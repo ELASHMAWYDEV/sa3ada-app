@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "746609326906",
+    "project_id": "sa3ada-62bc6",
+    "storage_bucket": "sa3ada-62bc6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:746609326906:android:1916ffd936a70f007a6e03",
+        "android_client_info": {
+          "package_name": "com.sa3ada.elashmawydev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "746609326906-j4rah8t1l5f32l86tsn91kbrnns5iep5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmWnz0XqbXGAaSmlktf6aBk5OqOeYx-6o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "746609326906-j4rah8t1l5f32l86tsn91kbrnns5iep5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
