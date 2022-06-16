@@ -75,30 +75,37 @@ class HomeScreen extends StatelessWidget {
             onPressed: () {},
           ),
           Spacer(),
-          TextButton(
-              onPressed: () {},
-              style: ButtonStyle(
-                  padding: MaterialStateProperty.all(
-                      EdgeInsets.symmetric(vertical: 12, horizontal: 50)),
-                  backgroundColor: MaterialStateProperty.all(kRedColor),
-                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50)))),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.add,
-                    color: kWhiteColor,
-                  ),
-                  Text(
-                    "انشاء فاتورة جديدة",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: kWhiteColor, fontSize: 16),
-                  )
-                ],
-              )),
+          Container(
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+                boxShadow: [
+                  BoxShadow(
+                      color: kSecondaryColor.withOpacity(0.5),
+                      offset: Offset(0, 4),
+                      blurRadius: 10,
+                      spreadRadius: 2)
+                ]),
+            child: TextButton(
+                onPressed: () {},
+                style: TextButton.styleFrom(
+                  backgroundColor: kRedColor,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(100)),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.add,
+                      color: kWhiteColor,
+                    ),
+                  ],
+                )),
+          ),
           SizedBox(
             height: 20,
           )

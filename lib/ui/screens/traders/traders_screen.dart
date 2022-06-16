@@ -203,6 +203,38 @@ class TradersScreen extends StatelessWidget {
                     MiniTableModel(
                         title: "التاريخ", selector: (row) => row["id"]),
                   ],
+                ),
+                Divider(
+                  color: kSecondaryColor,
+                  height: 50,
+                  thickness: 1,
+                  indent: 40,
+                  endIndent: 40,
+                ),
+                MiniTable(
+                  title: "عمليات الايداع الأخيرة",
+                  data: [
+                    {"id": "1", "type": "نقدي", "total": 198235},
+                    {"id": "2"},
+                    {"id": "3"},
+                    {"id": "4"},
+                    {"id": "5"},
+                    {"id": "6"},
+                  ],
+                  columns: [
+                    MiniTableModel(title: "#", selector: (row) => row["id"]),
+                    MiniTableModel(
+                        title: "المبلغ",
+                        selector: (row) => row["total"] == null
+                            ? ""
+                            : numberToString(row["total"])),
+                    MiniTableModel(
+                        title: "طريقة الايداع", selector: (row) => row["type"]),
+                    MiniTableModel(
+                        title: "رقم الايصال", selector: (row) => row["id"]),
+                    MiniTableModel(
+                        title: "التاريخ", selector: (row) => row["id"]),
+                  ],
                 )
               ]),
             ),
