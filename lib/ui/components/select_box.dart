@@ -4,6 +4,58 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sa3ada_app/utils/constants.dart';
 
+class SelectBox extends StatelessWidget {
+  const SelectBox({
+    Key? key,
+    required this.items,
+    required this.selectedItemIndex,
+    required this.onChange,
+  }) : super(key: key);
+
+  final List<String> items;
+  final int selectedItemIndex;
+  final Function(int) onChange;
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        SizedBox(
+          width: size.width * 0.8,
+          child: TextButton(
+              onPressed: () {
+                Get.bottomSheet(SelectModal(
+                    items: items,
+                    selectedItemIndex: selectedItemIndex,
+                    onChange: onChange));
+              },
+              style: ButtonStyle(
+                  padding: MaterialStateProperty.all(
+                      EdgeInsets.symmetric(vertical: 12, horizontal: 60)),
+                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(100))),
+                  backgroundColor: MaterialStateProperty.all(kWhiteColor)),
+              child: Text(
+                items[selectedItemIndex],
+                style: TextStyle(
+                    color: kSecondaryColor,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500),
+              )),
+        ),
+        Positioned(
+          left: 15,
+          top: 4,
+          child: Icon(
+            Icons.arrow_drop_down_sharp,
+            color: kSecondaryColor,
+            size: 40,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class SelectModal extends StatelessWidget {
   const SelectModal({
     Key? key,

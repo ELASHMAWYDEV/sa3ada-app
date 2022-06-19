@@ -6,13 +6,17 @@ import 'package:sa3ada_app/utils/constants.dart';
 class Header extends StatelessWidget {
   const Header({
     Key? key,
+    required this.title,
+    this.icon = Icons.arrow_back_ios,
   }) : super(key: key);
 
+  final String title;
+  final IconData icon;
   @override
   Widget build(BuildContext context) {
     return AppBar(
       centerTitle: true,
-      title: Text("التجار"),
+      title: Text(title),
       titleTextStyle: TextStyle(
           fontWeight: FontWeight.w600, fontFamily: "Tajawal", fontSize: 22),
       backgroundColor: kSecondaryColor,
@@ -21,8 +25,8 @@ class Header extends StatelessWidget {
             Get.back();
           },
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: Icon(Icons.arrow_back_ios),
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            child: Icon(icon),
           )),
     );
   }

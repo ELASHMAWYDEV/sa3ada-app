@@ -6,7 +6,7 @@ import 'package:sa3ada_app/data/models/mini_table_model.dart';
 import 'package:sa3ada_app/ui/components/balance_box.dart';
 import 'package:sa3ada_app/ui/components/header.dart';
 import 'package:sa3ada_app/ui/components/mini_table.dart';
-import 'package:sa3ada_app/ui/components/select_modal.dart';
+import 'package:sa3ada_app/ui/components/select_box.dart';
 import 'package:sa3ada_app/utils/constants.dart';
 import 'package:sa3ada_app/utils/utils.dart';
 
@@ -35,7 +35,9 @@ class _TradersScreenState extends State<TradersScreen> {
     return Scaffold(
         body: Column(
       children: [
-        Header(),
+        Header(
+          title: "التجار",
+        ),
         SizedBox(
           height: size.height - 80,
           child: SingleChildScrollView(
@@ -45,47 +47,14 @@ class _TradersScreenState extends State<TradersScreen> {
                 SizedBox(
                   height: 20,
                 ),
-                Stack(
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.8,
-                      child: TextButton(
-                          onPressed: () {
-                            Get.bottomSheet(SelectModal(
-                                items: items,
-                                selectedItemIndex: selectedIndex,
-                                onChange: (index) => setState(() {
-                                      selectedIndex = index;
-                                    })));
-                          },
-                          style: ButtonStyle(
-                              padding: MaterialStateProperty.all(
-                                  EdgeInsets.symmetric(
-                                      vertical: 12, horizontal: 60)),
-                              shape: MaterialStateProperty.all(
-                                  RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(100))),
-                              backgroundColor:
-                                  MaterialStateProperty.all(kWhiteColor)),
-                          child: Text(
-                            items[selectedIndex],
-                            style: TextStyle(
-                                color: kSecondaryColor,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500),
-                          )),
-                    ),
-                    Positioned(
-                      left: 15,
-                      top: 4,
-                      child: Icon(
-                        Icons.arrow_drop_down_sharp,
-                        color: kSecondaryColor,
-                        size: 40,
-                      ),
-                    ),
-                  ],
+                SelectBox(
+                  items: items,
+                  selectedItemIndex: selectedIndex,
+                  onChange: (index) {
+                    setState(() {
+                      selectedIndex = index;
+                    });
+                  },
                 ),
                 SizedBox(
                   height: 25,

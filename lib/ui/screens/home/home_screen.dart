@@ -88,7 +88,9 @@ class HomeScreen extends StatelessWidget {
                       spreadRadius: 2)
                 ]),
             child: TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.toNamed("/actions/transfer-deposit");
+                },
                 style: TextButton.styleFrom(
                   backgroundColor: kRedColor,
                   shape: RoundedRectangleBorder(
