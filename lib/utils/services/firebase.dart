@@ -3,7 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:sa3ada_app/utils/constants.dart';
 
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
   print("Handling background messaging: ${message.messageId}");
 }
@@ -16,18 +16,18 @@ FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 
 Future<void> setupFirebase() async {
   await Firebase.initializeApp();
-  FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
 
   //Get the token
-  final String? token = await _firebaseMessaging.getToken();
+  final String? token = await firebaseMessaging.getToken();
 
   print("firebase token: $token");
 
   //Handle background messages
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
   //Get notification permission
-  NotificationSettings settings = await _firebaseMessaging.requestPermission();
+  NotificationSettings settings = await firebaseMessaging.requestPermission();
   print("authurization is : ${settings.authorizationStatus}");
 
   /*****************************************/

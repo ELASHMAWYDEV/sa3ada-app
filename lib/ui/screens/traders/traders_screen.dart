@@ -3,15 +3,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sa3ada_app/data/models/mini_table_model.dart';
-import 'package:sa3ada_app/ui/screens/components/balance_box.dart';
-import 'package:sa3ada_app/ui/screens/components/header.dart';
-import 'package:sa3ada_app/ui/screens/components/mini_table.dart';
+import 'package:sa3ada_app/ui/components/balance_box.dart';
+import 'package:sa3ada_app/ui/components/header.dart';
+import 'package:sa3ada_app/ui/components/mini_table.dart';
+import 'package:sa3ada_app/ui/components/select_modal.dart';
 import 'package:sa3ada_app/utils/constants.dart';
 import 'package:sa3ada_app/utils/utils.dart';
 
-class TradersScreen extends StatelessWidget {
+class TradersScreen extends StatefulWidget {
   TradersScreen({Key? key}) : super(key: key);
 
+  @override
+  State<TradersScreen> createState() => _TradersScreenState();
+}
+
+class _TradersScreenState extends State<TradersScreen> {
   var items = [
     'الطلبة',
     'الدولية',
@@ -21,6 +27,8 @@ class TradersScreen extends StatelessWidget {
     'بكار',
     'بكار',
   ];
+
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -43,79 +51,12 @@ class TradersScreen extends StatelessWidget {
                       width: size.width * 0.8,
                       child: TextButton(
                           onPressed: () {
-                            Get.bottomSheet(Container(
-                              height: 350,
-                              padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
-                              decoration: BoxDecoration(
-                                  color: kWhiteColor,
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(30),
-                                      topRight: Radius.circular(30))),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          Get.back();
-                                        },
-                                        child: Container(
-                                            width: 25,
-                                            height: 25,
-                                            decoration: BoxDecoration(
-                                                color: kSecondaryColor,
-                                                borderRadius:
-                                                    BorderRadius.circular(50)),
-                                            child: Icon(
-                                              Icons.close,
-                                              color: kWhiteColor,
-                                              size: 20,
-                                            )),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Expanded(
-                                    child: ListView.builder(
-                                        itemCount: items.length,
-                                        padding: EdgeInsets.only(bottom: 20),
-                                        itemBuilder: (BuildContext context,
-                                                int index) =>
-                                            Padding(
-                                              padding:
-                                                  EdgeInsets.only(bottom: 7.0),
-                                              child: TextButton(
-                                                onPressed: () {
-                                                  Get.back();
-                                                },
-                                                style: TextButton.styleFrom(
-                                                    backgroundColor: index == 0
-                                                        ? kPrimaryColor
-                                                        : kWhiteColor,
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 40,
-                                                            vertical: 15),
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        4))),
-                                                child: Text(items[index],
-                                                    style: TextStyle(
-                                                        color: index == 0
-                                                            ? kWhiteColor
-                                                            : kSecondaryColor,
-                                                        fontSize: 18)),
-                                              ),
-                                            )),
-                                  )
-                                ],
-                              ),
-                            ));
+                            Get.bottomSheet(SelectModal(
+                                items: items,
+                                selectedItemIndex: selectedIndex,
+                                onChange: (index) => setState(() {
+                                      selectedIndex = index;
+                                    })));
                           },
                           style: ButtonStyle(
                               padding: MaterialStateProperty.all(
@@ -128,7 +69,7 @@ class TradersScreen extends StatelessWidget {
                               backgroundColor:
                                   MaterialStateProperty.all(kWhiteColor)),
                           child: Text(
-                            items[0],
+                            items[selectedIndex],
                             style: TextStyle(
                                 color: kSecondaryColor,
                                 fontSize: 20,
