@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:sa3ada_app/ui/screens/expenses/expenses_screen.dart';
 import 'package:sa3ada_app/ui/screens/home/home_screen.dart';
 import 'package:get/get.dart';
 import 'package:sa3ada_app/ui/screens/traders/traders_screen.dart';
@@ -13,5 +14,6 @@ class AppRoutes {
     GetPage(name: "/traders", page: () => TradersScreen()),
     GetPage(
         name: "/actions/transfer-deposit", page: () => TransferDepositScreen()),
+    GetPage(name: "/actions/expenses", page: () => ExpensesScreen()),
   ];
 }

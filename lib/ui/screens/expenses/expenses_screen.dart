@@ -8,28 +8,27 @@ import 'package:sa3ada_app/ui/components/rounded_selector_box.dart';
 import 'package:sa3ada_app/ui/components/select_box.dart';
 import 'package:sa3ada_app/ui/components/take_photo_button.dart';
 import 'package:sa3ada_app/ui/components/text_box.dart';
-import 'package:sa3ada_app/ui/controllers/transfer_deposit_controller.dart';
+import 'package:sa3ada_app/ui/controllers/expenses_controller.dart';
 import 'package:sa3ada_app/utils/constants.dart';
 
-class TransferDepositScreen extends StatelessWidget {
-  TransferDepositScreen({Key? key}) : super(key: key);
+class ExpensesScreen extends StatelessWidget {
+  ExpensesScreen({Key? key}) : super(key: key);
 
-  final TransferDepositController controller =
-      Get.put(TransferDepositController());
+  final ExpensesController controller = Get.put(ExpensesController());
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<TransferDepositController>(builder: (_) {
+    return GetBuilder<ExpensesController>(builder: (_) {
       return Scaffold(
         body: Container(
           child: SingleChildScrollView(
             child: Column(children: [
-              Header(title: "ايداع / تحويل", icon: Icons.close),
+              Header(title: "المصاريف", icon: Icons.close),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 child: Column(
                   children: [
-                    Text("اختر نوع المحول منه",
+                    Text("اختر مصدر المصاريف",
                         style: TextStyle(color: kGrayLightColor, fontSize: 12)),
                     SizedBox(
                       height: 15,
@@ -49,31 +48,21 @@ class TransferDepositScreen extends StatelessWidget {
                           .toList(),
                     ),
                     Visibility(
-                        visible: ["تاجر", "فرع"].contains(_.selectedFrom),
+                        visible: _.selectedFrom == "فرع",
                         child: Column(
                           children: [
                             SizedBox(
                               height: 20,
                             ),
                             SelectBox(
-                              items: _.selectedFrom == "تاجر"
-                                  ? _.subSelectors["traders"]!
-                                  : _.subSelectors["branches"]!,
-                              selectedItemIndex: _.selectedFrom == "تاجر"
-                                  ? _.selectedSubFrom != null
-                                      ? _.subSelectors["traders"]!
-                                          .indexOf(_.selectedSubFrom!)
-                                      : 0
-                                  : _.selectedSubFrom != null
-                                      ? _.subSelectors["branches"]!
-                                          .indexOf(_.selectedSubFrom!)
-                                      : 0,
+                              items: _.subSelectors["branches"]!,
+                              selectedItemIndex: _.selectedSubFrom != null
+                                  ? _.subSelectors["branches"]!
+                                      .indexOf(_.selectedSubFrom!)
+                                  : 0,
                               onChange: (index) {
-                                _.selectedFrom == "تاجر"
-                                    ? _.selectedSubFrom =
-                                        _.subSelectors["traders"]![index]
-                                    : _.selectedSubFrom =
-                                        _.subSelectors["branches"]![index];
+                                _.selectedSubFrom =
+                                    _.subSelectors["branches"]![index];
                                 _.update();
                               },
                             ),
@@ -90,57 +79,22 @@ class TransferDepositScreen extends StatelessWidget {
                               indent: 40,
                               endIndent: 40,
                             ),
-                            Text("اختر نوع المحول اليه",
+                            Text("اختر وجهة المصاريف",
                                 style: TextStyle(
                                     color: kGrayLightColor, fontSize: 12)),
                             SizedBox(
                               height: 15,
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: _.toSelectors
-                                  .map((selector) => RoundedSelectorBox(
-                                        selector: selector,
-                                        isActive: selector == _.selectedTo,
-                                        onClick: () {
-                                          _.selectedTo = selector;
-                                          _.selectedSubTo = null;
-                                          _.update();
-                                        },
-                                      ))
-                                  .toList(),
+                            SelectBox(
+                              items: _.toSelectors,
+                              selectedItemIndex: _.selectedTo != null
+                                  ? _.toSelectors.indexOf(_.selectedTo!)
+                                  : 0,
+                              onChange: (index) {
+                                _.selectedTo = _.toSelectors[index];
+                                _.update();
+                              },
                             ),
-                            Visibility(
-                                visible: ["تاجر", "فرع"].contains(_.selectedTo),
-                                child: Column(
-                                  children: [
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    SelectBox(
-                                      items: _.selectedTo == "تاجر"
-                                          ? _.subSelectors["traders"]!
-                                          : _.subSelectors["branches"]!,
-                                      selectedItemIndex: _.selectedTo == "تاجر"
-                                          ? _.selectedSubTo != null
-                                              ? _.subSelectors["traders"]!
-                                                  .indexOf(_.selectedSubTo!)
-                                              : 0
-                                          : _.selectedSubTo != null
-                                              ? _.subSelectors["branches"]!
-                                                  .indexOf(_.selectedSubTo!)
-                                              : 0,
-                                      onChange: (index) {
-                                        _.selectedFrom == "تاجر"
-                                            ? _.selectedSubTo = _
-                                                .subSelectors["traders"]![index]
-                                            : _.selectedSubTo = _.subSelectors[
-                                                "branches"]![index];
-                                        _.update();
-                                      },
-                                    ),
-                                  ],
-                                )),
                             Visibility(
                                 visible: _.selectedTo != null,
                                 child: Column(
@@ -168,23 +122,14 @@ class TransferDepositScreen extends StatelessWidget {
                                     SizedBox(
                                       height: 20,
                                     ),
-                                    TextBox(
-                                        label: "رقم الايصال",
-                                        controller:
-                                            _.receiptNumberInputController,
-                                        keyboardType: TextInputType.number),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
-                                        TakePhotoButton(
-                                            title: "اضافة صور الايداع/السحب"),
+                                        TakePhotoButton(),
                                       ],
                                     ),
                                     SizedBox(
-                                      height: 30,
+                                      height: 20,
                                     ),
                                     MainButton(
                                       title: "اضافة",

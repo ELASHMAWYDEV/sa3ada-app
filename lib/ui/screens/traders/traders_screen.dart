@@ -39,7 +39,8 @@ class _TradersScreenState extends State<TradersScreen> {
           title: "التجار",
         ),
         SizedBox(
-          height: size.height - 80,
+          height:
+              size.height - kToolbarHeight - MediaQuery.of(context).padding.top,
           child: SingleChildScrollView(
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),

@@ -89,7 +89,7 @@ class HomeScreen extends StatelessWidget {
                 ]),
             child: TextButton(
                 onPressed: () {
-                  Get.toNamed("/actions/transfer-deposit");
+                  Get.toNamed("/actions/expenses");
                 },
                 style: TextButton.styleFrom(
                   backgroundColor: kRedColor,

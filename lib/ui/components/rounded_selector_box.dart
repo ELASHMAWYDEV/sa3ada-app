@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:sa3ada_app/utils/constants.dart';
 
@@ -17,7 +19,7 @@ class RoundedSelectorBox extends StatelessWidget {
     return TextButton(
       onPressed: onClick,
       style: TextButton.styleFrom(
-          padding: EdgeInsets.zero,
+          padding: EdgeInsets.all(5),
           backgroundColor: isActive ? kGreenColor : kSecondaryColor,
           fixedSize: Size(size.width * 0.25 - 20, size.width * 0.25 - 20),
           shape:
