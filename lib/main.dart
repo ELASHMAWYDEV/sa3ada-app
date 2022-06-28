@@ -14,11 +14,10 @@ import 'utils/translations/app_translations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await setupFirebase();
-
   Get.put(NavigationService.init(), permanent: true);
   await Get.putAsync(() => ConnectionService.init(), permanent: true);
   await Get.putAsync(() => StorageService.init(), permanent: true);
+  Get.put(FirebaseService(), permanent: true);
   Get.put(LocalizationService.init(), permanent: true);
   Get.put(ApiService(), permanent: true);
   runApp(const MyApp());

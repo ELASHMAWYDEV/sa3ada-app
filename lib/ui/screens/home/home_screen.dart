@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sa3ada_app/data/firebase_services/auth_service.dart';
+import 'package:sa3ada_app/ui/components/floating_add_button.dart';
 import 'package:sa3ada_app/utils/constants.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -10,6 +12,28 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingAddButton(
+        options: [
+          FloatingOptionButton(
+            title: "فاتورة",
+            onClick: () {},
+          ),
+          FloatingOptionButton(
+            title: "ايداع / تحويل",
+            onClick: () {
+              Get.toNamed("/actions/transfer-deposit");
+              AuthService.login();
+            },
+          ),
+          FloatingOptionButton(
+            title: "مصاريف",
+            onClick: () {
+              Get.toNamed("/actions/expenses");
+            },
+          )
+        ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       body: Column(
         children: [
           Stack(
@@ -52,73 +76,46 @@ class HomeScreen extends StatelessWidget {
           SizedBox(
             height: 70,
           ),
-          MainButton(
-            title: "الفروع",
-            onPressed: () {},
-          ),
-          MainButton(
-            title: "المخازن",
-            onPressed: () {},
-          ),
-          MainButton(
-            title: "التجار",
-            onPressed: () {
-              Get.toNamed("/traders");
-            },
-          ),
-          MainButton(
-            title: "الخزنة",
-            onPressed: () {},
-          ),
-          MainButton(
-            title: "حساب الشغل",
-            onPressed: () {},
-          ),
-          Spacer(),
-          Container(
-            width: 60,
-            height: 60,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
-                boxShadow: [
-                  BoxShadow(
-                      color: kSecondaryColor.withOpacity(0.5),
-                      offset: Offset(0, 4),
-                      blurRadius: 10,
-                      spreadRadius: 2)
-                ]),
-            child: TextButton(
-                onPressed: () {
-                  Get.toNamed("/actions/expenses");
-                },
-                style: TextButton.styleFrom(
-                  backgroundColor: kRedColor,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(100)),
+          Visibility(
+            visible: true,
+            child: Column(
+              children: [
+                OptionButton(
+                  title: "الفروع",
+                  onPressed: () {},
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.add,
-                      color: kWhiteColor,
-                    ),
-                  ],
-                )),
+                OptionButton(
+                  title: "المخازن",
+                  onPressed: () {},
+                ),
+                OptionButton(
+                  title: "التجار",
+                  onPressed: () {
+                    Get.toNamed("/traders");
+                  },
+                ),
+                OptionButton(
+                  title: "الخزنة",
+                  onPressed: () {},
+                ),
+                OptionButton(
+                  title: "حساب الشغل",
+                  onPressed: () {},
+                ),
+                SizedBox(
+                  height: 20,
+                )
+              ],
+            ),
           ),
-          SizedBox(
-            height: 20,
-          )
         ],
       ),
     );
   }
 }
 
-class MainButton extends StatelessWidget {
-  const MainButton({Key? key, required this.title, required this.onPressed})
+class OptionButton extends StatelessWidget {
+  const OptionButton({Key? key, required this.title, required this.onPressed})
       : super(key: key);
 
   final String title;

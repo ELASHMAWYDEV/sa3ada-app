@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:cloud_firestore_odm/cloud_firestore_odm.dart';
 
 part 'user_model.g.dart';
 
@@ -7,8 +6,15 @@ part 'user_model.g.dart';
 class UserModel {
   final String name;
   final String username;
+  final String password;
+  final String type;
 
-  UserModel({required this.username, required this.name});
+  UserModel({
+    required this.name,
+    required this.username,
+    required this.password,
+    required this.type,
+  });
 
   factory UserModel.fromJson(Map<String, Object?> json) =>
       _$UserModelFromJson(json);

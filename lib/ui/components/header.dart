@@ -20,14 +20,12 @@ class Header extends StatelessWidget {
       titleTextStyle: TextStyle(
           fontWeight: FontWeight.w600, fontFamily: "Tajawal", fontSize: 22),
       backgroundColor: kSecondaryColor,
-      leading: GestureDetector(
+      leading: InkWell(
           onTap: () {
             Get.back();
           },
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            child: Icon(icon),
-          )),
+          borderRadius: BorderRadius.circular(100),
+          child: Icon(icon)),
     );
   }
 }

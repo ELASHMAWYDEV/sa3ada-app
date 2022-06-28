@@ -54,65 +54,83 @@ class MiniTable extends StatelessWidget {
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(
               color: kWhiteColor, borderRadius: BorderRadius.circular(8)),
-          child: Table(
-            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+          child: Column(
             children: [
-              TableRow(
-                  decoration: BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(
-                    width: 1,
-                    color: kSecondaryColor,
-                  ))),
-                  children: columns
-                      .asMap()
-                      .map((index, column) => MapEntry(
-                            index,
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(
-                                  index == columns.length + 1 ? 20 : 0,
-                                  14,
-                                  index == 0 ? 15 : 0,
-                                  14),
-                              child: Text(
-                                column.title,
-                                style: tableTitleStyle,
-                              ),
-                            ),
-                          ))
-                      .values
-                      .toList()),
-              ...data
-                  .asMap()
-                  .map((index, row) => MapEntry(
-                      index,
-                      TableRow(
-                          decoration: BoxDecoration(
-                              color: index % 2 == 0
-                                  ? kGrayLightColor.withOpacity(0.4)
-                                  : kWhiteColor),
-                          children: columns
-                              .asMap()
-                              .map((index, column) => MapEntry(
-                                  index,
-                                  Padding(
-                                    padding: EdgeInsets.fromLTRB(
-                                        index == columns.length + 1 ? 20 : 4,
-                                        12,
-                                        index == columns.length + 1 ? 0 : 15,
-                                        12),
-                                    child: Text(
-                                      column.selector == null
-                                          ? row[column.title] ?? ""
-                                          : column.selector!(row) ?? "",
-                                      maxLines: 1,
-                                      style: tableItemStyle,
-                                    ),
-                                  )))
-                              .values
-                              .toList())))
-                  .values
-                  .toList()
+              Table(
+                children: [
+                  TableRow(
+                      decoration: BoxDecoration(
+                          border: Border(
+                              bottom: BorderSide(
+                        width: 1,
+                        color: kSecondaryColor,
+                      ))),
+                      children: columns
+                          .asMap()
+                          .map((index, column) => MapEntry(
+                                index,
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(
+                                      index == columns.length + 1 ? 20 : 0,
+                                      14,
+                                      index == 0 ? 15 : 0,
+                                      14),
+                                  child: Text(
+                                    column.title,
+                                    style: tableTitleStyle,
+                                  ),
+                                ),
+                              ))
+                          .values
+                          .toList()),
+                ],
+              ),
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                    maxHeight: 250, minHeight: double.minPositive),
+                child: SingleChildScrollView(
+                  child: Table(
+                    defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                    children: [
+                      ...data
+                          .asMap()
+                          .map((index, row) => MapEntry(
+                              index,
+                              TableRow(
+                                  decoration: BoxDecoration(
+                                      color: index % 2 == 0
+                                          ? kGrayLightColor.withOpacity(0.4)
+                                          : kWhiteColor),
+                                  children: columns
+                                      .asMap()
+                                      .map((index, column) => MapEntry(
+                                          index,
+                                          Padding(
+                                            padding: EdgeInsets.fromLTRB(
+                                                index == columns.length + 1
+                                                    ? 20
+                                                    : 40,
+                                                12,
+                                                index == columns.length + 1
+                                                    ? 0
+                                                    : 15,
+                                                12),
+                                            child: Text(
+                                              column.selector == null
+                                                  ? row[column.title] ?? ""
+                                                  : column.selector!(row) ?? "",
+                                              maxLines: 1,
+                                              style: tableItemStyle,
+                                            ),
+                                          )))
+                                      .values
+                                      .toList())))
+                          .values
+                          .toList()
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ),
