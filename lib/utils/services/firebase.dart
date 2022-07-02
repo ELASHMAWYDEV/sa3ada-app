@@ -1,8 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:sa3ada_app/firebase_options.dart';
 import 'package:sa3ada_app/utils/constants.dart';
 
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -25,13 +29,22 @@ class FirebaseService extends GetxService {
     return _firebaseUtil;
   }
 
-  late final FirebaseMessaging firebaseMessaging;
-  late final FirebaseFirestore firestore;
+  static final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  static final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  static final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+  static final FirebaseStorage firebaseStorage = FirebaseStorage.instance;
 
-  Future<void> init() async {
-    await Firebase.initializeApp();
-    firebaseMessaging = FirebaseMessaging.instance;
-    firestore = FirebaseFirestore.instance;
+  static Future<void> init() async {
+    await Firebase.initializeApp(
+            name: 'sa3ada', options: DefaultFirebaseOptions.currentPlatform)
+        .whenComplete(() => print("initialized firebase app"));
+
+    // Initialize emulators
+    if (!kReleaseMode) {
+      await firebaseAuth.useAuthEmulator('192.168.1.153', 9099);
+      firestore.useFirestoreEmulator('192.168.1.153', 8080);
+      await firebaseStorage.useStorageEmulator('192.168.1.153', 9199);
+    }
 
     //Get the token
     final String? token = await firebaseMessaging.getToken();
@@ -42,8 +55,8 @@ class FirebaseService extends GetxService {
     FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
     //Get notification permission
-    NotificationSettings settings = await firebaseMessaging.requestPermission();
-    print("authurization is : ${settings.authorizationStatus}");
+    // NotificationSettings settings = await firebaseMessaging.requestPermission();
+    // print("authurization is : ${settings.authorizationStatus}");
 
     /*****************************************/
     //Handle messaging
@@ -62,6 +75,13 @@ class FirebaseService extends GetxService {
                     playSound: true,
                     priority: Priority.high,
                     icon: "@mipmap/ic_launcher")));
+      }
+    });
+    /*****************************************/
+    // Handle authentication
+    firebaseAuth.authStateChanges().listen((user) {
+      if (user == null) {
+        Get.offAndToNamed("/login");
       }
     });
   }

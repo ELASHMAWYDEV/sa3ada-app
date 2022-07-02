@@ -1,27 +1,27 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:cloud_firestore_odm/cloud_firestore_odm.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-part 'account_model.g.dart';
+part 'transaction_model.g.dart';
 
-@Collection<AccountModel>('accounts', name: 'accounts')
-final accountsRef = AccountModelCollectionReference();
+@Collection<TransactionModel>('transactions', name: 'transactions')
+final transactionsRef = TransactionModelCollectionReference();
 
 @JsonSerializable(explicitToJson: true)
-class AccountModel {
+class TransactionModel {
   final String ownerId;
   final String type;
   final double activeBalance;
   final double creditBalance;
 
-  AccountModel({
+  TransactionModel({
     required this.ownerId,
     required this.type,
     required this.activeBalance,
     required this.creditBalance,
   });
 
-  factory AccountModel.fromJson(Map<String, Object?> json) =>
-      _$AccountModelFromJson(json);
+  factory TransactionModel.fromJson(Map<String, Object?> json) =>
+      _$TransactionModelFromJson(json);
 
-  Map<String, Object?> toJson() => _$AccountModelToJson(this);
+  Map<String, Object?> toJson() => _$TransactionModelToJson(this);
 }

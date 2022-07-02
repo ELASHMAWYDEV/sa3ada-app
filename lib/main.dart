@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-
 import 'utils/app_routes.dart';
 import 'utils/constants.dart';
 import 'utils/services/firebase.dart';
@@ -14,11 +13,11 @@ import 'utils/translations/app_translations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Get.put(NavigationService.init(), permanent: true);
+  Get.put(FirebaseService.init(), permanent: true);
   await Get.putAsync(() => ConnectionService.init(), permanent: true);
   await Get.putAsync(() => StorageService.init(), permanent: true);
-  Get.put(FirebaseService(), permanent: true);
   Get.put(LocalizationService.init(), permanent: true);
+  Get.put(NavigationService.init(), permanent: true);
   Get.put(ApiService(), permanent: true);
   runApp(const MyApp());
 }
@@ -47,7 +46,7 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: kPrimaryColor,
           primaryColor: kPrimaryColor,
           textTheme: Theme.of(context).textTheme.apply(
-                bodyColor: kWhiteColor,
+                bodyColor: kSecondaryColor,
                 fontFamily: kFontFamilyPrimary,
               ),
           visualDensity: VisualDensity.adaptivePlatformDensity),

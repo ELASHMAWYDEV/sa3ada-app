@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'account_model.dart';
+part of 'transaction_model.dart';
 
 // **************************************************************************
 // CollectionGenerator
@@ -18,80 +18,81 @@ const _sentinel = _Sentinel();
 /// A collection reference object can be used for adding documents,
 /// getting document references, and querying for documents
 /// (using the methods inherited from Query).
-abstract class AccountModelCollectionReference
+abstract class TransactionModelCollectionReference
     implements
-        AccountModelQuery,
-        FirestoreCollectionReference<AccountModelQuerySnapshot> {
-  factory AccountModelCollectionReference([
+        TransactionModelQuery,
+        FirestoreCollectionReference<TransactionModelQuerySnapshot> {
+  factory TransactionModelCollectionReference([
     FirebaseFirestore? firestore,
-  ]) = _$AccountModelCollectionReference;
+  ]) = _$TransactionModelCollectionReference;
 
-  static AccountModel fromFirestore(
+  static TransactionModel fromFirestore(
     DocumentSnapshot<Map<String, Object?>> snapshot,
     SnapshotOptions? options,
   ) {
-    return AccountModel.fromJson(snapshot.data()!);
+    return TransactionModel.fromJson(snapshot.data()!);
   }
 
   static Map<String, Object?> toFirestore(
-    AccountModel value,
+    TransactionModel value,
     SetOptions? options,
   ) {
     return value.toJson();
   }
 
   @override
-  AccountModelDocumentReference doc([String? id]);
+  TransactionModelDocumentReference doc([String? id]);
 
   /// Add a new document to this collection with the specified data,
   /// assigning it a document ID automatically.
-  Future<AccountModelDocumentReference> add(AccountModel value);
+  Future<TransactionModelDocumentReference> add(TransactionModel value);
 }
 
-class _$AccountModelCollectionReference extends _$AccountModelQuery
-    implements AccountModelCollectionReference {
-  factory _$AccountModelCollectionReference([FirebaseFirestore? firestore]) {
+class _$TransactionModelCollectionReference extends _$TransactionModelQuery
+    implements TransactionModelCollectionReference {
+  factory _$TransactionModelCollectionReference(
+      [FirebaseFirestore? firestore]) {
     firestore ??= FirebaseFirestore.instance;
 
-    return _$AccountModelCollectionReference._(
-      firestore.collection('accounts').withConverter(
-            fromFirestore: AccountModelCollectionReference.fromFirestore,
-            toFirestore: AccountModelCollectionReference.toFirestore,
+    return _$TransactionModelCollectionReference._(
+      firestore.collection('transactions').withConverter(
+            fromFirestore: TransactionModelCollectionReference.fromFirestore,
+            toFirestore: TransactionModelCollectionReference.toFirestore,
           ),
     );
   }
 
-  _$AccountModelCollectionReference._(
-    CollectionReference<AccountModel> reference,
+  _$TransactionModelCollectionReference._(
+    CollectionReference<TransactionModel> reference,
   ) : super(reference, reference);
 
   String get path => reference.path;
 
   @override
-  CollectionReference<AccountModel> get reference =>
-      super.reference as CollectionReference<AccountModel>;
+  CollectionReference<TransactionModel> get reference =>
+      super.reference as CollectionReference<TransactionModel>;
 
   @override
-  AccountModelDocumentReference doc([String? id]) {
+  TransactionModelDocumentReference doc([String? id]) {
     assert(
       id == null || id.split('/').length == 1,
       'The document ID cannot be from a different collection',
     );
-    return AccountModelDocumentReference(
+    return TransactionModelDocumentReference(
       reference.doc(id),
     );
   }
 
   @override
-  Future<AccountModelDocumentReference> add(AccountModel value) {
+  Future<TransactionModelDocumentReference> add(TransactionModel value) {
     return reference
         .add(value)
-        .then((ref) => AccountModelDocumentReference(ref));
+        .then((ref) => TransactionModelDocumentReference(ref));
   }
 
   @override
   bool operator ==(Object other) {
-    return other is _$AccountModelCollectionReference &&
+    return other is _$TransactionModelCollectionReference &&
         other.runtimeType == runtimeType &&
         other.reference == reference;
   }
@@ -100,24 +101,24 @@ class _$AccountModelCollectionReference extends _$AccountModelQuery
   int get hashCode => Object.hash(runtimeType, reference);
 }
 
-abstract class AccountModelDocumentReference
-    extends FirestoreDocumentReference<AccountModelDocumentSnapshot> {
-  factory AccountModelDocumentReference(
-          DocumentReference<AccountModel> reference) =
-      _$AccountModelDocumentReference;
+abstract class TransactionModelDocumentReference
+    extends FirestoreDocumentReference<TransactionModelDocumentSnapshot> {
+  factory TransactionModelDocumentReference(
+          DocumentReference<TransactionModel> reference) =
+      _$TransactionModelDocumentReference;
 
-  DocumentReference<AccountModel> get reference;
+  DocumentReference<TransactionModel> get reference;
 
-  /// A reference to the [AccountModelCollectionReference] containing this document.
-  AccountModelCollectionReference get parent {
-    return _$AccountModelCollectionReference(reference.firestore);
+  /// A reference to the [TransactionModelCollectionReference] containing this document.
+  TransactionModelCollectionReference get parent {
+    return _$TransactionModelCollectionReference(reference.firestore);
   }
 
   @override
-  Stream<AccountModelDocumentSnapshot> snapshots();
+  Stream<TransactionModelDocumentSnapshot> snapshots();
 
   @override
-  Future<AccountModelDocumentSnapshot> get([GetOptions? options]);
+  Future<TransactionModelDocumentSnapshot> get([GetOptions? options]);
 
   @override
   Future<void> delete();
@@ -129,26 +130,26 @@ abstract class AccountModelDocumentReference
     double creditBalance,
   });
 
-  Future<void> set(AccountModel value);
+  Future<void> set(TransactionModel value);
 }
 
-class _$AccountModelDocumentReference
-    extends FirestoreDocumentReference<AccountModelDocumentSnapshot>
-    implements AccountModelDocumentReference {
-  _$AccountModelDocumentReference(this.reference);
+class _$TransactionModelDocumentReference
+    extends FirestoreDocumentReference<TransactionModelDocumentSnapshot>
+    implements TransactionModelDocumentReference {
+  _$TransactionModelDocumentReference(this.reference);
 
   @override
-  final DocumentReference<AccountModel> reference;
+  final DocumentReference<TransactionModel> reference;
 
-  /// A reference to the [AccountModelCollectionReference] containing this document.
-  AccountModelCollectionReference get parent {
-    return _$AccountModelCollectionReference(reference.firestore);
+  /// A reference to the [TransactionModelCollectionReference] containing this document.
+  TransactionModelCollectionReference get parent {
+    return _$TransactionModelCollectionReference(reference.firestore);
   }
 
   @override
-  Stream<AccountModelDocumentSnapshot> snapshots() {
+  Stream<TransactionModelDocumentSnapshot> snapshots() {
     return reference.snapshots().map((snapshot) {
-      return AccountModelDocumentSnapshot._(
+      return TransactionModelDocumentSnapshot._(
         snapshot,
         snapshot.data(),
       );
@@ -156,9 +157,9 @@ class _$AccountModelDocumentReference
   }
 
   @override
-  Future<AccountModelDocumentSnapshot> get([GetOptions? options]) {
+  Future<TransactionModelDocumentSnapshot> get([GetOptions? options]) {
     return reference.get(options).then((snapshot) {
-      return AccountModelDocumentSnapshot._(
+      return TransactionModelDocumentSnapshot._(
         snapshot,
         snapshot.data(),
       );
@@ -186,13 +187,13 @@ class _$AccountModelDocumentReference
     return reference.update(json);
   }
 
-  Future<void> set(AccountModel value) {
+  Future<void> set(TransactionModel value) {
     return reference.set(value);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is AccountModelDocumentReference &&
+    return other is TransactionModelDocumentReference &&
         other.runtimeType == runtimeType &&
         other.parent == parent &&
         other.id == id;
@@ -202,35 +203,35 @@ class _$AccountModelDocumentReference
   int get hashCode => Object.hash(runtimeType, parent, id);
 }
 
-class AccountModelDocumentSnapshot extends FirestoreDocumentSnapshot {
-  AccountModelDocumentSnapshot._(
+class TransactionModelDocumentSnapshot extends FirestoreDocumentSnapshot {
+  TransactionModelDocumentSnapshot._(
     this.snapshot,
     this.data,
   );
 
   @override
-  final DocumentSnapshot<AccountModel> snapshot;
+  final DocumentSnapshot<TransactionModel> snapshot;
 
   @override
-  AccountModelDocumentReference get reference {
-    return AccountModelDocumentReference(
+  TransactionModelDocumentReference get reference {
+    return TransactionModelDocumentReference(
       snapshot.reference,
     );
   }
 
   @override
-  final AccountModel? data;
+  final TransactionModel? data;
 }
 
-abstract class AccountModelQuery
-    implements QueryReference<AccountModelQuerySnapshot> {
+abstract class TransactionModelQuery
+    implements QueryReference<TransactionModelQuerySnapshot> {
   @override
-  AccountModelQuery limit(int limit);
+  TransactionModelQuery limit(int limit);
 
   @override
-  AccountModelQuery limitToLast(int limit);
+  TransactionModelQuery limitToLast(int limit);
 
-  AccountModelQuery whereOwnerId({
+  TransactionModelQuery whereOwnerId({
     String? isEqualTo,
     String? isNotEqualTo,
     String? isLessThan,
@@ -241,7 +242,7 @@ abstract class AccountModelQuery
     List<String>? whereIn,
     List<String>? whereNotIn,
   });
-  AccountModelQuery whereType({
+  TransactionModelQuery whereType({
     String? isEqualTo,
     String? isNotEqualTo,
     String? isLessThan,
@@ -252,7 +253,7 @@ abstract class AccountModelQuery
     List<String>? whereIn,
     List<String>? whereNotIn,
   });
-  AccountModelQuery whereActiveBalance({
+  TransactionModelQuery whereActiveBalance({
     double? isEqualTo,
     double? isNotEqualTo,
     double? isLessThan,
@@ -263,7 +264,7 @@ abstract class AccountModelQuery
     List<double>? whereIn,
     List<double>? whereNotIn,
   });
-  AccountModelQuery whereCreditBalance({
+  TransactionModelQuery whereCreditBalance({
     double? isEqualTo,
     double? isNotEqualTo,
     double? isLessThan,
@@ -275,58 +276,59 @@ abstract class AccountModelQuery
     List<double>? whereNotIn,
   });
 
-  AccountModelQuery orderByOwnerId({
+  TransactionModelQuery orderByOwnerId({
     bool descending = false,
     String startAt,
     String startAfter,
     String endAt,
     String endBefore,
-    AccountModelDocumentSnapshot? startAtDocument,
-    AccountModelDocumentSnapshot? endAtDocument,
-    AccountModelDocumentSnapshot? endBeforeDocument,
-    AccountModelDocumentSnapshot? startAfterDocument,
+    TransactionModelDocumentSnapshot? startAtDocument,
+    TransactionModelDocumentSnapshot? endAtDocument,
+    TransactionModelDocumentSnapshot? endBeforeDocument,
+    TransactionModelDocumentSnapshot? startAfterDocument,
   });
 
-  AccountModelQuery orderByType({
+  TransactionModelQuery orderByType({
     bool descending = false,
     String startAt,
     String startAfter,
     String endAt,
     String endBefore,
-    AccountModelDocumentSnapshot? startAtDocument,
-    AccountModelDocumentSnapshot? endAtDocument,
-    AccountModelDocumentSnapshot? endBeforeDocument,
-    AccountModelDocumentSnapshot? startAfterDocument,
+    TransactionModelDocumentSnapshot? startAtDocument,
+    TransactionModelDocumentSnapshot? endAtDocument,
+    TransactionModelDocumentSnapshot? endBeforeDocument,
+    TransactionModelDocumentSnapshot? startAfterDocument,
   });
 
-  AccountModelQuery orderByActiveBalance({
+  TransactionModelQuery orderByActiveBalance({
     bool descending = false,
     double startAt,
     double startAfter,
     double endAt,
     double endBefore,
-    AccountModelDocumentSnapshot? startAtDocument,
-    AccountModelDocumentSnapshot? endAtDocument,
-    AccountModelDocumentSnapshot? endBeforeDocument,
-    AccountModelDocumentSnapshot? startAfterDocument,
+    TransactionModelDocumentSnapshot? startAtDocument,
+    TransactionModelDocumentSnapshot? endAtDocument,
+    TransactionModelDocumentSnapshot? endBeforeDocument,
+    TransactionModelDocumentSnapshot? startAfterDocument,
   });
 
-  AccountModelQuery orderByCreditBalance({
+  TransactionModelQuery orderByCreditBalance({
     bool descending = false,
     double startAt,
     double startAfter,
     double endAt,
     double endBefore,
-    AccountModelDocumentSnapshot? startAtDocument,
-    AccountModelDocumentSnapshot? endAtDocument,
-    AccountModelDocumentSnapshot? endBeforeDocument,
-    AccountModelDocumentSnapshot? startAfterDocument,
+    TransactionModelDocumentSnapshot? startAtDocument,
+    TransactionModelDocumentSnapshot? endAtDocument,
+    TransactionModelDocumentSnapshot? endBeforeDocument,
+    TransactionModelDocumentSnapshot? startAfterDocument,
   });
 }
 
-class _$AccountModelQuery extends QueryReference<AccountModelQuerySnapshot>
-    implements AccountModelQuery {
-  _$AccountModelQuery(
+class _$TransactionModelQuery
+    extends QueryReference<TransactionModelQuerySnapshot>
+    implements TransactionModelQuery {
+  _$TransactionModelQuery(
     this.reference,
     this._collection,
   );
@@ -334,25 +336,25 @@ class _$AccountModelQuery extends QueryReference<AccountModelQuerySnapshot>
   final CollectionReference<Object?> _collection;
 
   @override
-  final Query<AccountModel> reference;
+  final Query<TransactionModel> reference;
 
-  AccountModelQuerySnapshot _decodeSnapshot(
-    QuerySnapshot<AccountModel> snapshot,
+  TransactionModelQuerySnapshot _decodeSnapshot(
+    QuerySnapshot<TransactionModel> snapshot,
   ) {
     final docs = snapshot.docs.map((e) {
-      return AccountModelQueryDocumentSnapshot._(e, e.data());
+      return TransactionModelQueryDocumentSnapshot._(e, e.data());
     }).toList();
 
     final docChanges = snapshot.docChanges.map((change) {
-      return FirestoreDocumentChange<AccountModelDocumentSnapshot>(
+      return FirestoreDocumentChange<TransactionModelDocumentSnapshot>(
         type: change.type,
         oldIndex: change.oldIndex,
         newIndex: change.newIndex,
-        doc: AccountModelDocumentSnapshot._(change.doc, change.doc.data()),
+        doc: TransactionModelDocumentSnapshot._(change.doc, change.doc.data()),
       );
     }).toList();
 
-    return AccountModelQuerySnapshot._(
+    return TransactionModelQuerySnapshot._(
       snapshot,
       docs,
       docChanges,
@@ -360,32 +362,32 @@ class _$AccountModelQuery extends QueryReference<AccountModelQuerySnapshot>
   }
 
   @override
-  Stream<AccountModelQuerySnapshot> snapshots([SnapshotOptions? options]) {
+  Stream<TransactionModelQuerySnapshot> snapshots([SnapshotOptions? options]) {
     return reference.snapshots().map(_decodeSnapshot);
   }
 
   @override
-  Future<AccountModelQuerySnapshot> get([GetOptions? options]) {
+  Future<TransactionModelQuerySnapshot> get([GetOptions? options]) {
     return reference.get(options).then(_decodeSnapshot);
   }
 
   @override
-  AccountModelQuery limit(int limit) {
-    return _$AccountModelQuery(
+  TransactionModelQuery limit(int limit) {
+    return _$TransactionModelQuery(
       reference.limit(limit),
       _collection,
     );
   }
 
   @override
-  AccountModelQuery limitToLast(int limit) {
-    return _$AccountModelQuery(
+  TransactionModelQuery limitToLast(int limit) {
+    return _$TransactionModelQuery(
       reference.limitToLast(limit),
       _collection,
     );
   }
 
-  AccountModelQuery whereOwnerId({
+  TransactionModelQuery whereOwnerId({
     String? isEqualTo,
     String? isNotEqualTo,
     String? isLessThan,
@@ -396,7 +398,7 @@ class _$AccountModelQuery extends QueryReference<AccountModelQuerySnapshot>
     List<String>? whereIn,
     List<String>? whereNotIn,
   }) {
-    return _$AccountModelQuery(
+    return _$TransactionModelQuery(
       reference.where(
         'ownerId',
         isEqualTo: isEqualTo,
@@ -413,7 +415,7 @@ class _$AccountModelQuery extends QueryReference<AccountModelQuerySnapshot>
     );
   }
 
-  AccountModelQuery whereType({
+  TransactionModelQuery whereType({
     String? isEqualTo,
     String? isNotEqualTo,
     String? isLessThan,
@@ -424,7 +426,7 @@ class _$AccountModelQuery extends QueryReference<AccountModelQuerySnapshot>
     List<String>? whereIn,
     List<String>? whereNotIn,
   }) {
-    return _$AccountModelQuery(
+    return _$TransactionModelQuery(
       reference.where(
         'type',
         isEqualTo: isEqualTo,
@@ -441,7 +443,7 @@ class _$AccountModelQuery extends QueryReference<AccountModelQuerySnapshot>
     );
   }
 
-  AccountModelQuery whereActiveBalance({
+  TransactionModelQuery whereActiveBalance({
     double? isEqualTo,
     double? isNotEqualTo,
     double? isLessThan,
@@ -452,7 +454,7 @@ class _$AccountModelQuery extends QueryReference<AccountModelQuerySnapshot>
     List<double>? whereIn,
     List<double>? whereNotIn,
   }) {
-    return _$AccountModelQuery(
+    return _$TransactionModelQuery(
       reference.where(
         'activeBalance',
         isEqualTo: isEqualTo,
@@ -469,7 +471,7 @@ class _$AccountModelQuery extends QueryReference<AccountModelQuerySnapshot>
     );
   }
 
-  AccountModelQuery whereCreditBalance({
+  TransactionModelQuery whereCreditBalance({
     double? isEqualTo,
     double? isNotEqualTo,
     double? isLessThan,
@@ -480,7 +482,7 @@ class _$AccountModelQuery extends QueryReference<AccountModelQuerySnapshot>
     List<double>? whereIn,
     List<double>? whereNotIn,
   }) {
-    return _$AccountModelQuery(
+    return _$TransactionModelQuery(
       reference.where(
         'creditBalance',
         isEqualTo: isEqualTo,
@@ -497,16 +499,16 @@ class _$AccountModelQuery extends QueryReference<AccountModelQuerySnapshot>
     );
   }
 
-  AccountModelQuery orderByOwnerId({
+  TransactionModelQuery orderByOwnerId({
     bool descending = false,
     Object? startAt = _sentinel,
     Object? startAfter = _sentinel,
     Object? endAt = _sentinel,
     Object? endBefore = _sentinel,
-    AccountModelDocumentSnapshot? startAtDocument,
-    AccountModelDocumentSnapshot? endAtDocument,
-    AccountModelDocumentSnapshot? endBeforeDocument,
-    AccountModelDocumentSnapshot? startAfterDocument,
+    TransactionModelDocumentSnapshot? startAtDocument,
+    TransactionModelDocumentSnapshot? endAtDocument,
+    TransactionModelDocumentSnapshot? endBeforeDocument,
+    TransactionModelDocumentSnapshot? startAfterDocument,
   }) {
     var query = reference.orderBy('ownerId', descending: descending);
 
@@ -536,19 +538,19 @@ class _$AccountModelQuery extends QueryReference<AccountModelQuerySnapshot>
       query = query.endBefore([endBefore]);
     }
 
-    return _$AccountModelQuery(query, _collection);
+    return _$TransactionModelQuery(query, _collection);
   }
 
-  AccountModelQuery orderByType({
+  TransactionModelQuery orderByType({
     bool descending = false,
     Object? startAt = _sentinel,
     Object? startAfter = _sentinel,
     Object? endAt = _sentinel,
     Object? endBefore = _sentinel,
-    AccountModelDocumentSnapshot? startAtDocument,
-    AccountModelDocumentSnapshot? endAtDocument,
-    AccountModelDocumentSnapshot? endBeforeDocument,
-    AccountModelDocumentSnapshot? startAfterDocument,
+    TransactionModelDocumentSnapshot? startAtDocument,
+    TransactionModelDocumentSnapshot? endAtDocument,
+    TransactionModelDocumentSnapshot? endBeforeDocument,
+    TransactionModelDocumentSnapshot? startAfterDocument,
   }) {
     var query = reference.orderBy('type', descending: descending);
 
@@ -578,19 +580,19 @@ class _$AccountModelQuery extends QueryReference<AccountModelQuerySnapshot>
       query = query.endBefore([endBefore]);
     }
 
-    return _$AccountModelQuery(query, _collection);
+    return _$TransactionModelQuery(query, _collection);
   }
 
-  AccountModelQuery orderByActiveBalance({
+  TransactionModelQuery orderByActiveBalance({
     bool descending = false,
     Object? startAt = _sentinel,
     Object? startAfter = _sentinel,
     Object? endAt = _sentinel,
     Object? endBefore = _sentinel,
-    AccountModelDocumentSnapshot? startAtDocument,
-    AccountModelDocumentSnapshot? endAtDocument,
-    AccountModelDocumentSnapshot? endBeforeDocument,
-    AccountModelDocumentSnapshot? startAfterDocument,
+    TransactionModelDocumentSnapshot? startAtDocument,
+    TransactionModelDocumentSnapshot? endAtDocument,
+    TransactionModelDocumentSnapshot? endBeforeDocument,
+    TransactionModelDocumentSnapshot? startAfterDocument,
   }) {
     var query = reference.orderBy('activeBalance', descending: descending);
 
@@ -620,19 +622,19 @@ class _$AccountModelQuery extends QueryReference<AccountModelQuerySnapshot>
       query = query.endBefore([endBefore]);
     }
 
-    return _$AccountModelQuery(query, _collection);
+    return _$TransactionModelQuery(query, _collection);
   }
 
-  AccountModelQuery orderByCreditBalance({
+  TransactionModelQuery orderByCreditBalance({
     bool descending = false,
     Object? startAt = _sentinel,
     Object? startAfter = _sentinel,
     Object? endAt = _sentinel,
     Object? endBefore = _sentinel,
-    AccountModelDocumentSnapshot? startAtDocument,
-    AccountModelDocumentSnapshot? endAtDocument,
-    AccountModelDocumentSnapshot? endBeforeDocument,
-    AccountModelDocumentSnapshot? startAfterDocument,
+    TransactionModelDocumentSnapshot? startAtDocument,
+    TransactionModelDocumentSnapshot? endAtDocument,
+    TransactionModelDocumentSnapshot? endBeforeDocument,
+    TransactionModelDocumentSnapshot? startAfterDocument,
   }) {
     var query = reference.orderBy('creditBalance', descending: descending);
 
@@ -662,12 +664,12 @@ class _$AccountModelQuery extends QueryReference<AccountModelQuerySnapshot>
       query = query.endBefore([endBefore]);
     }
 
-    return _$AccountModelQuery(query, _collection);
+    return _$TransactionModelQuery(query, _collection);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is _$AccountModelQuery &&
+    return other is _$TransactionModelQuery &&
         other.runtimeType == runtimeType &&
         other.reference == reference;
   }
@@ -676,51 +678,54 @@ class _$AccountModelQuery extends QueryReference<AccountModelQuerySnapshot>
   int get hashCode => Object.hash(runtimeType, reference);
 }
 
-class AccountModelQuerySnapshot
-    extends FirestoreQuerySnapshot<AccountModelQueryDocumentSnapshot> {
-  AccountModelQuerySnapshot._(
+class TransactionModelQuerySnapshot
+    extends FirestoreQuerySnapshot<TransactionModelQueryDocumentSnapshot> {
+  TransactionModelQuerySnapshot._(
     this.snapshot,
     this.docs,
     this.docChanges,
   );
 
-  final QuerySnapshot<AccountModel> snapshot;
+  final QuerySnapshot<TransactionModel> snapshot;
 
   @override
-  final List<AccountModelQueryDocumentSnapshot> docs;
+  final List<TransactionModelQueryDocumentSnapshot> docs;
 
   @override
-  final List<FirestoreDocumentChange<AccountModelDocumentSnapshot>> docChanges;
+  final List<FirestoreDocumentChange<TransactionModelDocumentSnapshot>>
+      docChanges;
 }
 
-class AccountModelQueryDocumentSnapshot extends FirestoreQueryDocumentSnapshot
-    implements AccountModelDocumentSnapshot {
-  AccountModelQueryDocumentSnapshot._(this.snapshot, this.data);
+class TransactionModelQueryDocumentSnapshot
+    extends FirestoreQueryDocumentSnapshot
+    implements TransactionModelDocumentSnapshot {
+  TransactionModelQueryDocumentSnapshot._(this.snapshot, this.data);
 
   @override
-  final QueryDocumentSnapshot<AccountModel> snapshot;
+  final QueryDocumentSnapshot<TransactionModel> snapshot;
 
   @override
-  AccountModelDocumentReference get reference {
-    return AccountModelDocumentReference(snapshot.reference);
+  TransactionModelDocumentReference get reference {
+    return TransactionModelDocumentReference(snapshot.reference);
   }
 
   @override
-  final AccountModel data;
+  final TransactionModel data;
 }
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-AccountModel _$AccountModelFromJson(Map<String, dynamic> json) => AccountModel(
+TransactionModel _$TransactionModelFromJson(Map<String, dynamic> json) =>
+    TransactionModel(
       ownerId: json['ownerId'] as String,
       type: json['type'] as String,
       activeBalance: (json['activeBalance'] as num).toDouble(),
       creditBalance: (json['creditBalance'] as num).toDouble(),
     );
 
-Map<String, dynamic> _$AccountModelToJson(AccountModel instance) =>
+Map<String, dynamic> _$TransactionModelToJson(TransactionModel instance) =>
     <String, dynamic>{
       'ownerId': instance.ownerId,
       'type': instance.type,

@@ -50,7 +50,7 @@ class ConnectionService extends GetxService {
     if (!newConnectionStatus) {
       Get.dialog(const AlertDialog(
         title: Text("لا يوجد اتصال بالانترنت"),
-        content: Text("يرجي التحقق من اتصالك بالانترنت ، واعادة فتح التطبيق"),
+        content: Text("يرجي من اتصالك بالانترنت واعادة فتح التطبيق"),
       ));
     }
   }

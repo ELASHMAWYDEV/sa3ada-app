@@ -1,10 +1,13 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, curly_braces_in_flow_control_structures
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore_odm/cloud_firestore_odm.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sa3ada_app/data/firebase_services/auth_service.dart';
+import 'package:sa3ada_app/data/firestore_models/user_model.dart';
 import 'package:sa3ada_app/ui/components/floating_add_button.dart';
 import 'package:sa3ada_app/utils/constants.dart';
+import 'package:sa3ada_app/utils/services/firebase.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -16,7 +19,9 @@ class HomeScreen extends StatelessWidget {
         options: [
           FloatingOptionButton(
             title: "فاتورة",
-            onClick: () {},
+            onClick: () {
+              FirebaseService.firebaseAuth.signOut();
+            },
           ),
           FloatingOptionButton(
             title: "ايداع / تحويل",
@@ -61,6 +66,7 @@ class HomeScreen extends StatelessWidget {
                         fontFamily: "Cairo",
                         fontSize: 34,
                         fontWeight: FontWeight.w700,
+                        color: kWhiteColor,
                         shadows: [
                           BoxShadow(
                               color: kPrimaryColor,
@@ -76,37 +82,55 @@ class HomeScreen extends StatelessWidget {
           SizedBox(
             height: 70,
           ),
-          Visibility(
-            visible: true,
-            child: Column(
-              children: [
-                OptionButton(
-                  title: "الفروع",
-                  onPressed: () {},
-                ),
-                OptionButton(
-                  title: "المخازن",
-                  onPressed: () {},
-                ),
-                OptionButton(
-                  title: "التجار",
-                  onPressed: () {
-                    Get.toNamed("/traders");
-                  },
-                ),
-                OptionButton(
-                  title: "الخزنة",
-                  onPressed: () {},
-                ),
-                OptionButton(
-                  title: "حساب الشغل",
-                  onPressed: () {},
-                ),
-                SizedBox(
-                  height: 20,
-                )
-              ],
-            ),
+          // FirestoreBuilder<UserModelQuerySnapshot>(
+          //   ref: usersRef,
+          //   builder: (context, snapshot, _) {
+          //     if (snapshot.hasError) return Text('error: ${snapshot.error}');
+          //     if (!snapshot.hasData) return const Text('loading');
+
+          //     UserModelQuerySnapshot querySnapshot = snapshot.requireData;
+
+          //     if (querySnapshot.docs.isEmpty) return Text("Empty");
+
+          //     return SizedBox(
+          //       height: 100,
+          //       child: ListView.builder(
+          //         itemCount: querySnapshot.docs.length,
+          //         itemBuilder: (context, index) {
+          //           // Access the User instance
+          //           UserModel user = querySnapshot.docs[index].data;
+
+          //           return Text(
+          //               'User name: ${user.name}, id ${querySnapshot.docs[index].id}');
+          //         },
+          //       ),
+          //     );
+          //   },
+          // ),
+          OptionButton(
+            title: "الفروع",
+            onPressed: () {},
+          ),
+          OptionButton(
+            title: "المخازن",
+            onPressed: () {},
+          ),
+          OptionButton(
+            title: "التجار",
+            onPressed: () {
+              Get.toNamed("/traders");
+            },
+          ),
+          OptionButton(
+            title: "الخزنة",
+            onPressed: () {},
+          ),
+          OptionButton(
+            title: "حساب الشغل",
+            onPressed: () {},
+          ),
+          SizedBox(
+            height: 20,
           ),
         ],
       ),
