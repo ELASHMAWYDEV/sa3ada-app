@@ -51,9 +51,9 @@ class LoginScreen extends StatelessWidget {
                   height: 20,
                 ),
                 TextBox(
-                  label: "كلمة المرور",
-                  controller: _.passwordInputController,
-                ),
+                    label: "كلمة المرور",
+                    controller: _.passwordInputController,
+                    isTextVisible: false),
                 SizedBox(
                   height: 30,
                 ),

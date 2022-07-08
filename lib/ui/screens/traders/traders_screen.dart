@@ -90,6 +90,7 @@ class _TradersScreenState extends State<TradersScreen> {
                 ),
                 MiniTable(
                   title: "الفواتير الأخيرة",
+                  onPressingAll: () {},
                   data: [
                     {"id": "1", "type": "نقدي", "total": 198235},
                     {"id": "1", "type": "نقدي", "total": 198235},
@@ -134,6 +135,7 @@ class _TradersScreenState extends State<TradersScreen> {
                 ),
                 MiniTable(
                   title: "عمليات الايداع الأخيرة",
+                  onPressingAll: () {},
                   data: [
                     {"id": "1", "type": "نقدي", "total": 198235},
                     {"id": "2"},

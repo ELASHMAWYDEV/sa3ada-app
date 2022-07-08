@@ -123,7 +123,7 @@ abstract class AccountModelDocumentReference
   Future<void> delete();
 
   Future<void> update({
-    String ownerId,
+    String? ownerId,
     String type,
     double activeBalance,
     double creditBalance,
@@ -177,7 +177,7 @@ class _$AccountModelDocumentReference
     Object? creditBalance = _sentinel,
   }) async {
     final json = {
-      if (ownerId != _sentinel) "ownerId": ownerId as String,
+      if (ownerId != _sentinel) "ownerId": ownerId as String?,
       if (type != _sentinel) "type": type as String,
       if (activeBalance != _sentinel) "activeBalance": activeBalance as double,
       if (creditBalance != _sentinel) "creditBalance": creditBalance as double,
@@ -238,8 +238,8 @@ abstract class AccountModelQuery
     String? isGreaterThan,
     String? isGreaterThanOrEqualTo,
     bool? isNull,
-    List<String>? whereIn,
-    List<String>? whereNotIn,
+    List<String?>? whereIn,
+    List<String?>? whereNotIn,
   });
   AccountModelQuery whereType({
     String? isEqualTo,
@@ -277,10 +277,10 @@ abstract class AccountModelQuery
 
   AccountModelQuery orderByOwnerId({
     bool descending = false,
-    String startAt,
-    String startAfter,
-    String endAt,
-    String endBefore,
+    String? startAt,
+    String? startAfter,
+    String? endAt,
+    String? endBefore,
     AccountModelDocumentSnapshot? startAtDocument,
     AccountModelDocumentSnapshot? endAtDocument,
     AccountModelDocumentSnapshot? endBeforeDocument,
@@ -393,8 +393,8 @@ class _$AccountModelQuery extends QueryReference<AccountModelQuerySnapshot>
     String? isGreaterThan,
     String? isGreaterThanOrEqualTo,
     bool? isNull,
-    List<String>? whereIn,
-    List<String>? whereNotIn,
+    List<String?>? whereIn,
+    List<String?>? whereNotIn,
   }) {
     return _$AccountModelQuery(
       reference.where(
@@ -714,7 +714,7 @@ class AccountModelQueryDocumentSnapshot extends FirestoreQueryDocumentSnapshot
 // **************************************************************************
 
 AccountModel _$AccountModelFromJson(Map<String, dynamic> json) => AccountModel(
-      ownerId: json['ownerId'] as String,
+      ownerId: json['ownerId'] as String?,
       type: json['type'] as String,
       activeBalance: (json['activeBalance'] as num).toDouble(),
       creditBalance: (json['creditBalance'] as num).toDouble(),

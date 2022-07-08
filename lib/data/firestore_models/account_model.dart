@@ -6,9 +6,20 @@ part 'account_model.g.dart';
 @Collection<AccountModel>('accounts', name: 'accounts')
 final accountsRef = AccountModelCollectionReference();
 
+enum AccountTypes {
+  trader,
+  branch,
+  store,
+  safe,
+  bankAccount,
+  sa3adaAccount,
+  client,
+  customer
+}
+
 @JsonSerializable(explicitToJson: true)
 class AccountModel {
-  final String ownerId;
+  final String? ownerId;
   final String type;
   final double activeBalance;
   final double creditBalance;

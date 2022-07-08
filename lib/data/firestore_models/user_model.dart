@@ -6,18 +6,24 @@ part 'user_model.g.dart';
 @Collection<UserModel>('users', name: 'users')
 final usersRef = UserModelCollectionReference();
 
+enum UserTypes { superAdmin, user }
+
+enum UserPermissions { expenses }
+
 @JsonSerializable(explicitToJson: true)
 class UserModel {
-  final String? name;
-  final String? username;
-  final String? password;
+  final String authUserId;
+  final String name;
+  final String username;
   final String? type;
+  final List<String> permissions;
 
   UserModel({
+    required this.authUserId,
     required this.name,
     required this.username,
-    required this.password,
     required this.type,
+    required this.permissions,
   });
 
   factory UserModel.fromJson(Map<String, Object?> json) =>

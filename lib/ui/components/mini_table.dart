@@ -10,19 +10,21 @@ const TextStyle tableItemStyle = TextStyle(
     fontSize: 10,
     color: kSecondaryColor,
     fontWeight: FontWeight.w400,
-    overflow: TextOverflow.ellipsis);
+    overflow: TextOverflow.visible);
 
 class MiniTable extends StatelessWidget {
-  const MiniTable({
-    Key? key,
-    required this.columns,
-    required this.data,
-    required this.title,
-  }) : super(key: key);
+  const MiniTable(
+      {Key? key,
+      required this.columns,
+      required this.data,
+      required this.title,
+      required this.onPressingAll})
+      : super(key: key);
 
   final List<MiniTableModel> columns;
   final List<dynamic> data;
   final String title;
+  final VoidCallback onPressingAll;
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +35,14 @@ class MiniTable extends StatelessWidget {
           children: [
             Text(
               title,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
+              style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w500,
+                  color: kWhiteColor),
             ),
             Spacer(),
             TextButton(
-                onPressed: () {},
+                onPressed: onPressingAll,
                 style: TextButton.styleFrom(
                     backgroundColor: kSecondaryColor,
                     padding: EdgeInsets.symmetric(vertical: 0, horizontal: 25),

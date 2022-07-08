@@ -125,9 +125,10 @@ abstract class TransactionModelDocumentReference
 
   Future<void> update({
     String ownerId,
-    String type,
-    double activeBalance,
-    double creditBalance,
+    double amount,
+    String sourceAccountId,
+    String destinationAccountId,
+    bool? isDeleted,
   });
 
   Future<void> set(TransactionModel value);
@@ -173,15 +174,19 @@ class _$TransactionModelDocumentReference
 
   Future<void> update({
     Object? ownerId = _sentinel,
-    Object? type = _sentinel,
-    Object? activeBalance = _sentinel,
-    Object? creditBalance = _sentinel,
+    Object? amount = _sentinel,
+    Object? sourceAccountId = _sentinel,
+    Object? destinationAccountId = _sentinel,
+    Object? isDeleted = _sentinel,
   }) async {
     final json = {
       if (ownerId != _sentinel) "ownerId": ownerId as String,
-      if (type != _sentinel) "type": type as String,
-      if (activeBalance != _sentinel) "activeBalance": activeBalance as double,
-      if (creditBalance != _sentinel) "creditBalance": creditBalance as double,
+      if (amount != _sentinel) "amount": amount as double,
+      if (sourceAccountId != _sentinel)
+        "sourceAccountId": sourceAccountId as String,
+      if (destinationAccountId != _sentinel)
+        "destinationAccountId": destinationAccountId as String,
+      if (isDeleted != _sentinel) "isDeleted": isDeleted as bool?,
     };
 
     return reference.update(json);
@@ -242,7 +247,18 @@ abstract class TransactionModelQuery
     List<String>? whereIn,
     List<String>? whereNotIn,
   });
-  TransactionModelQuery whereType({
+  TransactionModelQuery whereAmount({
+    double? isEqualTo,
+    double? isNotEqualTo,
+    double? isLessThan,
+    double? isLessThanOrEqualTo,
+    double? isGreaterThan,
+    double? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<double>? whereIn,
+    List<double>? whereNotIn,
+  });
+  TransactionModelQuery whereSourceAccountId({
     String? isEqualTo,
     String? isNotEqualTo,
     String? isLessThan,
@@ -253,27 +269,27 @@ abstract class TransactionModelQuery
     List<String>? whereIn,
     List<String>? whereNotIn,
   });
-  TransactionModelQuery whereActiveBalance({
-    double? isEqualTo,
-    double? isNotEqualTo,
-    double? isLessThan,
-    double? isLessThanOrEqualTo,
-    double? isGreaterThan,
-    double? isGreaterThanOrEqualTo,
+  TransactionModelQuery whereDestinationAccountId({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
     bool? isNull,
-    List<double>? whereIn,
-    List<double>? whereNotIn,
+    List<String>? whereIn,
+    List<String>? whereNotIn,
   });
-  TransactionModelQuery whereCreditBalance({
-    double? isEqualTo,
-    double? isNotEqualTo,
-    double? isLessThan,
-    double? isLessThanOrEqualTo,
-    double? isGreaterThan,
-    double? isGreaterThanOrEqualTo,
+  TransactionModelQuery whereIsDeleted({
+    bool? isEqualTo,
+    bool? isNotEqualTo,
+    bool? isLessThan,
+    bool? isLessThanOrEqualTo,
+    bool? isGreaterThan,
+    bool? isGreaterThanOrEqualTo,
     bool? isNull,
-    List<double>? whereIn,
-    List<double>? whereNotIn,
+    List<bool?>? whereIn,
+    List<bool?>? whereNotIn,
   });
 
   TransactionModelQuery orderByOwnerId({
@@ -288,7 +304,19 @@ abstract class TransactionModelQuery
     TransactionModelDocumentSnapshot? startAfterDocument,
   });
 
-  TransactionModelQuery orderByType({
+  TransactionModelQuery orderByAmount({
+    bool descending = false,
+    double startAt,
+    double startAfter,
+    double endAt,
+    double endBefore,
+    TransactionModelDocumentSnapshot? startAtDocument,
+    TransactionModelDocumentSnapshot? endAtDocument,
+    TransactionModelDocumentSnapshot? endBeforeDocument,
+    TransactionModelDocumentSnapshot? startAfterDocument,
+  });
+
+  TransactionModelQuery orderBySourceAccountId({
     bool descending = false,
     String startAt,
     String startAfter,
@@ -300,24 +328,24 @@ abstract class TransactionModelQuery
     TransactionModelDocumentSnapshot? startAfterDocument,
   });
 
-  TransactionModelQuery orderByActiveBalance({
+  TransactionModelQuery orderByDestinationAccountId({
     bool descending = false,
-    double startAt,
-    double startAfter,
-    double endAt,
-    double endBefore,
+    String startAt,
+    String startAfter,
+    String endAt,
+    String endBefore,
     TransactionModelDocumentSnapshot? startAtDocument,
     TransactionModelDocumentSnapshot? endAtDocument,
     TransactionModelDocumentSnapshot? endBeforeDocument,
     TransactionModelDocumentSnapshot? startAfterDocument,
   });
 
-  TransactionModelQuery orderByCreditBalance({
+  TransactionModelQuery orderByIsDeleted({
     bool descending = false,
-    double startAt,
-    double startAfter,
-    double endAt,
-    double endBefore,
+    bool? startAt,
+    bool? startAfter,
+    bool? endAt,
+    bool? endBefore,
     TransactionModelDocumentSnapshot? startAtDocument,
     TransactionModelDocumentSnapshot? endAtDocument,
     TransactionModelDocumentSnapshot? endBeforeDocument,
@@ -415,7 +443,35 @@ class _$TransactionModelQuery
     );
   }
 
-  TransactionModelQuery whereType({
+  TransactionModelQuery whereAmount({
+    double? isEqualTo,
+    double? isNotEqualTo,
+    double? isLessThan,
+    double? isLessThanOrEqualTo,
+    double? isGreaterThan,
+    double? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<double>? whereIn,
+    List<double>? whereNotIn,
+  }) {
+    return _$TransactionModelQuery(
+      reference.where(
+        'amount',
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        whereIn: whereIn,
+        whereNotIn: whereNotIn,
+      ),
+      _collection,
+    );
+  }
+
+  TransactionModelQuery whereSourceAccountId({
     String? isEqualTo,
     String? isNotEqualTo,
     String? isLessThan,
@@ -428,7 +484,7 @@ class _$TransactionModelQuery
   }) {
     return _$TransactionModelQuery(
       reference.where(
-        'type',
+        'sourceAccountId',
         isEqualTo: isEqualTo,
         isNotEqualTo: isNotEqualTo,
         isLessThan: isLessThan,
@@ -443,20 +499,20 @@ class _$TransactionModelQuery
     );
   }
 
-  TransactionModelQuery whereActiveBalance({
-    double? isEqualTo,
-    double? isNotEqualTo,
-    double? isLessThan,
-    double? isLessThanOrEqualTo,
-    double? isGreaterThan,
-    double? isGreaterThanOrEqualTo,
+  TransactionModelQuery whereDestinationAccountId({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
     bool? isNull,
-    List<double>? whereIn,
-    List<double>? whereNotIn,
+    List<String>? whereIn,
+    List<String>? whereNotIn,
   }) {
     return _$TransactionModelQuery(
       reference.where(
-        'activeBalance',
+        'destinationAccountId',
         isEqualTo: isEqualTo,
         isNotEqualTo: isNotEqualTo,
         isLessThan: isLessThan,
@@ -471,20 +527,20 @@ class _$TransactionModelQuery
     );
   }
 
-  TransactionModelQuery whereCreditBalance({
-    double? isEqualTo,
-    double? isNotEqualTo,
-    double? isLessThan,
-    double? isLessThanOrEqualTo,
-    double? isGreaterThan,
-    double? isGreaterThanOrEqualTo,
+  TransactionModelQuery whereIsDeleted({
+    bool? isEqualTo,
+    bool? isNotEqualTo,
+    bool? isLessThan,
+    bool? isLessThanOrEqualTo,
+    bool? isGreaterThan,
+    bool? isGreaterThanOrEqualTo,
     bool? isNull,
-    List<double>? whereIn,
-    List<double>? whereNotIn,
+    List<bool?>? whereIn,
+    List<bool?>? whereNotIn,
   }) {
     return _$TransactionModelQuery(
       reference.where(
-        'creditBalance',
+        'isDeleted',
         isEqualTo: isEqualTo,
         isNotEqualTo: isNotEqualTo,
         isLessThan: isLessThan,
@@ -541,7 +597,7 @@ class _$TransactionModelQuery
     return _$TransactionModelQuery(query, _collection);
   }
 
-  TransactionModelQuery orderByType({
+  TransactionModelQuery orderByAmount({
     bool descending = false,
     Object? startAt = _sentinel,
     Object? startAfter = _sentinel,
@@ -552,7 +608,7 @@ class _$TransactionModelQuery
     TransactionModelDocumentSnapshot? endBeforeDocument,
     TransactionModelDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('type', descending: descending);
+    var query = reference.orderBy('amount', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -583,7 +639,7 @@ class _$TransactionModelQuery
     return _$TransactionModelQuery(query, _collection);
   }
 
-  TransactionModelQuery orderByActiveBalance({
+  TransactionModelQuery orderBySourceAccountId({
     bool descending = false,
     Object? startAt = _sentinel,
     Object? startAfter = _sentinel,
@@ -594,7 +650,7 @@ class _$TransactionModelQuery
     TransactionModelDocumentSnapshot? endBeforeDocument,
     TransactionModelDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('activeBalance', descending: descending);
+    var query = reference.orderBy('sourceAccountId', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -625,7 +681,7 @@ class _$TransactionModelQuery
     return _$TransactionModelQuery(query, _collection);
   }
 
-  TransactionModelQuery orderByCreditBalance({
+  TransactionModelQuery orderByDestinationAccountId({
     bool descending = false,
     Object? startAt = _sentinel,
     Object? startAfter = _sentinel,
@@ -636,7 +692,50 @@ class _$TransactionModelQuery
     TransactionModelDocumentSnapshot? endBeforeDocument,
     TransactionModelDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('creditBalance', descending: descending);
+    var query =
+        reference.orderBy('destinationAccountId', descending: descending);
+
+    if (startAtDocument != null) {
+      query = query.startAtDocument(startAtDocument.snapshot);
+    }
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument.snapshot);
+    }
+    if (endAtDocument != null) {
+      query = query.endAtDocument(endAtDocument.snapshot);
+    }
+    if (endBeforeDocument != null) {
+      query = query.endBeforeDocument(endBeforeDocument.snapshot);
+    }
+
+    if (startAt != _sentinel) {
+      query = query.startAt([startAt]);
+    }
+    if (startAfter != _sentinel) {
+      query = query.startAfter([startAfter]);
+    }
+    if (endAt != _sentinel) {
+      query = query.endAt([endAt]);
+    }
+    if (endBefore != _sentinel) {
+      query = query.endBefore([endBefore]);
+    }
+
+    return _$TransactionModelQuery(query, _collection);
+  }
+
+  TransactionModelQuery orderByIsDeleted({
+    bool descending = false,
+    Object? startAt = _sentinel,
+    Object? startAfter = _sentinel,
+    Object? endAt = _sentinel,
+    Object? endBefore = _sentinel,
+    TransactionModelDocumentSnapshot? startAtDocument,
+    TransactionModelDocumentSnapshot? endAtDocument,
+    TransactionModelDocumentSnapshot? endBeforeDocument,
+    TransactionModelDocumentSnapshot? startAfterDocument,
+  }) {
+    var query = reference.orderBy('isDeleted', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -720,15 +819,32 @@ class TransactionModelQueryDocumentSnapshot
 TransactionModel _$TransactionModelFromJson(Map<String, dynamic> json) =>
     TransactionModel(
       ownerId: json['ownerId'] as String,
-      type: json['type'] as String,
-      activeBalance: (json['activeBalance'] as num).toDouble(),
-      creditBalance: (json['creditBalance'] as num).toDouble(),
+      type: $enumDecode(_$TransactionTypeEnumMap, json['type']),
+      amount: (json['amount'] as num).toDouble(),
+      status: $enumDecode(_$TransactionStatusEnumMap, json['status']),
+      sourceAccountId: json['sourceAccountId'] as String,
+      destinationAccountId: json['destinationAccountId'] as String,
+      isDeleted: json['isDeleted'] as bool?,
     );
 
 Map<String, dynamic> _$TransactionModelToJson(TransactionModel instance) =>
     <String, dynamic>{
       'ownerId': instance.ownerId,
-      'type': instance.type,
-      'activeBalance': instance.activeBalance,
-      'creditBalance': instance.creditBalance,
+      'type': _$TransactionTypeEnumMap[instance.type],
+      'amount': instance.amount,
+      'status': _$TransactionStatusEnumMap[instance.status],
+      'sourceAccountId': instance.sourceAccountId,
+      'destinationAccountId': instance.destinationAccountId,
+      'isDeleted': instance.isDeleted,
     };
+
+const _$TransactionTypeEnumMap = {
+  TransactionType.invoice: 'invoice',
+  TransactionType.expenses: 'expenses',
+  TransactionType.transfer: 'transfer',
+};
+
+const _$TransactionStatusEnumMap = {
+  TransactionStatus.completed: 'completed',
+  TransactionStatus.canceled: 'canceled',
+};

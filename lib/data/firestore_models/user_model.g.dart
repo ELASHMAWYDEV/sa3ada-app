@@ -120,10 +120,11 @@ abstract class UserModelDocumentReference
   Future<void> delete();
 
   Future<void> update({
-    String? name,
-    String? username,
-    String? password,
+    String authUserId,
+    String name,
+    String username,
     String? type,
+    List<String> permissions,
   });
 
   Future<void> set(UserModel value);
@@ -168,16 +169,18 @@ class _$UserModelDocumentReference
   }
 
   Future<void> update({
+    Object? authUserId = _sentinel,
     Object? name = _sentinel,
     Object? username = _sentinel,
-    Object? password = _sentinel,
     Object? type = _sentinel,
+    Object? permissions = _sentinel,
   }) async {
     final json = {
-      if (name != _sentinel) "name": name as String?,
-      if (username != _sentinel) "username": username as String?,
-      if (password != _sentinel) "password": password as String?,
+      if (authUserId != _sentinel) "authUserId": authUserId as String,
+      if (name != _sentinel) "name": name as String,
+      if (username != _sentinel) "username": username as String,
       if (type != _sentinel) "type": type as String?,
+      if (permissions != _sentinel) "permissions": permissions as List<String>,
     };
 
     return reference.update(json);
@@ -227,6 +230,17 @@ abstract class UserModelQuery
   @override
   UserModelQuery limitToLast(int limit);
 
+  UserModelQuery whereAuthUserId({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String>? whereIn,
+    List<String>? whereNotIn,
+  });
   UserModelQuery whereName({
     String? isEqualTo,
     String? isNotEqualTo,
@@ -235,8 +249,8 @@ abstract class UserModelQuery
     String? isGreaterThan,
     String? isGreaterThanOrEqualTo,
     bool? isNull,
-    List<String?>? whereIn,
-    List<String?>? whereNotIn,
+    List<String>? whereIn,
+    List<String>? whereNotIn,
   });
   UserModelQuery whereUsername({
     String? isEqualTo,
@@ -246,19 +260,8 @@ abstract class UserModelQuery
     String? isGreaterThan,
     String? isGreaterThanOrEqualTo,
     bool? isNull,
-    List<String?>? whereIn,
-    List<String?>? whereNotIn,
-  });
-  UserModelQuery wherePassword({
-    String? isEqualTo,
-    String? isNotEqualTo,
-    String? isLessThan,
-    String? isLessThanOrEqualTo,
-    String? isGreaterThan,
-    String? isGreaterThanOrEqualTo,
-    bool? isNull,
-    List<String?>? whereIn,
-    List<String?>? whereNotIn,
+    List<String>? whereIn,
+    List<String>? whereNotIn,
   });
   UserModelQuery whereType({
     String? isEqualTo,
@@ -271,13 +274,35 @@ abstract class UserModelQuery
     List<String?>? whereIn,
     List<String?>? whereNotIn,
   });
+  UserModelQuery wherePermissions({
+    List<String>? isEqualTo,
+    List<String>? isNotEqualTo,
+    List<String>? isLessThan,
+    List<String>? isLessThanOrEqualTo,
+    List<String>? isGreaterThan,
+    List<String>? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String>? arrayContainsAny,
+  });
+
+  UserModelQuery orderByAuthUserId({
+    bool descending = false,
+    String startAt,
+    String startAfter,
+    String endAt,
+    String endBefore,
+    UserModelDocumentSnapshot? startAtDocument,
+    UserModelDocumentSnapshot? endAtDocument,
+    UserModelDocumentSnapshot? endBeforeDocument,
+    UserModelDocumentSnapshot? startAfterDocument,
+  });
 
   UserModelQuery orderByName({
     bool descending = false,
-    String? startAt,
-    String? startAfter,
-    String? endAt,
-    String? endBefore,
+    String startAt,
+    String startAfter,
+    String endAt,
+    String endBefore,
     UserModelDocumentSnapshot? startAtDocument,
     UserModelDocumentSnapshot? endAtDocument,
     UserModelDocumentSnapshot? endBeforeDocument,
@@ -286,22 +311,10 @@ abstract class UserModelQuery
 
   UserModelQuery orderByUsername({
     bool descending = false,
-    String? startAt,
-    String? startAfter,
-    String? endAt,
-    String? endBefore,
-    UserModelDocumentSnapshot? startAtDocument,
-    UserModelDocumentSnapshot? endAtDocument,
-    UserModelDocumentSnapshot? endBeforeDocument,
-    UserModelDocumentSnapshot? startAfterDocument,
-  });
-
-  UserModelQuery orderByPassword({
-    bool descending = false,
-    String? startAt,
-    String? startAfter,
-    String? endAt,
-    String? endBefore,
+    String startAt,
+    String startAfter,
+    String endAt,
+    String endBefore,
     UserModelDocumentSnapshot? startAtDocument,
     UserModelDocumentSnapshot? endAtDocument,
     UserModelDocumentSnapshot? endBeforeDocument,
@@ -314,6 +327,18 @@ abstract class UserModelQuery
     String? startAfter,
     String? endAt,
     String? endBefore,
+    UserModelDocumentSnapshot? startAtDocument,
+    UserModelDocumentSnapshot? endAtDocument,
+    UserModelDocumentSnapshot? endBeforeDocument,
+    UserModelDocumentSnapshot? startAfterDocument,
+  });
+
+  UserModelQuery orderByPermissions({
+    bool descending = false,
+    List<String> startAt,
+    List<String> startAfter,
+    List<String> endAt,
+    List<String> endBefore,
     UserModelDocumentSnapshot? startAtDocument,
     UserModelDocumentSnapshot? endAtDocument,
     UserModelDocumentSnapshot? endBeforeDocument,
@@ -382,6 +407,34 @@ class _$UserModelQuery extends QueryReference<UserModelQuerySnapshot>
     );
   }
 
+  UserModelQuery whereAuthUserId({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String>? whereIn,
+    List<String>? whereNotIn,
+  }) {
+    return _$UserModelQuery(
+      reference.where(
+        'authUserId',
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        whereIn: whereIn,
+        whereNotIn: whereNotIn,
+      ),
+      _collection,
+    );
+  }
+
   UserModelQuery whereName({
     String? isEqualTo,
     String? isNotEqualTo,
@@ -390,8 +443,8 @@ class _$UserModelQuery extends QueryReference<UserModelQuerySnapshot>
     String? isGreaterThan,
     String? isGreaterThanOrEqualTo,
     bool? isNull,
-    List<String?>? whereIn,
-    List<String?>? whereNotIn,
+    List<String>? whereIn,
+    List<String>? whereNotIn,
   }) {
     return _$UserModelQuery(
       reference.where(
@@ -418,40 +471,12 @@ class _$UserModelQuery extends QueryReference<UserModelQuerySnapshot>
     String? isGreaterThan,
     String? isGreaterThanOrEqualTo,
     bool? isNull,
-    List<String?>? whereIn,
-    List<String?>? whereNotIn,
+    List<String>? whereIn,
+    List<String>? whereNotIn,
   }) {
     return _$UserModelQuery(
       reference.where(
         'username',
-        isEqualTo: isEqualTo,
-        isNotEqualTo: isNotEqualTo,
-        isLessThan: isLessThan,
-        isLessThanOrEqualTo: isLessThanOrEqualTo,
-        isGreaterThan: isGreaterThan,
-        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
-        isNull: isNull,
-        whereIn: whereIn,
-        whereNotIn: whereNotIn,
-      ),
-      _collection,
-    );
-  }
-
-  UserModelQuery wherePassword({
-    String? isEqualTo,
-    String? isNotEqualTo,
-    String? isLessThan,
-    String? isLessThanOrEqualTo,
-    String? isGreaterThan,
-    String? isGreaterThanOrEqualTo,
-    bool? isNull,
-    List<String?>? whereIn,
-    List<String?>? whereNotIn,
-  }) {
-    return _$UserModelQuery(
-      reference.where(
-        'password',
         isEqualTo: isEqualTo,
         isNotEqualTo: isNotEqualTo,
         isLessThan: isLessThan,
@@ -492,6 +517,74 @@ class _$UserModelQuery extends QueryReference<UserModelQuerySnapshot>
       ),
       _collection,
     );
+  }
+
+  UserModelQuery wherePermissions({
+    List<String>? isEqualTo,
+    List<String>? isNotEqualTo,
+    List<String>? isLessThan,
+    List<String>? isLessThanOrEqualTo,
+    List<String>? isGreaterThan,
+    List<String>? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String>? arrayContainsAny,
+  }) {
+    return _$UserModelQuery(
+      reference.where(
+        'permissions',
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        arrayContainsAny: arrayContainsAny,
+      ),
+      _collection,
+    );
+  }
+
+  UserModelQuery orderByAuthUserId({
+    bool descending = false,
+    Object? startAt = _sentinel,
+    Object? startAfter = _sentinel,
+    Object? endAt = _sentinel,
+    Object? endBefore = _sentinel,
+    UserModelDocumentSnapshot? startAtDocument,
+    UserModelDocumentSnapshot? endAtDocument,
+    UserModelDocumentSnapshot? endBeforeDocument,
+    UserModelDocumentSnapshot? startAfterDocument,
+  }) {
+    var query = reference.orderBy('authUserId', descending: descending);
+
+    if (startAtDocument != null) {
+      query = query.startAtDocument(startAtDocument.snapshot);
+    }
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument.snapshot);
+    }
+    if (endAtDocument != null) {
+      query = query.endAtDocument(endAtDocument.snapshot);
+    }
+    if (endBeforeDocument != null) {
+      query = query.endBeforeDocument(endBeforeDocument.snapshot);
+    }
+
+    if (startAt != _sentinel) {
+      query = query.startAt([startAt]);
+    }
+    if (startAfter != _sentinel) {
+      query = query.startAfter([startAfter]);
+    }
+    if (endAt != _sentinel) {
+      query = query.endAt([endAt]);
+    }
+    if (endBefore != _sentinel) {
+      query = query.endBefore([endBefore]);
+    }
+
+    return _$UserModelQuery(query, _collection);
   }
 
   UserModelQuery orderByName({
@@ -578,7 +671,7 @@ class _$UserModelQuery extends QueryReference<UserModelQuerySnapshot>
     return _$UserModelQuery(query, _collection);
   }
 
-  UserModelQuery orderByPassword({
+  UserModelQuery orderByType({
     bool descending = false,
     Object? startAt = _sentinel,
     Object? startAfter = _sentinel,
@@ -589,7 +682,7 @@ class _$UserModelQuery extends QueryReference<UserModelQuerySnapshot>
     UserModelDocumentSnapshot? endBeforeDocument,
     UserModelDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('password', descending: descending);
+    var query = reference.orderBy('type', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -620,7 +713,7 @@ class _$UserModelQuery extends QueryReference<UserModelQuerySnapshot>
     return _$UserModelQuery(query, _collection);
   }
 
-  UserModelQuery orderByType({
+  UserModelQuery orderByPermissions({
     bool descending = false,
     Object? startAt = _sentinel,
     Object? startAfter = _sentinel,
@@ -631,7 +724,7 @@ class _$UserModelQuery extends QueryReference<UserModelQuerySnapshot>
     UserModelDocumentSnapshot? endBeforeDocument,
     UserModelDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('type', descending: descending);
+    var query = reference.orderBy('permissions', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -711,15 +804,19 @@ class UserModelQueryDocumentSnapshot extends FirestoreQueryDocumentSnapshot
 // **************************************************************************
 
 UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
-      name: json['name'] as String?,
-      username: json['username'] as String?,
-      password: json['password'] as String?,
+      authUserId: json['authUserId'] as String,
+      name: json['name'] as String,
+      username: json['username'] as String,
       type: json['type'] as String?,
+      permissions: (json['permissions'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
     );
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
+      'authUserId': instance.authUserId,
       'name': instance.name,
       'username': instance.username,
-      'password': instance.password,
       'type': instance.type,
+      'permissions': instance.permissions,
     };

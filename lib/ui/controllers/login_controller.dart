@@ -11,6 +11,14 @@ class LoginController extends GetxController {
   TextEditingController usernameInputController = TextEditingController();
   TextEditingController passwordInputController = TextEditingController();
 
+  @override
+  void onReady() {
+    super.onReady();
+    // if (FirebaseService.firebaseAuth.currentUser != null) {
+    //   Get.offAllNamed("/home");
+    // }
+  }
+
   Future<void> login() async {
     try {
       if (usernameInputController.text == "") {

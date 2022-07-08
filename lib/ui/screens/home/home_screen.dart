@@ -39,100 +39,122 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-      body: Column(
-        children: [
-          Stack(
-            children: [
-              ClipPath(
-                clipper: BackgroundImageClipper(),
-                child: Container(
-                  height: size.height * 0.3,
-                  width: size.width,
-                  foregroundDecoration: BoxDecoration(
-                    color: kRedColor.withOpacity(0.5),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                ClipPath(
+                  clipper: BackgroundImageClipper(),
+                  child: Container(
+                    height: size.height * 0.3,
+                    width: size.width,
+                    foregroundDecoration: BoxDecoration(
+                      color: kRedColor.withOpacity(0.5),
+                    ),
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage("assets/images/home-bg.jpg"),
+                            fit: BoxFit.cover)),
                   ),
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage("assets/images/home-bg.jpg"),
-                          fit: BoxFit.cover)),
                 ),
-              ),
-              Center(
-                child: Padding(
-                  padding: EdgeInsets.only(top: size.height * 0.15),
-                  child: Text(
-                    "مكتبة السعادة",
-                    style: TextStyle(
-                        fontFamily: "Cairo",
-                        fontSize: 34,
-                        fontWeight: FontWeight.w700,
+                Positioned(
+                    top: MediaQuery.of(context).padding.top + 10,
+                    left: 20,
+                    child: TextButton(
+                      onPressed: () {
+                        Get.toNamed("items");
+                      },
+                      style: TextButton.styleFrom(
+                          backgroundColor: kGreenColor,
+                          padding: EdgeInsets.zero,
+                          fixedSize: Size(45, 45),
+                          minimumSize: Size(45, 45),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(100))),
+                      child: Icon(
+                        Icons.storage,
                         color: kWhiteColor,
-                        shadows: [
-                          BoxShadow(
-                              color: kPrimaryColor,
-                              blurRadius: 10,
-                              spreadRadius: 2,
-                              offset: Offset(0, 2)),
-                        ]),
+                        size: 26,
+                      ),
+                    )),
+                Center(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: size.height * 0.15),
+                    child: Text(
+                      "مكتبة السعادة",
+                      style: TextStyle(
+                          fontFamily: "Cairo",
+                          fontSize: 34,
+                          fontWeight: FontWeight.w700,
+                          color: kWhiteColor,
+                          shadows: [
+                            BoxShadow(
+                                color: kPrimaryColor,
+                                blurRadius: 10,
+                                spreadRadius: 2,
+                                offset: Offset(0, 2)),
+                          ]),
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 70,
-          ),
-          // FirestoreBuilder<UserModelQuerySnapshot>(
-          //   ref: usersRef,
-          //   builder: (context, snapshot, _) {
-          //     if (snapshot.hasError) return Text('error: ${snapshot.error}');
-          //     if (!snapshot.hasData) return const Text('loading');
+              ],
+            ),
+            SizedBox(
+              height: 70,
+            ),
+            // FirestoreBuilder<UserModelQuerySnapshot>(
+            //   ref: usersRef,
+            //   builder: (context, snapshot, _) {
+            //     if (snapshot.hasError) return Text('error: ${snapshot.error}');
+            //     if (!snapshot.hasData) return const Text('loading');
 
-          //     UserModelQuerySnapshot querySnapshot = snapshot.requireData;
+            //     UserModelQuerySnapshot querySnapshot = snapshot.requireData;
 
-          //     if (querySnapshot.docs.isEmpty) return Text("Empty");
+            //     if (querySnapshot.docs.isEmpty) return Text("Empty");
 
-          //     return SizedBox(
-          //       height: 100,
-          //       child: ListView.builder(
-          //         itemCount: querySnapshot.docs.length,
-          //         itemBuilder: (context, index) {
-          //           // Access the User instance
-          //           UserModel user = querySnapshot.docs[index].data;
+            //     return SizedBox(
+            //       height: 100,
+            //       child: ListView.builder(
+            //         itemCount: querySnapshot.docs.length,
+            //         itemBuilder: (context, index) {
+            //           // Access the User instance
+            //           UserModel user = querySnapshot.docs[index].data;
 
-          //           return Text(
-          //               'User name: ${user.name}, id ${querySnapshot.docs[index].id}');
-          //         },
-          //       ),
-          //     );
-          //   },
-          // ),
-          OptionButton(
-            title: "الفروع",
-            onPressed: () {},
-          ),
-          OptionButton(
-            title: "المخازن",
-            onPressed: () {},
-          ),
-          OptionButton(
-            title: "التجار",
-            onPressed: () {
-              Get.toNamed("/traders");
-            },
-          ),
-          OptionButton(
-            title: "الخزنة",
-            onPressed: () {},
-          ),
-          OptionButton(
-            title: "حساب الشغل",
-            onPressed: () {},
-          ),
-          SizedBox(
-            height: 20,
-          ),
-        ],
+            //           return Text(
+            //               'User name: ${user.name}, id ${querySnapshot.docs[index].id}');
+            //         },
+            //       ),
+            //     );
+            //   },
+            // ),
+            OptionButton(
+              title: "الفروع",
+              onPressed: () {},
+            ),
+            OptionButton(
+              title: "المخازن",
+              onPressed: () {},
+            ),
+            OptionButton(
+              title: "التجار",
+              onPressed: () {
+                Get.toNamed("/traders");
+              },
+            ),
+            OptionButton(
+              title: "الخزنة",
+              onPressed: () {},
+            ),
+            OptionButton(
+              title: "حساب الشغل",
+              onPressed: () {},
+            ),
+            SizedBox(
+              height: 20,
+            ),
+          ],
+        ),
       ),
     );
   }

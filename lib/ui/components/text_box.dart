@@ -12,7 +12,8 @@ class TextBox extends StatelessWidget {
       this.isLarge = false,
       this.isEditable = true,
       this.fillColor = kWhiteColor,
-      this.hintColor = kGrayLightColor})
+      this.hintColor = kGrayLightColor,
+      this.isTextVisible = true})
       : super(key: key);
 
   final String label;
@@ -22,6 +23,7 @@ class TextBox extends StatelessWidget {
   final Color hintColor;
   final TextInputType? keyboardType;
   final TextEditingController controller;
+  final bool isTextVisible;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +34,7 @@ class TextBox extends StatelessWidget {
       autofocus: false,
       readOnly: !isEditable,
       style: TextStyle(color: kSecondaryColor, height: 1.4),
+      obscureText: !isTextVisible,
       decoration: InputDecoration(
         hintText: label,
         hintStyle: TextStyle(

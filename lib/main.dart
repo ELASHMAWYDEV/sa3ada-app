@@ -1,6 +1,8 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:sa3ada_app/firebase_options.dart';
 import 'utils/app_routes.dart';
 import 'utils/constants.dart';
 import 'utils/services/firebase.dart';
@@ -13,9 +15,9 @@ import 'utils/translations/app_translations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Get.put(FirebaseService.init(), permanent: true);
   await Get.putAsync(() => ConnectionService.init(), permanent: true);
   await Get.putAsync(() => StorageService.init(), permanent: true);
+  Get.put(FirebaseService.init(), permanent: true);
   Get.put(LocalizationService.init(), permanent: true);
   Get.put(NavigationService.init(), permanent: true);
   Get.put(ApiService(), permanent: true);
