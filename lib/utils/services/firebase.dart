@@ -46,8 +46,8 @@ class FirebaseService extends GetxService {
       if (kIsWeb) {
         firestore.enablePersistence();
       }
-      firestore.enableNetwork();
-      firestore.settings = Settings(persistenceEnabled: true);
+      // firestore.enableNetwork();
+      // firestore.settings = Settings(persistenceEnabled: true);
 
       // Handle authentication
       firebaseAuth.authStateChanges().listen((user) {

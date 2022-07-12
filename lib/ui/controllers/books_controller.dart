@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:sa3ada_app/data/models/selector_model.dart';
 
 class BooksController extends GetxController {
   final TextEditingController searchInputController = TextEditingController();
 
-  final List<String> yearsSelectors = ["ابتدائى", "اعدادى", "ثانوى"];
+  @override
+  void onInit() {
+    super.onInit();
 
-  String? selectedYear;
+    searchInputController.addListener(() {
+      update();
+    });
+  }
+
+  SelectorModel? selectedStage;
 }

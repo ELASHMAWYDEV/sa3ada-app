@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sa3ada_app/data/firestore_models/account_model.dart';
+import 'package:sa3ada_app/data/firestore_models/transaction_model.dart';
 import 'package:sa3ada_app/ui/components/alert_prompt_box.dart';
 import 'package:sa3ada_app/utils/services/firebase.dart';
 

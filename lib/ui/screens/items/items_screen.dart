@@ -1,11 +1,16 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, curly_braces_in_flow_control_structures
 
+import 'package:cloud_firestore_odm/cloud_firestore_odm.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sa3ada_app/data/firebase_services/auth_service.dart';
+import 'package:sa3ada_app/data/firestore_models/item_model.dart';
 import 'package:sa3ada_app/data/models/mini_table_model.dart';
+import 'package:sa3ada_app/ui/components/floating_add_button.dart';
 import 'package:sa3ada_app/ui/components/header.dart';
 import 'package:sa3ada_app/ui/components/mini_table.dart';
 import 'package:sa3ada_app/utils/constants.dart';
+import 'package:sa3ada_app/utils/services/firebase.dart';
 import 'package:sa3ada_app/utils/utils.dart';
 
 class ItemsScreen extends StatelessWidget {
@@ -14,6 +19,23 @@ class ItemsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingAddButton(
+        options: [
+          FloatingOptionButton(
+            title: "كتاب جديد",
+            onClick: () {
+              Get.toNamed("items/books/add");
+            },
+          ),
+          FloatingOptionButton(
+            title: "أدوات جديدة",
+            onClick: () {
+              Get.toNamed("/actions/transfer-deposit");
+            },
+          ),
+        ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       body: Column(
         children: [
           Header(title: "الأصناف"),
@@ -26,60 +48,45 @@ class ItemsScreen extends StatelessWidget {
               padding: EdgeInsets.all(20),
               child: Column(
                 children: [
-                  MiniTable(
-                    title: "الكتب",
-                    onPressingAll: () {
-                      Get.toNamed("/items/books");
-                    },
-                    data: [
-                      {
-                        "customCode": "434",
-                        "name": "سلاح عربي ٤ب م١",
-                        "quantity": 124,
-                        "price": {"retail": 50}
-                      },
-                      {
-                        "customCode": "434",
-                        "name": "سلاح عربي ٤ب م١",
-                        "quantity": 124,
-                        "price": {"retail": 50}
-                      },
-                      {
-                        "customCode": "434",
-                        "name": "سلاح عربي ٤ب م١",
-                        "quantity": 124,
-                        "price": {"retail": 50}
-                      },
-                      {
-                        "customCode": "434",
-                        "name": "سلاح عربي ٤ب م١",
-                        "quantity": 124,
-                        "price": {"retail": 50}
-                      },
-                      {
-                        "customCode": "434",
-                        "name": "سلاح عربي ٤ب م١",
-                        "quantity": 124,
-                        "price": {"retail": 50}
-                      },
-                    ],
-                    columns: [
-                      MiniTableModel(
-                          title: "الكود", selector: (row) => row["customCode"]),
-                      MiniTableModel(
-                          title: "اسم الكتاب", selector: (row) => row["name"]),
-                      MiniTableModel(
-                          title: "الكمية",
-                          selector: (row) => row["quantity"] == null
-                              ? ""
-                              : numberToString(row["quantity"])),
-                      MiniTableModel(
-                          title: "سعر البيع",
-                          selector: (row) => numberToString(
-                              row["price"]["retail"],
-                              includeMinimals: true)),
-                    ],
-                  ),
+                  FirestoreBuilder<ItemModelQuerySnapshot>(
+                      ref: itemsRef,
+                      builder: (context, snapshot, _) {
+                        if (snapshot.hasError)
+                          return Text('error: ${snapshot.error}');
+                        if (!snapshot.hasData)
+                          return CircularProgressIndicator(
+                            color: kGreenColor,
+                          );
+                        ItemModelQuerySnapshot querySnapshot =
+                            snapshot.requireData;
+                        return MiniTable(
+                          title: "الكتب",
+                          onPressingAll: () {
+                            Get.toNamed("/items/books");
+                          },
+                          data: querySnapshot.docs
+                              .map<ItemModel>((e) => e.data)
+                              .toList(),
+                          columns: [
+                            MiniTableModel(
+                                title: "الكود",
+                                selector: (row) => row.customCode),
+                            MiniTableModel(
+                                title: "اسم الكتاب",
+                                selector: (row) => row.name),
+                            MiniTableModel(
+                                title: "الكمية",
+                                selector: (row) => row.coverPrice == null
+                                    ? ""
+                                    : numberToString(row.coverPrice)),
+                            MiniTableModel(
+                                title: "سعر البيع",
+                                selector: (row) => numberToString(
+                                    row.coverPrice,
+                                    includeMinimals: true)),
+                          ],
+                        );
+                      }),
                   Divider(
                     color: kSecondaryColor,
                     height: 50,

@@ -32,20 +32,20 @@ class ExpensesScreen extends StatelessWidget {
                   SizedBox(
                     height: 15,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: _.fromSelectors
-                        .map((selector) => RoundedSelectorBox(
-                              selector: selector,
-                              isActive: selector == _.selectedFrom,
-                              onClick: () {
-                                _.selectedFrom = selector;
-                                _.selectedSubFrom = null;
-                                _.update();
-                              },
-                            ))
-                        .toList(),
-                  ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: _.fromSelectors
+                  //       .map((selector) => RoundedSelectorBox(
+                  //             selector: selector,
+                  //             isActive: selector == _.selectedFrom,
+                  //             onClick: () {
+                  //               _.selectedFrom = selector;
+                  //               _.selectedSubFrom = null;
+                  //               _.update();
+                  //             },
+                  //           ))
+                  //       .toList(),
+                  // ),
                   Visibility(
                       visible: _.selectedFrom == "فرع",
                       child: Column(
@@ -124,7 +124,9 @@ class ExpensesScreen extends StatelessWidget {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
-                                      TakePhotoButton(),
+                                      TakePhotoButton(
+                                        onSelectingImages: (images) {},
+                                      ),
                                     ],
                                   ),
                                   SizedBox(

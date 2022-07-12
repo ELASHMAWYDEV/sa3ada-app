@@ -11,11 +11,11 @@ class TakePhotoButton extends StatefulWidget {
   const TakePhotoButton({
     Key? key,
     this.title = "اضافة صور",
-    this.onSelectingImages,
+    required this.onSelectingImages,
   }) : super(key: key);
 
   final String title;
-  final Function(List<XFile?>)? onSelectingImages;
+  final Function(List<File?>) onSelectingImages;
   @override
   State<TakePhotoButton> createState() => _TakePhotoButtonState();
 }
@@ -37,6 +37,7 @@ class _TakePhotoButtonState extends State<TakePhotoButton> {
       imageFiles.addNonNull(File(image!.path));
     }
 
+    widget.onSelectingImages(imageFiles);
     setState(() {});
   }
 
@@ -163,7 +164,7 @@ class _TakePhotoButtonState extends State<TakePhotoButton> {
               ],
             )),
         SizedBox(
-          height: 20,
+          height: imageFiles.isEmpty ? 0 : 20,
         ),
         SizedBox(
           width: size.width - 40,
@@ -207,6 +208,7 @@ class _TakePhotoButtonState extends State<TakePhotoButton> {
                       child: GestureDetector(
                         onTap: () {
                           imageFiles.remove(imageFiles[index]);
+                          widget.onSelectingImages(imageFiles);
                           setState(() {});
                         },
                         child: Container(

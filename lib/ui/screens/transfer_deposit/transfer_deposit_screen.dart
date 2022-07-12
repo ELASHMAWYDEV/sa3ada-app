@@ -34,20 +34,20 @@ class TransferDepositScreen extends StatelessWidget {
                     SizedBox(
                       height: 15,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: _.fromSelectors
-                          .map((selector) => RoundedSelectorBox(
-                                selector: selector,
-                                isActive: selector == _.selectedFrom,
-                                onClick: () {
-                                  _.selectedFrom = selector;
-                                  _.selectedSubFrom = null;
-                                  _.update();
-                                },
-                              ))
-                          .toList(),
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: _.fromSelectors
+                    //       .map((selector) => RoundedSelectorBox(
+                    //             selector: selector,
+                    //             isActive: selector == _.selectedFrom,
+                    //             onClick: () {
+                    //               _.selectedFrom = selector;
+                    //               _.selectedSubFrom = null;
+                    //               _.update();
+                    //             },
+                    //           ))
+                    //       .toList(),
+                    // ),
                     Visibility(
                         visible: ["تاجر", "فرع"].contains(_.selectedFrom),
                         child: Column(
@@ -96,20 +96,20 @@ class TransferDepositScreen extends StatelessWidget {
                             SizedBox(
                               height: 15,
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: _.toSelectors
-                                  .map((selector) => RoundedSelectorBox(
-                                        selector: selector,
-                                        isActive: selector == _.selectedTo,
-                                        onClick: () {
-                                          _.selectedTo = selector;
-                                          _.selectedSubTo = null;
-                                          _.update();
-                                        },
-                                      ))
-                                  .toList(),
-                            ),
+                            // Row(
+                            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            //   children: _.toSelectors
+                            //       .map((selector) => RoundedSelectorBox(
+                            //             selector: selector,
+                            //             isActive: selector == _.selectedTo,
+                            //             onClick: () {
+                            //               _.selectedTo = selector;
+                            //               _.selectedSubTo = null;
+                            //               _.update();
+                            //             },
+                            //           ))
+                            //       .toList(),
+                            // ),
                             Visibility(
                                 visible: ["تاجر", "فرع"].contains(_.selectedTo),
                                 child: Column(
@@ -180,7 +180,9 @@ class TransferDepositScreen extends StatelessWidget {
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
                                         TakePhotoButton(
-                                            title: "اضافة صور الايداع/السحب"),
+                                          title: "اضافة صور الايداع/السحب",
+                                          onSelectingImages: (images) {},
+                                        ),
                                       ],
                                     ),
                                     SizedBox(

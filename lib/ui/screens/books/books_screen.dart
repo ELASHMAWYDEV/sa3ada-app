@@ -1,8 +1,11 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, curly_braces_in_flow_control_structures
 
+import 'package:cloud_firestore_odm/cloud_firestore_odm.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sa3ada_app/data/firestore_models/item_model.dart';
 import 'package:sa3ada_app/ui/components/header.dart';
+import 'package:sa3ada_app/ui/components/item_box.dart';
 import 'package:sa3ada_app/ui/components/rounded_selector_box.dart';
 import 'package:sa3ada_app/ui/components/text_box.dart';
 import 'package:sa3ada_app/ui/controllers/books_controller.dart';
@@ -17,6 +20,7 @@ class BooksScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<BooksController>(builder: (_) {
       return Scaffold(
+        resizeToAvoidBottomInset: false,
         body: Column(
           children: [
             Header(title: "الكتب"),
@@ -31,14 +35,20 @@ class BooksScreen extends StatelessWidget {
                     SizedBox(
                       height: 15,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: _.yearsSelectors
+                    Wrap(
+                      alignment: WrapAlignment.center,
+                      runSpacing: 15,
+                      spacing: 10,
+                      children: kStageSelectors
                           .map((selector) => RoundedSelectorBox(
                                 selector: selector,
-                                isActive: selector == _.selectedYear,
-                                onClick: () {
-                                  _.selectedYear = selector;
+                                isActive: selector == _.selectedStage,
+                                onSelect: (selectedItem) {
+                                  if (_.selectedStage == selectedItem) {
+                                    _.selectedStage = null;
+                                  } else {
+                                    _.selectedStage = selectedItem;
+                                  }
                                   _.update();
                                 },
                               ))
@@ -59,129 +69,54 @@ class BooksScreen extends StatelessWidget {
                     ),
                     SizedBox(
                       height: size.height * 0.7,
-                      child: ListView.builder(
-                          padding: EdgeInsets.only(bottom: 120),
-                          itemCount: 10,
-                          itemBuilder: ((context, index) => Padding(
-                                padding: EdgeInsets.only(bottom: 20),
-                                child: TextButton(
-                                  onPressed: () {},
-                                  style: TextButton.styleFrom(
-                                      backgroundColor: kWhiteColor,
-                                      padding: EdgeInsets.all(12),
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(4)),
-                                      textStyle: TextStyle(
-                                          color: kSecondaryColor,
-                                          fontFamily: kFontFamilyPrimary)),
-                                  child: Row(children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "سلاح دراسات 4ب م1",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: kSecondaryColor),
-                                        ),
-                                        SizedBox(
-                                          height: 20,
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              "كود الصنف: ",
-                                              style: TextStyle(
-                                                  color: kSecondaryColor),
-                                            ),
-                                            Text(
-                                              "294",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w500,
-                                                  color: kSecondaryColor),
-                                            ),
-                                          ],
-                                        )
-                                      ],
+                      child: FirestoreBuilder<ItemModelQuerySnapshot>(
+                          ref: itemsRef
+                              .whereName(
+                                  isGreaterThanOrEqualTo:
+                                      _.searchInputController.text == ""
+                                          ? null
+                                          : _.searchInputController.text,
+                                  isLessThanOrEqualTo: _
+                                              .searchInputController.text ==
+                                          ""
+                                      ? null
+                                      : "${_.searchInputController.text}\uf8ff")
+                              .whereGrade(
+                                  isEqualTo: _.selectedStage?.value == "other"
+                                      ? "null"
+                                      : null,
+                                  whereIn: _.selectedStage == null ||
+                                          _.selectedStage?.value == "other"
+                                      ? null
+                                      : kGradeSelectors[_.selectedStage?.value]
+                                          ?.map((e) => e.value)
+                                          .toList()),
+                          builder: (context, snapshot, _) {
+                            if (snapshot.hasError)
+                              return Text('error: ${snapshot.error}');
+                            if (!snapshot.hasData)
+                              return CircularProgressIndicator(
+                                color: kGreenColor,
+                              );
+
+                            ItemModelQuerySnapshot querySnapshot =
+                                snapshot.requireData;
+
+                            return ListView.builder(
+                                padding: EdgeInsets.only(bottom: 120),
+                                itemCount: querySnapshot.docs.length,
+                                itemBuilder: ((context, index) {
+                                  ItemModel item =
+                                      querySnapshot.docs[index].data;
+                                  return Padding(
+                                    padding: EdgeInsets.only(bottom: 20),
+                                    child: ItemBox(
+                                      item: item,
+                                      quantity: 29,
                                     ),
-                                    Spacer(),
-                                    Row(
-                                      children: [
-                                        Column(
-                                          children: [
-                                            Text(
-                                              "سعر البيع",
-                                              style: TextStyle(
-                                                  fontSize: 10,
-                                                  color: kSecondaryColor),
-                                            ),
-                                            SizedBox(
-                                              height: 4,
-                                            ),
-                                            Text(
-                                              "50 ج",
-                                              style: TextStyle(
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: kSecondaryColor),
-                                            ),
-                                            Container(
-                                              height: 1,
-                                              width: 50,
-                                              margin: EdgeInsets.symmetric(
-                                                  vertical: 10),
-                                              decoration: BoxDecoration(
-                                                  color: kSecondaryColor,
-                                                  borderRadius:
-                                                      BorderRadius.circular(5)),
-                                            ),
-                                            Text(
-                                              "الكمية المتاحة",
-                                              style: TextStyle(
-                                                  fontSize: 10,
-                                                  color: kSecondaryColor),
-                                            ),
-                                            SizedBox(
-                                              height: 4,
-                                            ),
-                                            Text(
-                                              "234",
-                                              style: TextStyle(
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: kSecondaryColor),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          width: 15,
-                                        ),
-                                        Container(
-                                          clipBehavior: Clip.hardEdge,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(4),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                    color: kSecondaryColor
-                                                        .withOpacity(0.2),
-                                                    offset: Offset(0, 3),
-                                                    blurRadius: 10)
-                                              ]),
-                                          child: Image.network(
-                                            "https://picsum.photos/300/300",
-                                            width: 90,
-                                            height: 90,
-                                            fit: BoxFit.contain,
-                                          ),
-                                        )
-                                      ],
-                                    )
-                                  ]),
-                                ),
-                              ))),
+                                  );
+                                }));
+                          }),
                     ),
                   ]),
                 ),
