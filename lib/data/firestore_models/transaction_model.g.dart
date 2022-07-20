@@ -124,6 +124,7 @@ abstract class TransactionModelDocumentReference
   Future<void> delete();
 
   Future<void> update({
+    String? id,
     String ownerId,
     double amount,
     String sourceAccountId,
@@ -173,6 +174,7 @@ class _$TransactionModelDocumentReference
   }
 
   Future<void> update({
+    Object? id = _sentinel,
     Object? ownerId = _sentinel,
     Object? amount = _sentinel,
     Object? sourceAccountId = _sentinel,
@@ -180,6 +182,7 @@ class _$TransactionModelDocumentReference
     Object? isDeleted = _sentinel,
   }) async {
     final json = {
+      if (id != _sentinel) "id": id as String?,
       if (ownerId != _sentinel) "ownerId": ownerId as String,
       if (amount != _sentinel) "amount": amount as double,
       if (sourceAccountId != _sentinel)
@@ -236,6 +239,17 @@ abstract class TransactionModelQuery
   @override
   TransactionModelQuery limitToLast(int limit);
 
+  TransactionModelQuery whereId({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String?>? whereIn,
+    List<String?>? whereNotIn,
+  });
   TransactionModelQuery whereOwnerId({
     String? isEqualTo,
     String? isNotEqualTo,
@@ -290,6 +304,18 @@ abstract class TransactionModelQuery
     bool? isNull,
     List<bool?>? whereIn,
     List<bool?>? whereNotIn,
+  });
+
+  TransactionModelQuery orderById({
+    bool descending = false,
+    String? startAt,
+    String? startAfter,
+    String? endAt,
+    String? endBefore,
+    TransactionModelDocumentSnapshot? startAtDocument,
+    TransactionModelDocumentSnapshot? endAtDocument,
+    TransactionModelDocumentSnapshot? endBeforeDocument,
+    TransactionModelDocumentSnapshot? startAfterDocument,
   });
 
   TransactionModelQuery orderByOwnerId({
@@ -411,6 +437,34 @@ class _$TransactionModelQuery
   TransactionModelQuery limitToLast(int limit) {
     return _$TransactionModelQuery(
       reference.limitToLast(limit),
+      _collection,
+    );
+  }
+
+  TransactionModelQuery whereId({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String?>? whereIn,
+    List<String?>? whereNotIn,
+  }) {
+    return _$TransactionModelQuery(
+      reference.where(
+        'id',
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        whereIn: whereIn,
+        whereNotIn: whereNotIn,
+      ),
       _collection,
     );
   }
@@ -553,6 +607,48 @@ class _$TransactionModelQuery
       ),
       _collection,
     );
+  }
+
+  TransactionModelQuery orderById({
+    bool descending = false,
+    Object? startAt = _sentinel,
+    Object? startAfter = _sentinel,
+    Object? endAt = _sentinel,
+    Object? endBefore = _sentinel,
+    TransactionModelDocumentSnapshot? startAtDocument,
+    TransactionModelDocumentSnapshot? endAtDocument,
+    TransactionModelDocumentSnapshot? endBeforeDocument,
+    TransactionModelDocumentSnapshot? startAfterDocument,
+  }) {
+    var query = reference.orderBy('id', descending: descending);
+
+    if (startAtDocument != null) {
+      query = query.startAtDocument(startAtDocument.snapshot);
+    }
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument.snapshot);
+    }
+    if (endAtDocument != null) {
+      query = query.endAtDocument(endAtDocument.snapshot);
+    }
+    if (endBeforeDocument != null) {
+      query = query.endBeforeDocument(endBeforeDocument.snapshot);
+    }
+
+    if (startAt != _sentinel) {
+      query = query.startAt([startAt]);
+    }
+    if (startAfter != _sentinel) {
+      query = query.startAfter([startAfter]);
+    }
+    if (endAt != _sentinel) {
+      query = query.endAt([endAt]);
+    }
+    if (endBefore != _sentinel) {
+      query = query.endBefore([endBefore]);
+    }
+
+    return _$TransactionModelQuery(query, _collection);
   }
 
   TransactionModelQuery orderByOwnerId({
@@ -818,6 +914,7 @@ class TransactionModelQueryDocumentSnapshot
 
 TransactionModel _$TransactionModelFromJson(Map<String, dynamic> json) =>
     TransactionModel(
+      id: json['id'] as String?,
       ownerId: json['ownerId'] as String,
       type: $enumDecode(_$TransactionTypeEnumMap, json['type']),
       amount: (json['amount'] as num).toDouble(),
@@ -829,6 +926,7 @@ TransactionModel _$TransactionModelFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$TransactionModelToJson(TransactionModel instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'ownerId': instance.ownerId,
       'type': _$TransactionTypeEnumMap[instance.type],
       'amount': instance.amount,

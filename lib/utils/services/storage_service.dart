@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sa3ada_app/utils/services/localization_service.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
@@ -11,6 +12,7 @@ abstract class StorageKeys {
   static const String token = "TOKEN";
   static const String activeLocale = "ACTIVE_LOCAL";
   static const String hasSeenSplashScreens = "HAS_SEEN_SPLASH_SCREENS";
+  static const String isLoggedIn = "IS_LOGGED_IN";
 }
 
 class StorageService extends GetxService {
@@ -56,5 +58,14 @@ class StorageService extends GetxService {
 
   set activeLocale(Locale activeLocal) {
     _prefs.setString(StorageKeys.activeLocale, activeLocal.toString());
+  }
+
+  //is Logged in
+  bool get isLoggedIn {
+    return _prefs.getBool(StorageKeys.isLoggedIn) ?? false;
+  }
+
+  set isLoggedIn(bool isLoggedIn) {
+    _prefs.setBool(StorageKeys.isLoggedIn, isLoggedIn);
   }
 }

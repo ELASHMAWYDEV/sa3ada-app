@@ -120,6 +120,7 @@ abstract class UserModelDocumentReference
   Future<void> delete();
 
   Future<void> update({
+    String? id,
     String authUserId,
     String name,
     String username,
@@ -169,6 +170,7 @@ class _$UserModelDocumentReference
   }
 
   Future<void> update({
+    Object? id = _sentinel,
     Object? authUserId = _sentinel,
     Object? name = _sentinel,
     Object? username = _sentinel,
@@ -176,6 +178,7 @@ class _$UserModelDocumentReference
     Object? permissions = _sentinel,
   }) async {
     final json = {
+      if (id != _sentinel) "id": id as String?,
       if (authUserId != _sentinel) "authUserId": authUserId as String,
       if (name != _sentinel) "name": name as String,
       if (username != _sentinel) "username": username as String,
@@ -230,6 +233,17 @@ abstract class UserModelQuery
   @override
   UserModelQuery limitToLast(int limit);
 
+  UserModelQuery whereId({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String?>? whereIn,
+    List<String?>? whereNotIn,
+  });
   UserModelQuery whereAuthUserId({
     String? isEqualTo,
     String? isNotEqualTo,
@@ -283,6 +297,18 @@ abstract class UserModelQuery
     List<String>? isGreaterThanOrEqualTo,
     bool? isNull,
     List<String>? arrayContainsAny,
+  });
+
+  UserModelQuery orderById({
+    bool descending = false,
+    String? startAt,
+    String? startAfter,
+    String? endAt,
+    String? endBefore,
+    UserModelDocumentSnapshot? startAtDocument,
+    UserModelDocumentSnapshot? endAtDocument,
+    UserModelDocumentSnapshot? endBeforeDocument,
+    UserModelDocumentSnapshot? startAfterDocument,
   });
 
   UserModelQuery orderByAuthUserId({
@@ -403,6 +429,34 @@ class _$UserModelQuery extends QueryReference<UserModelQuerySnapshot>
   UserModelQuery limitToLast(int limit) {
     return _$UserModelQuery(
       reference.limitToLast(limit),
+      _collection,
+    );
+  }
+
+  UserModelQuery whereId({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String?>? whereIn,
+    List<String?>? whereNotIn,
+  }) {
+    return _$UserModelQuery(
+      reference.where(
+        'id',
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        whereIn: whereIn,
+        whereNotIn: whereNotIn,
+      ),
       _collection,
     );
   }
@@ -543,6 +597,48 @@ class _$UserModelQuery extends QueryReference<UserModelQuerySnapshot>
       ),
       _collection,
     );
+  }
+
+  UserModelQuery orderById({
+    bool descending = false,
+    Object? startAt = _sentinel,
+    Object? startAfter = _sentinel,
+    Object? endAt = _sentinel,
+    Object? endBefore = _sentinel,
+    UserModelDocumentSnapshot? startAtDocument,
+    UserModelDocumentSnapshot? endAtDocument,
+    UserModelDocumentSnapshot? endBeforeDocument,
+    UserModelDocumentSnapshot? startAfterDocument,
+  }) {
+    var query = reference.orderBy('id', descending: descending);
+
+    if (startAtDocument != null) {
+      query = query.startAtDocument(startAtDocument.snapshot);
+    }
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument.snapshot);
+    }
+    if (endAtDocument != null) {
+      query = query.endAtDocument(endAtDocument.snapshot);
+    }
+    if (endBeforeDocument != null) {
+      query = query.endBeforeDocument(endBeforeDocument.snapshot);
+    }
+
+    if (startAt != _sentinel) {
+      query = query.startAt([startAt]);
+    }
+    if (startAfter != _sentinel) {
+      query = query.startAfter([startAfter]);
+    }
+    if (endAt != _sentinel) {
+      query = query.endAt([endAt]);
+    }
+    if (endBefore != _sentinel) {
+      query = query.endBefore([endBefore]);
+    }
+
+    return _$UserModelQuery(query, _collection);
   }
 
   UserModelQuery orderByAuthUserId({
@@ -804,6 +900,7 @@ class UserModelQueryDocumentSnapshot extends FirestoreQueryDocumentSnapshot
 // **************************************************************************
 
 UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
+      id: json['id'] as String?,
       authUserId: json['authUserId'] as String,
       name: json['name'] as String,
       username: json['username'] as String,
@@ -814,6 +911,7 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
     );
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
+      'id': instance.id,
       'authUserId': instance.authUserId,
       'name': instance.name,
       'username': instance.username,

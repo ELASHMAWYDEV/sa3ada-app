@@ -10,11 +10,17 @@ class SelectBox extends StatelessWidget {
     required this.items,
     required this.selectedItemIndex,
     required this.onChange,
+    this.title = "اختر",
+    this.backgroundColor = kWhiteColor,
+    this.textColor = kSecondaryColor,
   }) : super(key: key);
 
   final List<String> items;
-  final int selectedItemIndex;
+  final int? selectedItemIndex;
   final Function(int) onChange;
+  final String title;
+  final Color backgroundColor;
+  final Color textColor;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -33,11 +39,11 @@ class SelectBox extends StatelessWidget {
                       EdgeInsets.symmetric(vertical: 12, horizontal: 60)),
                   shape: MaterialStateProperty.all(RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(100))),
-                  backgroundColor: MaterialStateProperty.all(kWhiteColor)),
+                  backgroundColor: MaterialStateProperty.all(backgroundColor)),
               child: Text(
-                items[selectedItemIndex],
+                selectedItemIndex == null ? title : items[selectedItemIndex!],
                 style: TextStyle(
-                    color: kSecondaryColor,
+                    color: textColor,
                     fontSize: 20,
                     fontWeight: FontWeight.w500),
               )),
@@ -47,7 +53,7 @@ class SelectBox extends StatelessWidget {
           top: 4,
           child: Icon(
             Icons.arrow_drop_down_sharp,
-            color: kSecondaryColor,
+            color: textColor,
             size: 40,
           ),
         ),
@@ -65,7 +71,7 @@ class SelectModal extends StatelessWidget {
   }) : super(key: key);
 
   final List<String> items;
-  final int selectedItemIndex;
+  final int? selectedItemIndex;
   final Function(int) onChange;
 
   @override

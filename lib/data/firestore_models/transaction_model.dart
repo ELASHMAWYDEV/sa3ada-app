@@ -12,6 +12,7 @@ enum TransactionStatus { completed, canceled }
 
 @JsonSerializable(explicitToJson: true)
 class TransactionModel {
+  final String? id;
   final String ownerId;
   final TransactionType type;
   final double amount;
@@ -21,7 +22,8 @@ class TransactionModel {
   final bool? isDeleted;
 
   TransactionModel(
-      {required this.ownerId,
+      {required this.id,
+      required this.ownerId,
       required this.type,
       required this.amount,
       required this.status,

@@ -10,6 +10,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:sa3ada_app/firebase_options.dart';
 import 'package:sa3ada_app/utils/constants.dart';
+import 'package:sa3ada_app/utils/services/storage_service.dart';
 
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
@@ -47,13 +48,16 @@ class FirebaseService extends GetxService {
         firestore.enablePersistence();
       }
       // firestore.enableNetwork();
-      // firestore.settings = Settings(persistenceEnabled: true);
+      firestore.settings = Settings(persistenceEnabled: true);
 
       // Handle authentication
       firebaseAuth.authStateChanges().listen((user) {
         if (user == null) {
           print("user logged out...");
           Get.offAndToNamed("/login");
+          Get.find<StorageService>().isLoggedIn = false;
+        } else {
+          Get.find<StorageService>().isLoggedIn = true;
         }
       });
 

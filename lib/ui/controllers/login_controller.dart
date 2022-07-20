@@ -6,6 +6,7 @@ import 'package:sa3ada_app/ui/components/alert_prompt_box.dart';
 import 'package:sa3ada_app/utils/constants.dart';
 import 'package:sa3ada_app/utils/services/firebase.dart';
 import 'package:sa3ada_app/utils/services/navigation_service.dart';
+import 'package:sa3ada_app/utils/services/storage_service.dart';
 
 class LoginController extends GetxController {
   TextEditingController usernameInputController = TextEditingController();
@@ -14,9 +15,10 @@ class LoginController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    // if (FirebaseService.firebaseAuth.currentUser != null) {
-    //   Get.offAllNamed("/home");
-    // }
+
+    if (Get.find<StorageService>().isLoggedIn) {
+      Get.offAllNamed("/home");
+    }
   }
 
   Future<void> login() async {

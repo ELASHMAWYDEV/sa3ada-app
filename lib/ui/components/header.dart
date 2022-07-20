@@ -8,10 +8,12 @@ class Header extends StatelessWidget {
     Key? key,
     required this.title,
     this.icon = Icons.arrow_back_ios,
+    this.onIconPressed,
   }) : super(key: key);
 
   final String title;
   final IconData icon;
+  final VoidCallback? onIconPressed;
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -22,7 +24,11 @@ class Header extends StatelessWidget {
       backgroundColor: kSecondaryColor,
       leading: InkWell(
           onTap: () {
-            Get.back();
+            if (onIconPressed == null) {
+              Get.back();
+            } else {
+              onIconPressed!();
+            }
           },
           borderRadius: BorderRadius.circular(100),
           child: Icon(icon)),

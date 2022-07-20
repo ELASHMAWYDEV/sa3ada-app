@@ -1,3 +1,6 @@
+// ignore_for_file: prefer_const_constructors
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sa3ada_app/data/firestore_models/item_model.dart';
@@ -26,13 +29,23 @@ class AddNewBookController extends GetxController {
         return AlertPromptBox.showError(error: "يجب عمل سكان للبار كود أولا");
       }
 
+      // Check if item wasn't added before
+      final foundItems = await itemsRef
+          .whereBarcode(isEqualTo: barcode)
+          .get(GetOptions(source: Source.serverAndCache));
+
+      if (foundItems.docs.isNotEmpty) {
+        return AlertPromptBox.showError(error: "هذا الكتاب تم اضافته من قبل");
+      }
+
       final value = await itemsRef.add(ItemModel(
-          name: bookNameInputController.text,
-          coverPrice: num.parse(priceInputController.text),
-          images: [],
-          barcode: barcode,
-          grade: selectedYear?.value ?? "",
-          semester: selectedSemester?.value ?? ""));
+        name: bookNameInputController.text,
+        coverPrice: num.parse(priceInputController.text),
+        images: [],
+        barcode: barcode,
+        grade: selectedYear?.value ?? "",
+        semester: selectedSemester?.value ?? "",
+      ));
 
       AlertPromptBox.showSuccess(
           message: "تم اضافة كتاب ${bookNameInputController.text} بنجاح",

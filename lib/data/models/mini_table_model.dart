@@ -1,18 +1,22 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 
 class MiniTableModel {
   String title;
   Function(dynamic)? selector;
+  Widget? Function(dynamic)? cell;
 
   MiniTableModel({
     required this.title,
     required this.selector,
+    this.cell,
   });
 
   factory MiniTableModel.fromJson(Map<String, dynamic> parsedJson) {
     return MiniTableModel(
       title: parsedJson['title'],
       selector: parsedJson['selector'],
+      cell: parsedJson['cell'],
     );
   }
 
@@ -32,5 +36,6 @@ class MiniTableModel {
   Map<String, dynamic> toJson() => {
         'title': title,
         'selector': selector,
+        'cell': cell,
       };
 }

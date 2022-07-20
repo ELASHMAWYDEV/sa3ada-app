@@ -28,6 +28,7 @@ enum Years {
 
 @JsonSerializable(explicitToJson: true)
 class ItemModel {
+  final String? id;
   final String name;
   final num coverPrice;
   final List<String> images;
@@ -35,16 +36,20 @@ class ItemModel {
   final int? customCode;
   final String? grade;
   final String? semester;
+  final int? quantity;
+  final int year;
 
-  ItemModel({
-    required this.name,
-    required this.coverPrice,
-    required this.images,
-    required this.barcode,
-    this.customCode,
-    required this.grade,
-    required this.semester,
-  });
+  ItemModel(
+      {this.id,
+      required this.name,
+      required this.coverPrice,
+      required this.images,
+      required this.barcode,
+      this.customCode,
+      required this.grade,
+      required this.semester,
+      this.quantity,
+      this.year = 2023});
 
   factory ItemModel.fromJson(Map<String, Object?> json) =>
       _$ItemModelFromJson(json);

@@ -10,6 +10,7 @@ import 'package:sa3ada_app/ui/components/rounded_selector_box.dart';
 import 'package:sa3ada_app/ui/components/text_box.dart';
 import 'package:sa3ada_app/ui/controllers/books_controller.dart';
 import 'package:sa3ada_app/utils/constants.dart';
+import 'package:sa3ada_app/utils/services/firebase.dart';
 
 class BooksScreen extends StatelessWidget {
   BooksScreen({Key? key}) : super(key: key);
@@ -112,7 +113,7 @@ class BooksScreen extends StatelessWidget {
                                     padding: EdgeInsets.only(bottom: 20),
                                     child: ItemBox(
                                       item: item,
-                                      quantity: 29,
+                                      onPressed: (item) {},
                                     ),
                                   );
                                 }));

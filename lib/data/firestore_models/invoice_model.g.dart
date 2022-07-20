@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'item_model.dart';
+part of 'invoice_model.dart';
 
 // **************************************************************************
 // CollectionGenerator
@@ -18,13 +18,910 @@ const _sentinel = _Sentinel();
 /// A collection reference object can be used for adding documents,
 /// getting document references, and querying for documents
 /// (using the methods inherited from Query).
+abstract class InvoiceModelCollectionReference
+    implements
+        InvoiceModelQuery,
+        FirestoreCollectionReference<InvoiceModelQuerySnapshot> {
+  factory InvoiceModelCollectionReference([
+    FirebaseFirestore? firestore,
+  ]) = _$InvoiceModelCollectionReference;
+
+  static InvoiceModel fromFirestore(
+    DocumentSnapshot<Map<String, Object?>> snapshot,
+    SnapshotOptions? options,
+  ) {
+    return InvoiceModel.fromJson(snapshot.data()!);
+  }
+
+  static Map<String, Object?> toFirestore(
+    InvoiceModel value,
+    SetOptions? options,
+  ) {
+    return value.toJson();
+  }
+
+  @override
+  InvoiceModelDocumentReference doc([String? id]);
+
+  /// Add a new document to this collection with the specified data,
+  /// assigning it a document ID automatically.
+  Future<InvoiceModelDocumentReference> add(InvoiceModel value);
+}
+
+class _$InvoiceModelCollectionReference extends _$InvoiceModelQuery
+    implements InvoiceModelCollectionReference {
+  factory _$InvoiceModelCollectionReference([FirebaseFirestore? firestore]) {
+    firestore ??= FirebaseFirestore.instance;
+
+    return _$InvoiceModelCollectionReference._(
+      firestore.collection('invoices').withConverter(
+            fromFirestore: InvoiceModelCollectionReference.fromFirestore,
+            toFirestore: InvoiceModelCollectionReference.toFirestore,
+          ),
+    );
+  }
+
+  _$InvoiceModelCollectionReference._(
+    CollectionReference<InvoiceModel> reference,
+  ) : super(reference, reference);
+
+  String get path => reference.path;
+
+  @override
+  CollectionReference<InvoiceModel> get reference =>
+      super.reference as CollectionReference<InvoiceModel>;
+
+  @override
+  InvoiceModelDocumentReference doc([String? id]) {
+    assert(
+      id == null || id.split('/').length == 1,
+      'The document ID cannot be from a different collection',
+    );
+    return InvoiceModelDocumentReference(
+      reference.doc(id),
+    );
+  }
+
+  @override
+  Future<InvoiceModelDocumentReference> add(InvoiceModel value) {
+    return reference
+        .add(value)
+        .then((ref) => InvoiceModelDocumentReference(ref));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is _$InvoiceModelCollectionReference &&
+        other.runtimeType == runtimeType &&
+        other.reference == reference;
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, reference);
+}
+
+abstract class InvoiceModelDocumentReference
+    extends FirestoreDocumentReference<InvoiceModelDocumentSnapshot> {
+  factory InvoiceModelDocumentReference(
+          DocumentReference<InvoiceModel> reference) =
+      _$InvoiceModelDocumentReference;
+
+  DocumentReference<InvoiceModel> get reference;
+
+  /// A reference to the [InvoiceModelCollectionReference] containing this document.
+  InvoiceModelCollectionReference get parent {
+    return _$InvoiceModelCollectionReference(reference.firestore);
+  }
+
+  late final ItemModelCollectionReference items =
+      _$ItemModelCollectionReference(
+    reference,
+  );
+
+  @override
+  Stream<InvoiceModelDocumentSnapshot> snapshots();
+
+  @override
+  Future<InvoiceModelDocumentSnapshot> get([GetOptions? options]);
+
+  @override
+  Future<void> delete();
+
+  Future<void> update({
+    String? id,
+    double total,
+    double discountPercentage,
+    double subTotal,
+    double paidAmount,
+    double? commission,
+  });
+
+  Future<void> set(InvoiceModel value);
+}
+
+class _$InvoiceModelDocumentReference
+    extends FirestoreDocumentReference<InvoiceModelDocumentSnapshot>
+    implements InvoiceModelDocumentReference {
+  _$InvoiceModelDocumentReference(this.reference);
+
+  @override
+  final DocumentReference<InvoiceModel> reference;
+
+  /// A reference to the [InvoiceModelCollectionReference] containing this document.
+  InvoiceModelCollectionReference get parent {
+    return _$InvoiceModelCollectionReference(reference.firestore);
+  }
+
+  late final ItemModelCollectionReference items =
+      _$ItemModelCollectionReference(
+    reference,
+  );
+
+  @override
+  Stream<InvoiceModelDocumentSnapshot> snapshots() {
+    return reference.snapshots().map((snapshot) {
+      return InvoiceModelDocumentSnapshot._(
+        snapshot,
+        snapshot.data(),
+      );
+    });
+  }
+
+  @override
+  Future<InvoiceModelDocumentSnapshot> get([GetOptions? options]) {
+    return reference.get(options).then((snapshot) {
+      return InvoiceModelDocumentSnapshot._(
+        snapshot,
+        snapshot.data(),
+      );
+    });
+  }
+
+  @override
+  Future<void> delete() {
+    return reference.delete();
+  }
+
+  Future<void> update({
+    Object? id = _sentinel,
+    Object? total = _sentinel,
+    Object? discountPercentage = _sentinel,
+    Object? subTotal = _sentinel,
+    Object? paidAmount = _sentinel,
+    Object? commission = _sentinel,
+  }) async {
+    final json = {
+      if (id != _sentinel) "id": id as String?,
+      if (total != _sentinel) "total": total as double,
+      if (discountPercentage != _sentinel)
+        "discountPercentage": discountPercentage as double,
+      if (subTotal != _sentinel) "subTotal": subTotal as double,
+      if (paidAmount != _sentinel) "paidAmount": paidAmount as double,
+      if (commission != _sentinel) "commission": commission as double?,
+    };
+
+    return reference.update(json);
+  }
+
+  Future<void> set(InvoiceModel value) {
+    return reference.set(value);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is InvoiceModelDocumentReference &&
+        other.runtimeType == runtimeType &&
+        other.parent == parent &&
+        other.id == id;
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, parent, id);
+}
+
+class InvoiceModelDocumentSnapshot extends FirestoreDocumentSnapshot {
+  InvoiceModelDocumentSnapshot._(
+    this.snapshot,
+    this.data,
+  );
+
+  @override
+  final DocumentSnapshot<InvoiceModel> snapshot;
+
+  @override
+  InvoiceModelDocumentReference get reference {
+    return InvoiceModelDocumentReference(
+      snapshot.reference,
+    );
+  }
+
+  @override
+  final InvoiceModel? data;
+}
+
+abstract class InvoiceModelQuery
+    implements QueryReference<InvoiceModelQuerySnapshot> {
+  @override
+  InvoiceModelQuery limit(int limit);
+
+  @override
+  InvoiceModelQuery limitToLast(int limit);
+
+  InvoiceModelQuery whereId({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String?>? whereIn,
+    List<String?>? whereNotIn,
+  });
+  InvoiceModelQuery whereTotal({
+    double? isEqualTo,
+    double? isNotEqualTo,
+    double? isLessThan,
+    double? isLessThanOrEqualTo,
+    double? isGreaterThan,
+    double? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<double>? whereIn,
+    List<double>? whereNotIn,
+  });
+  InvoiceModelQuery whereDiscountPercentage({
+    double? isEqualTo,
+    double? isNotEqualTo,
+    double? isLessThan,
+    double? isLessThanOrEqualTo,
+    double? isGreaterThan,
+    double? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<double>? whereIn,
+    List<double>? whereNotIn,
+  });
+  InvoiceModelQuery whereSubTotal({
+    double? isEqualTo,
+    double? isNotEqualTo,
+    double? isLessThan,
+    double? isLessThanOrEqualTo,
+    double? isGreaterThan,
+    double? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<double>? whereIn,
+    List<double>? whereNotIn,
+  });
+  InvoiceModelQuery wherePaidAmount({
+    double? isEqualTo,
+    double? isNotEqualTo,
+    double? isLessThan,
+    double? isLessThanOrEqualTo,
+    double? isGreaterThan,
+    double? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<double>? whereIn,
+    List<double>? whereNotIn,
+  });
+  InvoiceModelQuery whereCommission({
+    double? isEqualTo,
+    double? isNotEqualTo,
+    double? isLessThan,
+    double? isLessThanOrEqualTo,
+    double? isGreaterThan,
+    double? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<double?>? whereIn,
+    List<double?>? whereNotIn,
+  });
+
+  InvoiceModelQuery orderById({
+    bool descending = false,
+    String? startAt,
+    String? startAfter,
+    String? endAt,
+    String? endBefore,
+    InvoiceModelDocumentSnapshot? startAtDocument,
+    InvoiceModelDocumentSnapshot? endAtDocument,
+    InvoiceModelDocumentSnapshot? endBeforeDocument,
+    InvoiceModelDocumentSnapshot? startAfterDocument,
+  });
+
+  InvoiceModelQuery orderByTotal({
+    bool descending = false,
+    double startAt,
+    double startAfter,
+    double endAt,
+    double endBefore,
+    InvoiceModelDocumentSnapshot? startAtDocument,
+    InvoiceModelDocumentSnapshot? endAtDocument,
+    InvoiceModelDocumentSnapshot? endBeforeDocument,
+    InvoiceModelDocumentSnapshot? startAfterDocument,
+  });
+
+  InvoiceModelQuery orderByDiscountPercentage({
+    bool descending = false,
+    double startAt,
+    double startAfter,
+    double endAt,
+    double endBefore,
+    InvoiceModelDocumentSnapshot? startAtDocument,
+    InvoiceModelDocumentSnapshot? endAtDocument,
+    InvoiceModelDocumentSnapshot? endBeforeDocument,
+    InvoiceModelDocumentSnapshot? startAfterDocument,
+  });
+
+  InvoiceModelQuery orderBySubTotal({
+    bool descending = false,
+    double startAt,
+    double startAfter,
+    double endAt,
+    double endBefore,
+    InvoiceModelDocumentSnapshot? startAtDocument,
+    InvoiceModelDocumentSnapshot? endAtDocument,
+    InvoiceModelDocumentSnapshot? endBeforeDocument,
+    InvoiceModelDocumentSnapshot? startAfterDocument,
+  });
+
+  InvoiceModelQuery orderByPaidAmount({
+    bool descending = false,
+    double startAt,
+    double startAfter,
+    double endAt,
+    double endBefore,
+    InvoiceModelDocumentSnapshot? startAtDocument,
+    InvoiceModelDocumentSnapshot? endAtDocument,
+    InvoiceModelDocumentSnapshot? endBeforeDocument,
+    InvoiceModelDocumentSnapshot? startAfterDocument,
+  });
+
+  InvoiceModelQuery orderByCommission({
+    bool descending = false,
+    double? startAt,
+    double? startAfter,
+    double? endAt,
+    double? endBefore,
+    InvoiceModelDocumentSnapshot? startAtDocument,
+    InvoiceModelDocumentSnapshot? endAtDocument,
+    InvoiceModelDocumentSnapshot? endBeforeDocument,
+    InvoiceModelDocumentSnapshot? startAfterDocument,
+  });
+}
+
+class _$InvoiceModelQuery extends QueryReference<InvoiceModelQuerySnapshot>
+    implements InvoiceModelQuery {
+  _$InvoiceModelQuery(
+    this.reference,
+    this._collection,
+  );
+
+  final CollectionReference<Object?> _collection;
+
+  @override
+  final Query<InvoiceModel> reference;
+
+  InvoiceModelQuerySnapshot _decodeSnapshot(
+    QuerySnapshot<InvoiceModel> snapshot,
+  ) {
+    final docs = snapshot.docs.map((e) {
+      return InvoiceModelQueryDocumentSnapshot._(e, e.data());
+    }).toList();
+
+    final docChanges = snapshot.docChanges.map((change) {
+      return FirestoreDocumentChange<InvoiceModelDocumentSnapshot>(
+        type: change.type,
+        oldIndex: change.oldIndex,
+        newIndex: change.newIndex,
+        doc: InvoiceModelDocumentSnapshot._(change.doc, change.doc.data()),
+      );
+    }).toList();
+
+    return InvoiceModelQuerySnapshot._(
+      snapshot,
+      docs,
+      docChanges,
+    );
+  }
+
+  @override
+  Stream<InvoiceModelQuerySnapshot> snapshots([SnapshotOptions? options]) {
+    return reference.snapshots().map(_decodeSnapshot);
+  }
+
+  @override
+  Future<InvoiceModelQuerySnapshot> get([GetOptions? options]) {
+    return reference.get(options).then(_decodeSnapshot);
+  }
+
+  @override
+  InvoiceModelQuery limit(int limit) {
+    return _$InvoiceModelQuery(
+      reference.limit(limit),
+      _collection,
+    );
+  }
+
+  @override
+  InvoiceModelQuery limitToLast(int limit) {
+    return _$InvoiceModelQuery(
+      reference.limitToLast(limit),
+      _collection,
+    );
+  }
+
+  InvoiceModelQuery whereId({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String?>? whereIn,
+    List<String?>? whereNotIn,
+  }) {
+    return _$InvoiceModelQuery(
+      reference.where(
+        'id',
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        whereIn: whereIn,
+        whereNotIn: whereNotIn,
+      ),
+      _collection,
+    );
+  }
+
+  InvoiceModelQuery whereTotal({
+    double? isEqualTo,
+    double? isNotEqualTo,
+    double? isLessThan,
+    double? isLessThanOrEqualTo,
+    double? isGreaterThan,
+    double? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<double>? whereIn,
+    List<double>? whereNotIn,
+  }) {
+    return _$InvoiceModelQuery(
+      reference.where(
+        'total',
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        whereIn: whereIn,
+        whereNotIn: whereNotIn,
+      ),
+      _collection,
+    );
+  }
+
+  InvoiceModelQuery whereDiscountPercentage({
+    double? isEqualTo,
+    double? isNotEqualTo,
+    double? isLessThan,
+    double? isLessThanOrEqualTo,
+    double? isGreaterThan,
+    double? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<double>? whereIn,
+    List<double>? whereNotIn,
+  }) {
+    return _$InvoiceModelQuery(
+      reference.where(
+        'discountPercentage',
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        whereIn: whereIn,
+        whereNotIn: whereNotIn,
+      ),
+      _collection,
+    );
+  }
+
+  InvoiceModelQuery whereSubTotal({
+    double? isEqualTo,
+    double? isNotEqualTo,
+    double? isLessThan,
+    double? isLessThanOrEqualTo,
+    double? isGreaterThan,
+    double? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<double>? whereIn,
+    List<double>? whereNotIn,
+  }) {
+    return _$InvoiceModelQuery(
+      reference.where(
+        'subTotal',
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        whereIn: whereIn,
+        whereNotIn: whereNotIn,
+      ),
+      _collection,
+    );
+  }
+
+  InvoiceModelQuery wherePaidAmount({
+    double? isEqualTo,
+    double? isNotEqualTo,
+    double? isLessThan,
+    double? isLessThanOrEqualTo,
+    double? isGreaterThan,
+    double? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<double>? whereIn,
+    List<double>? whereNotIn,
+  }) {
+    return _$InvoiceModelQuery(
+      reference.where(
+        'paidAmount',
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        whereIn: whereIn,
+        whereNotIn: whereNotIn,
+      ),
+      _collection,
+    );
+  }
+
+  InvoiceModelQuery whereCommission({
+    double? isEqualTo,
+    double? isNotEqualTo,
+    double? isLessThan,
+    double? isLessThanOrEqualTo,
+    double? isGreaterThan,
+    double? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<double?>? whereIn,
+    List<double?>? whereNotIn,
+  }) {
+    return _$InvoiceModelQuery(
+      reference.where(
+        'commission',
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        whereIn: whereIn,
+        whereNotIn: whereNotIn,
+      ),
+      _collection,
+    );
+  }
+
+  InvoiceModelQuery orderById({
+    bool descending = false,
+    Object? startAt = _sentinel,
+    Object? startAfter = _sentinel,
+    Object? endAt = _sentinel,
+    Object? endBefore = _sentinel,
+    InvoiceModelDocumentSnapshot? startAtDocument,
+    InvoiceModelDocumentSnapshot? endAtDocument,
+    InvoiceModelDocumentSnapshot? endBeforeDocument,
+    InvoiceModelDocumentSnapshot? startAfterDocument,
+  }) {
+    var query = reference.orderBy('id', descending: descending);
+
+    if (startAtDocument != null) {
+      query = query.startAtDocument(startAtDocument.snapshot);
+    }
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument.snapshot);
+    }
+    if (endAtDocument != null) {
+      query = query.endAtDocument(endAtDocument.snapshot);
+    }
+    if (endBeforeDocument != null) {
+      query = query.endBeforeDocument(endBeforeDocument.snapshot);
+    }
+
+    if (startAt != _sentinel) {
+      query = query.startAt([startAt]);
+    }
+    if (startAfter != _sentinel) {
+      query = query.startAfter([startAfter]);
+    }
+    if (endAt != _sentinel) {
+      query = query.endAt([endAt]);
+    }
+    if (endBefore != _sentinel) {
+      query = query.endBefore([endBefore]);
+    }
+
+    return _$InvoiceModelQuery(query, _collection);
+  }
+
+  InvoiceModelQuery orderByTotal({
+    bool descending = false,
+    Object? startAt = _sentinel,
+    Object? startAfter = _sentinel,
+    Object? endAt = _sentinel,
+    Object? endBefore = _sentinel,
+    InvoiceModelDocumentSnapshot? startAtDocument,
+    InvoiceModelDocumentSnapshot? endAtDocument,
+    InvoiceModelDocumentSnapshot? endBeforeDocument,
+    InvoiceModelDocumentSnapshot? startAfterDocument,
+  }) {
+    var query = reference.orderBy('total', descending: descending);
+
+    if (startAtDocument != null) {
+      query = query.startAtDocument(startAtDocument.snapshot);
+    }
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument.snapshot);
+    }
+    if (endAtDocument != null) {
+      query = query.endAtDocument(endAtDocument.snapshot);
+    }
+    if (endBeforeDocument != null) {
+      query = query.endBeforeDocument(endBeforeDocument.snapshot);
+    }
+
+    if (startAt != _sentinel) {
+      query = query.startAt([startAt]);
+    }
+    if (startAfter != _sentinel) {
+      query = query.startAfter([startAfter]);
+    }
+    if (endAt != _sentinel) {
+      query = query.endAt([endAt]);
+    }
+    if (endBefore != _sentinel) {
+      query = query.endBefore([endBefore]);
+    }
+
+    return _$InvoiceModelQuery(query, _collection);
+  }
+
+  InvoiceModelQuery orderByDiscountPercentage({
+    bool descending = false,
+    Object? startAt = _sentinel,
+    Object? startAfter = _sentinel,
+    Object? endAt = _sentinel,
+    Object? endBefore = _sentinel,
+    InvoiceModelDocumentSnapshot? startAtDocument,
+    InvoiceModelDocumentSnapshot? endAtDocument,
+    InvoiceModelDocumentSnapshot? endBeforeDocument,
+    InvoiceModelDocumentSnapshot? startAfterDocument,
+  }) {
+    var query = reference.orderBy('discountPercentage', descending: descending);
+
+    if (startAtDocument != null) {
+      query = query.startAtDocument(startAtDocument.snapshot);
+    }
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument.snapshot);
+    }
+    if (endAtDocument != null) {
+      query = query.endAtDocument(endAtDocument.snapshot);
+    }
+    if (endBeforeDocument != null) {
+      query = query.endBeforeDocument(endBeforeDocument.snapshot);
+    }
+
+    if (startAt != _sentinel) {
+      query = query.startAt([startAt]);
+    }
+    if (startAfter != _sentinel) {
+      query = query.startAfter([startAfter]);
+    }
+    if (endAt != _sentinel) {
+      query = query.endAt([endAt]);
+    }
+    if (endBefore != _sentinel) {
+      query = query.endBefore([endBefore]);
+    }
+
+    return _$InvoiceModelQuery(query, _collection);
+  }
+
+  InvoiceModelQuery orderBySubTotal({
+    bool descending = false,
+    Object? startAt = _sentinel,
+    Object? startAfter = _sentinel,
+    Object? endAt = _sentinel,
+    Object? endBefore = _sentinel,
+    InvoiceModelDocumentSnapshot? startAtDocument,
+    InvoiceModelDocumentSnapshot? endAtDocument,
+    InvoiceModelDocumentSnapshot? endBeforeDocument,
+    InvoiceModelDocumentSnapshot? startAfterDocument,
+  }) {
+    var query = reference.orderBy('subTotal', descending: descending);
+
+    if (startAtDocument != null) {
+      query = query.startAtDocument(startAtDocument.snapshot);
+    }
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument.snapshot);
+    }
+    if (endAtDocument != null) {
+      query = query.endAtDocument(endAtDocument.snapshot);
+    }
+    if (endBeforeDocument != null) {
+      query = query.endBeforeDocument(endBeforeDocument.snapshot);
+    }
+
+    if (startAt != _sentinel) {
+      query = query.startAt([startAt]);
+    }
+    if (startAfter != _sentinel) {
+      query = query.startAfter([startAfter]);
+    }
+    if (endAt != _sentinel) {
+      query = query.endAt([endAt]);
+    }
+    if (endBefore != _sentinel) {
+      query = query.endBefore([endBefore]);
+    }
+
+    return _$InvoiceModelQuery(query, _collection);
+  }
+
+  InvoiceModelQuery orderByPaidAmount({
+    bool descending = false,
+    Object? startAt = _sentinel,
+    Object? startAfter = _sentinel,
+    Object? endAt = _sentinel,
+    Object? endBefore = _sentinel,
+    InvoiceModelDocumentSnapshot? startAtDocument,
+    InvoiceModelDocumentSnapshot? endAtDocument,
+    InvoiceModelDocumentSnapshot? endBeforeDocument,
+    InvoiceModelDocumentSnapshot? startAfterDocument,
+  }) {
+    var query = reference.orderBy('paidAmount', descending: descending);
+
+    if (startAtDocument != null) {
+      query = query.startAtDocument(startAtDocument.snapshot);
+    }
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument.snapshot);
+    }
+    if (endAtDocument != null) {
+      query = query.endAtDocument(endAtDocument.snapshot);
+    }
+    if (endBeforeDocument != null) {
+      query = query.endBeforeDocument(endBeforeDocument.snapshot);
+    }
+
+    if (startAt != _sentinel) {
+      query = query.startAt([startAt]);
+    }
+    if (startAfter != _sentinel) {
+      query = query.startAfter([startAfter]);
+    }
+    if (endAt != _sentinel) {
+      query = query.endAt([endAt]);
+    }
+    if (endBefore != _sentinel) {
+      query = query.endBefore([endBefore]);
+    }
+
+    return _$InvoiceModelQuery(query, _collection);
+  }
+
+  InvoiceModelQuery orderByCommission({
+    bool descending = false,
+    Object? startAt = _sentinel,
+    Object? startAfter = _sentinel,
+    Object? endAt = _sentinel,
+    Object? endBefore = _sentinel,
+    InvoiceModelDocumentSnapshot? startAtDocument,
+    InvoiceModelDocumentSnapshot? endAtDocument,
+    InvoiceModelDocumentSnapshot? endBeforeDocument,
+    InvoiceModelDocumentSnapshot? startAfterDocument,
+  }) {
+    var query = reference.orderBy('commission', descending: descending);
+
+    if (startAtDocument != null) {
+      query = query.startAtDocument(startAtDocument.snapshot);
+    }
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument.snapshot);
+    }
+    if (endAtDocument != null) {
+      query = query.endAtDocument(endAtDocument.snapshot);
+    }
+    if (endBeforeDocument != null) {
+      query = query.endBeforeDocument(endBeforeDocument.snapshot);
+    }
+
+    if (startAt != _sentinel) {
+      query = query.startAt([startAt]);
+    }
+    if (startAfter != _sentinel) {
+      query = query.startAfter([startAfter]);
+    }
+    if (endAt != _sentinel) {
+      query = query.endAt([endAt]);
+    }
+    if (endBefore != _sentinel) {
+      query = query.endBefore([endBefore]);
+    }
+
+    return _$InvoiceModelQuery(query, _collection);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is _$InvoiceModelQuery &&
+        other.runtimeType == runtimeType &&
+        other.reference == reference;
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, reference);
+}
+
+class InvoiceModelQuerySnapshot
+    extends FirestoreQuerySnapshot<InvoiceModelQueryDocumentSnapshot> {
+  InvoiceModelQuerySnapshot._(
+    this.snapshot,
+    this.docs,
+    this.docChanges,
+  );
+
+  final QuerySnapshot<InvoiceModel> snapshot;
+
+  @override
+  final List<InvoiceModelQueryDocumentSnapshot> docs;
+
+  @override
+  final List<FirestoreDocumentChange<InvoiceModelDocumentSnapshot>> docChanges;
+}
+
+class InvoiceModelQueryDocumentSnapshot extends FirestoreQueryDocumentSnapshot
+    implements InvoiceModelDocumentSnapshot {
+  InvoiceModelQueryDocumentSnapshot._(this.snapshot, this.data);
+
+  @override
+  final QueryDocumentSnapshot<InvoiceModel> snapshot;
+
+  @override
+  InvoiceModelDocumentReference get reference {
+    return InvoiceModelDocumentReference(snapshot.reference);
+  }
+
+  @override
+  final InvoiceModel data;
+}
+
+/// A collection reference object can be used for adding documents,
+/// getting document references, and querying for documents
+/// (using the methods inherited from Query).
 abstract class ItemModelCollectionReference
     implements
         ItemModelQuery,
         FirestoreCollectionReference<ItemModelQuerySnapshot> {
-  factory ItemModelCollectionReference([
-    FirebaseFirestore? firestore,
-  ]) = _$ItemModelCollectionReference;
+  factory ItemModelCollectionReference(
+    DocumentReference<InvoiceModel> parent,
+  ) = _$ItemModelCollectionReference;
 
   static ItemModel fromFirestore(
     DocumentSnapshot<Map<String, Object?>> snapshot,
@@ -40,6 +937,9 @@ abstract class ItemModelCollectionReference
     return value.toJson();
   }
 
+  /// A reference to the containing [InvoiceModelDocumentReference] if this is a subcollection.
+  InvoiceModelDocumentReference get parent;
+
   @override
   ItemModelDocumentReference doc([String? id]);
 
@@ -50,11 +950,12 @@ abstract class ItemModelCollectionReference
 
 class _$ItemModelCollectionReference extends _$ItemModelQuery
     implements ItemModelCollectionReference {
-  factory _$ItemModelCollectionReference([FirebaseFirestore? firestore]) {
-    firestore ??= FirebaseFirestore.instance;
-
+  factory _$ItemModelCollectionReference(
+    DocumentReference<InvoiceModel> parent,
+  ) {
     return _$ItemModelCollectionReference._(
-      firestore.collection('items').withConverter(
+      InvoiceModelDocumentReference(parent),
+      parent.collection('items').withConverter(
             fromFirestore: ItemModelCollectionReference.fromFirestore,
             toFirestore: ItemModelCollectionReference.toFirestore,
           ),
@@ -62,8 +963,12 @@ class _$ItemModelCollectionReference extends _$ItemModelQuery
   }
 
   _$ItemModelCollectionReference._(
+    this.parent,
     CollectionReference<ItemModel> reference,
   ) : super(reference, reference);
+
+  @override
+  final InvoiceModelDocumentReference parent;
 
   String get path => reference.path;
 
@@ -107,7 +1012,12 @@ abstract class ItemModelDocumentReference
 
   /// A reference to the [ItemModelCollectionReference] containing this document.
   ItemModelCollectionReference get parent {
-    return _$ItemModelCollectionReference(reference.firestore);
+    return _$ItemModelCollectionReference(
+      reference.parent.parent!.withConverter<InvoiceModel>(
+        fromFirestore: InvoiceModelCollectionReference.fromFirestore,
+        toFirestore: InvoiceModelCollectionReference.toFirestore,
+      ),
+    );
   }
 
   @override
@@ -145,7 +1055,12 @@ class _$ItemModelDocumentReference
 
   /// A reference to the [ItemModelCollectionReference] containing this document.
   ItemModelCollectionReference get parent {
-    return _$ItemModelCollectionReference(reference.firestore);
+    return _$ItemModelCollectionReference(
+      reference.parent.parent!.withConverter<InvoiceModel>(
+        fromFirestore: InvoiceModelCollectionReference.fromFirestore,
+        toFirestore: InvoiceModelCollectionReference.toFirestore,
+      ),
+    );
   }
 
   @override
@@ -1283,29 +2198,29 @@ class ItemModelQueryDocumentSnapshot extends FirestoreQueryDocumentSnapshot
 // JsonSerializableGenerator
 // **************************************************************************
 
-ItemModel _$ItemModelFromJson(Map<String, dynamic> json) => ItemModel(
+InvoiceModel _$InvoiceModelFromJson(Map<String, dynamic> json) => InvoiceModel(
       id: json['id'] as String?,
-      name: json['name'] as String,
-      coverPrice: json['coverPrice'] as num,
-      images:
-          (json['images'] as List<dynamic>).map((e) => e as String).toList(),
-      barcode: json['barcode'] as String?,
-      customCode: json['customCode'] as int?,
-      grade: json['grade'] as String?,
-      semester: json['semester'] as String?,
-      quantity: json['quantity'] as int?,
-      year: json['year'] as int? ?? 2023,
+      from: AccountModel.fromJson(json['from'] as Map<String, dynamic>),
+      to: AccountModel.fromJson(json['to'] as Map<String, dynamic>),
+      total: (json['total'] as num).toDouble(),
+      discountPercentage: (json['discountPercentage'] as num).toDouble(),
+      subTotal: (json['subTotal'] as num).toDouble(),
+      paidAmount: (json['paidAmount'] as num).toDouble(),
+      commission: (json['commission'] as num?)?.toDouble(),
+      items: (json['items'] as List<dynamic>?)
+          ?.map((e) => ItemModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
-Map<String, dynamic> _$ItemModelToJson(ItemModel instance) => <String, dynamic>{
+Map<String, dynamic> _$InvoiceModelToJson(InvoiceModel instance) =>
+    <String, dynamic>{
       'id': instance.id,
-      'name': instance.name,
-      'coverPrice': instance.coverPrice,
-      'images': instance.images,
-      'barcode': instance.barcode,
-      'customCode': instance.customCode,
-      'grade': instance.grade,
-      'semester': instance.semester,
-      'quantity': instance.quantity,
-      'year': instance.year,
+      'from': instance.from.toJson(),
+      'to': instance.to.toJson(),
+      'total': instance.total,
+      'discountPercentage': instance.discountPercentage,
+      'subTotal': instance.subTotal,
+      'paidAmount': instance.paidAmount,
+      'commission': instance.commission,
+      'items': instance.items?.map((e) => e.toJson()).toList(),
     };

@@ -12,6 +12,7 @@ enum UserPermissions { expenses }
 
 @JsonSerializable(explicitToJson: true)
 class UserModel {
+  final String? id;
   final String authUserId;
   final String name;
   final String username;
@@ -19,6 +20,7 @@ class UserModel {
   final List<String> permissions;
 
   UserModel({
+    this.id,
     required this.authUserId,
     required this.name,
     required this.username,

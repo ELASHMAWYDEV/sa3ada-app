@@ -3,18 +3,21 @@
 import 'package:flutter/material.dart';
 import 'package:sa3ada_app/data/firestore_models/item_model.dart';
 import 'package:sa3ada_app/utils/constants.dart';
+import 'package:sa3ada_app/utils/utils.dart';
 
 class ItemBox extends StatelessWidget {
-  const ItemBox({Key? key, required this.item, required this.quantity})
+  const ItemBox({Key? key, required this.item, required this.onPressed})
       : super(key: key);
 
   final ItemModel item;
-  final int quantity;
+  final Function(ItemModel) onPressed;
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () {},
+      onPressed: () {
+        onPressed(item);
+      },
       style: TextButton.styleFrom(
           backgroundColor: kWhiteColor,
           padding: EdgeInsets.all(12),
@@ -26,7 +29,7 @@ class ItemBox extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              item.name,
+              getBookFullName(item),
               style: TextStyle(
                   fontWeight: FontWeight.bold, color: kSecondaryColor),
             ),
@@ -83,7 +86,7 @@ class ItemBox extends StatelessWidget {
                   height: 4,
                 ),
                 Text(
-                  "$quantity",
+                  "${item.quantity ?? 0}",
                   style: TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.w500,

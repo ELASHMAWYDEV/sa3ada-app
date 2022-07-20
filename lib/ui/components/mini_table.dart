@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_if_null_operators
 
 import 'package:flutter/material.dart';
 import 'package:sa3ada_app/data/models/mini_table_model.dart';
@@ -13,52 +13,68 @@ const TextStyle tableItemStyle = TextStyle(
     overflow: TextOverflow.visible);
 
 class MiniTable extends StatelessWidget {
-  const MiniTable(
-      {Key? key,
-      required this.columns,
-      required this.data,
-      required this.title,
-      required this.onPressingAll})
-      : super(key: key);
+  const MiniTable({
+    Key? key,
+    required this.columns,
+    required this.data,
+    this.title,
+    required this.onPressingAll,
+    this.onCellPressed,
+    this.listAll = false,
+  }) : super(key: key);
 
   final List<MiniTableModel> columns;
   final List<dynamic> data;
-  final String title;
+  final String? title;
   final VoidCallback onPressingAll;
+  final Function(dynamic)? onCellPressed;
+  final bool listAll;
+
+  Widget tableWrapper({required Widget child}) =>
+      listAll ? SingleChildScrollView(child: child) : SizedBox(child: child);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              title,
-              style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w500,
-                  color: kWhiteColor),
-            ),
-            Spacer(),
-            TextButton(
-                onPressed: onPressingAll,
-                style: TextButton.styleFrom(
-                    backgroundColor: kSecondaryColor,
-                    padding: EdgeInsets.symmetric(vertical: 0, horizontal: 25),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50))),
-                child: Text(
-                  "عرض الكل",
-                  style: TextStyle(color: kWhiteColor, fontSize: 12),
-                ))
-          ],
+        Visibility(
+          visible: title != null,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                title ?? "",
+                style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w500,
+                    color: kWhiteColor),
+              ),
+              Spacer(),
+              Visibility(
+                visible: !listAll,
+                child: TextButton(
+                    onPressed: onPressingAll,
+                    style: TextButton.styleFrom(
+                        backgroundColor: kSecondaryColor,
+                        padding:
+                            EdgeInsets.symmetric(vertical: 0, horizontal: 25),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50))),
+                    child: Text(
+                      "عرض الكل",
+                      style: TextStyle(color: kWhiteColor, fontSize: 12),
+                    )),
+              )
+            ],
+          ),
         ),
         SizedBox(height: 15),
         Container(
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(
-              color: kWhiteColor, borderRadius: BorderRadius.circular(8)),
+            color: kWhiteColor,
+            borderRadius: BorderRadius.circular(8),
+          ),
           child: Column(
             children: [
               Table(
@@ -92,8 +108,9 @@ class MiniTable extends StatelessWidget {
               ),
               ConstrainedBox(
                 constraints: BoxConstraints(
-                    maxHeight: 250, minHeight: double.minPositive),
-                child: SingleChildScrollView(
+                    maxHeight: listAll ? double.infinity : 250,
+                    minHeight: double.minPositive),
+                child: tableWrapper(
                   child: Table(
                     defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                     children: [
@@ -110,22 +127,40 @@ class MiniTable extends StatelessWidget {
                                       .asMap()
                                       .map((index, column) => MapEntry(
                                           index,
-                                          Padding(
-                                            padding: EdgeInsets.fromLTRB(
-                                                index == columns.length + 1
-                                                    ? 20
-                                                    : 40,
-                                                12,
-                                                index == columns.length + 1
-                                                    ? 0
-                                                    : 15,
-                                                12),
-                                            child: Text(
-                                              column.selector == null
-                                                  ? row[column.title] ?? ""
-                                                  : column.selector!(row) ?? "",
-                                              maxLines: 1,
-                                              style: tableItemStyle,
+                                          GestureDetector(
+                                            onTap: () {
+                                              print(index);
+                                              if (onCellPressed != null) {
+                                                onCellPressed!(row);
+                                              }
+                                            },
+                                            child: Padding(
+                                              padding: EdgeInsets.fromLTRB(
+                                                  index == columns.length + 1
+                                                      ? 20
+                                                      : column.cell == null
+                                                          ? 40
+                                                          : 10,
+                                                  12,
+                                                  index == 0 ? 15 : 0,
+                                                  12),
+                                              child: column.cell != null
+                                                  ? column.cell!(column
+                                                              .selector ==
+                                                          null
+                                                      ? row[column.title] ?? ""
+                                                      : column.selector!(row) ??
+                                                          "")
+                                                  : Text(
+                                                      column.selector == null
+                                                          ? row[column.title]
+                                                              .toString()
+                                                          : column.selector!
+                                                                  (row)
+                                                              .toString(),
+                                                      // maxLines: 1,
+                                                      style: tableItemStyle,
+                                                    ),
                                             ),
                                           )))
                                       .values

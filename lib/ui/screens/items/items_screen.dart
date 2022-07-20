@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:sa3ada_app/data/firebase_services/auth_service.dart';
 import 'package:sa3ada_app/data/firestore_models/item_model.dart';
 import 'package:sa3ada_app/data/models/mini_table_model.dart';
+import 'package:sa3ada_app/ui/components/alert_prompt_box.dart';
 import 'package:sa3ada_app/ui/components/floating_add_button.dart';
 import 'package:sa3ada_app/ui/components/header.dart';
 import 'package:sa3ada_app/ui/components/mini_table.dart';
@@ -30,7 +31,9 @@ class ItemsScreen extends StatelessWidget {
           FloatingOptionButton(
             title: "أدوات جديدة",
             onClick: () {
-              Get.toNamed("/actions/transfer-deposit");
+              AlertPromptBox.showSuccess(
+                  message: "لم يتم اضافة هذه الخاصية بعد الي التطبيق",
+                  title: "نعتذر");
             },
           ),
         ],
@@ -43,87 +46,81 @@ class ItemsScreen extends StatelessWidget {
             height: size.height -
                 kToolbarHeight -
                 MediaQuery.of(context).padding.top,
-            child: SingleChildScrollView(
-                child: Padding(
-              padding: EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  FirestoreBuilder<ItemModelQuerySnapshot>(
-                      ref: itemsRef,
-                      builder: (context, snapshot, _) {
-                        if (snapshot.hasError)
-                          return Text('error: ${snapshot.error}');
-                        if (!snapshot.hasData)
-                          return CircularProgressIndicator(
-                            color: kGreenColor,
+            child: RefreshIndicator(
+              onRefresh: () async {
+                await FirebaseService.firestore.enableNetwork();
+              },
+              child: SingleChildScrollView(
+                  child: Padding(
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  children: [
+                    FirestoreBuilder<ItemModelQuerySnapshot>(
+                        ref: itemsRef,
+                        builder: (context, snapshot, _) {
+                          if (snapshot.hasError)
+                            return Text('error: ${snapshot.error}');
+                          if (!snapshot.hasData)
+                            return CircularProgressIndicator(
+                              color: kGreenColor,
+                            );
+                          ItemModelQuerySnapshot querySnapshot =
+                              snapshot.requireData;
+                          return MiniTable(
+                            title: "الكتب",
+                            onPressingAll: () {
+                              Get.toNamed("/items/books");
+                            },
+                            data: querySnapshot.docs
+                                .map<ItemModel>((e) => e.data)
+                                .toList(),
+                            columns: [
+                              MiniTableModel(
+                                  title: "الكود",
+                                  selector: (row) => row.customCode),
+                              MiniTableModel(
+                                  title: "اسم الكتاب",
+                                  selector: (row) => getBookFullName(row)),
+                              MiniTableModel(
+                                  title: "سعر البيع",
+                                  selector: (row) => numberToString(
+                                      row.coverPrice,
+                                      includeMinimals: true)),
+                            ],
                           );
-                        ItemModelQuerySnapshot querySnapshot =
-                            snapshot.requireData;
-                        return MiniTable(
-                          title: "الكتب",
-                          onPressingAll: () {
-                            Get.toNamed("/items/books");
-                          },
-                          data: querySnapshot.docs
-                              .map<ItemModel>((e) => e.data)
-                              .toList(),
-                          columns: [
-                            MiniTableModel(
-                                title: "الكود",
-                                selector: (row) => row.customCode),
-                            MiniTableModel(
-                                title: "اسم الكتاب",
-                                selector: (row) => row.name),
-                            MiniTableModel(
-                                title: "الكمية",
-                                selector: (row) => row.coverPrice == null
-                                    ? ""
-                                    : numberToString(row.coverPrice)),
-                            MiniTableModel(
-                                title: "سعر البيع",
-                                selector: (row) => numberToString(
-                                    row.coverPrice,
-                                    includeMinimals: true)),
-                          ],
-                        );
-                      }),
-                  Divider(
-                    color: kSecondaryColor,
-                    height: 50,
-                    thickness: 1,
-                    indent: 40,
-                    endIndent: 40,
-                  ),
-                  MiniTable(
-                    title: "الأدوات",
-                    onPressingAll: () {},
-                    data: [
-                      {"id": "1", "type": "نقدي", "total": 198235},
-                      {"id": "2"},
-                      {"id": "3"},
-                      {"id": "4"},
-                      {"id": "5"},
-                      {"id": "6"},
-                    ],
-                    columns: [
-                      MiniTableModel(title: "#", selector: (row) => row["id"]),
-                      MiniTableModel(
-                          title: "المبلغ",
-                          selector: (row) => row["total"] == null
-                              ? ""
-                              : numberToString(row["total"])),
-                      MiniTableModel(
-                          title: "طريقة الايداع",
-                          selector: (row) => row["type"]),
-                      MiniTableModel(
-                          title: "رقم الايصال", selector: (row) => row["id"]),
-                      MiniTableModel(
-                          title: "التاريخ", selector: (row) => row["id"]),
-                    ],
-                  )
-                ],
-              ),
-            )),
+                        }),
+                    Divider(
+                      color: kSecondaryColor,
+                      height: 50,
+                      thickness: 1,
+                      indent: 40,
+                      endIndent: 40,
+                    ),
+                    MiniTable(
+                      title: "الأدوات",
+                      onPressingAll: () {},
+                      data: [],
+                      columns: [
+                        MiniTableModel(
+                            title: "#", selector: (row) => row["id"]),
+                        MiniTableModel(
+                            title: "المبلغ",
+                            selector: (row) => row["total"] == null
+                                ? ""
+                                : numberToString(row["total"])),
+                        MiniTableModel(
+                            title: "طريقة الايداع",
+                            selector: (row) => row["type"]),
+                        MiniTableModel(
+                            title: "رقم الايصال", selector: (row) => row["id"]),
+                        MiniTableModel(
+                            title: "التاريخ", selector: (row) => row["id"]),
+                      ],
+                    )
+                  ],
+                ),
+              )),
+            ),
           ),
         ],
       ),

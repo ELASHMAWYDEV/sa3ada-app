@@ -1,9 +1,11 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:cloud_firestore_odm/cloud_firestore_odm.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:sa3ada_app/data/firestore_models/item_model.dart';
 part 'account_model.g.dart';
 
 @Collection<AccountModel>('accounts', name: 'accounts')
+@Collection<ItemModel>('accounts/*/items', name: 'accountItems')
 final accountsRef = AccountModelCollectionReference();
 
 enum AccountTypes {
@@ -19,13 +21,15 @@ enum AccountTypes {
 
 @JsonSerializable(explicitToJson: true)
 class AccountModel {
-  final String? ownerId;
+  final String? id;
+  final String name;
   final String type;
   final double activeBalance;
   final double creditBalance;
 
   AccountModel({
-    required this.ownerId,
+    this.id,
+    required this.name,
     required this.type,
     required this.activeBalance,
     required this.creditBalance,
