@@ -122,10 +122,11 @@ abstract class ItemModelDocumentReference
   Future<void> update({
     String? id,
     String name,
+    String type,
     num coverPrice,
     List<String> images,
     String? barcode,
-    int? customCode,
+    int? itemReference,
     String? grade,
     String? semester,
     int? quantity,
@@ -176,10 +177,11 @@ class _$ItemModelDocumentReference
   Future<void> update({
     Object? id = _sentinel,
     Object? name = _sentinel,
+    Object? type = _sentinel,
     Object? coverPrice = _sentinel,
     Object? images = _sentinel,
     Object? barcode = _sentinel,
-    Object? customCode = _sentinel,
+    Object? itemReference = _sentinel,
     Object? grade = _sentinel,
     Object? semester = _sentinel,
     Object? quantity = _sentinel,
@@ -188,10 +190,11 @@ class _$ItemModelDocumentReference
     final json = {
       if (id != _sentinel) "id": id as String?,
       if (name != _sentinel) "name": name as String,
+      if (type != _sentinel) "type": type as String,
       if (coverPrice != _sentinel) "coverPrice": coverPrice as num,
       if (images != _sentinel) "images": images as List<String>,
       if (barcode != _sentinel) "barcode": barcode as String?,
-      if (customCode != _sentinel) "customCode": customCode as int?,
+      if (itemReference != _sentinel) "itemReference": itemReference as int?,
       if (grade != _sentinel) "grade": grade as String?,
       if (semester != _sentinel) "semester": semester as String?,
       if (quantity != _sentinel) "quantity": quantity as int?,
@@ -267,6 +270,17 @@ abstract class ItemModelQuery
     List<String>? whereIn,
     List<String>? whereNotIn,
   });
+  ItemModelQuery whereType({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String>? whereIn,
+    List<String>? whereNotIn,
+  });
   ItemModelQuery whereCoverPrice({
     num? isEqualTo,
     num? isNotEqualTo,
@@ -299,7 +313,7 @@ abstract class ItemModelQuery
     List<String?>? whereIn,
     List<String?>? whereNotIn,
   });
-  ItemModelQuery whereCustomCode({
+  ItemModelQuery whereItemReference({
     int? isEqualTo,
     int? isNotEqualTo,
     int? isLessThan,
@@ -379,6 +393,18 @@ abstract class ItemModelQuery
     ItemModelDocumentSnapshot? startAfterDocument,
   });
 
+  ItemModelQuery orderByType({
+    bool descending = false,
+    String startAt,
+    String startAfter,
+    String endAt,
+    String endBefore,
+    ItemModelDocumentSnapshot? startAtDocument,
+    ItemModelDocumentSnapshot? endAtDocument,
+    ItemModelDocumentSnapshot? endBeforeDocument,
+    ItemModelDocumentSnapshot? startAfterDocument,
+  });
+
   ItemModelQuery orderByCoverPrice({
     bool descending = false,
     num startAt,
@@ -415,7 +441,7 @@ abstract class ItemModelQuery
     ItemModelDocumentSnapshot? startAfterDocument,
   });
 
-  ItemModelQuery orderByCustomCode({
+  ItemModelQuery orderByItemReference({
     bool descending = false,
     int? startAt,
     int? startAfter,
@@ -593,6 +619,34 @@ class _$ItemModelQuery extends QueryReference<ItemModelQuerySnapshot>
     );
   }
 
+  ItemModelQuery whereType({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String>? whereIn,
+    List<String>? whereNotIn,
+  }) {
+    return _$ItemModelQuery(
+      reference.where(
+        'type',
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        whereIn: whereIn,
+        whereNotIn: whereNotIn,
+      ),
+      _collection,
+    );
+  }
+
   ItemModelQuery whereCoverPrice({
     num? isEqualTo,
     num? isNotEqualTo,
@@ -675,7 +729,7 @@ class _$ItemModelQuery extends QueryReference<ItemModelQuerySnapshot>
     );
   }
 
-  ItemModelQuery whereCustomCode({
+  ItemModelQuery whereItemReference({
     int? isEqualTo,
     int? isNotEqualTo,
     int? isLessThan,
@@ -688,7 +742,7 @@ class _$ItemModelQuery extends QueryReference<ItemModelQuerySnapshot>
   }) {
     return _$ItemModelQuery(
       reference.where(
-        'customCode',
+        'itemReference',
         isEqualTo: isEqualTo,
         isNotEqualTo: isNotEqualTo,
         isLessThan: isLessThan,
@@ -899,6 +953,48 @@ class _$ItemModelQuery extends QueryReference<ItemModelQuerySnapshot>
     return _$ItemModelQuery(query, _collection);
   }
 
+  ItemModelQuery orderByType({
+    bool descending = false,
+    Object? startAt = _sentinel,
+    Object? startAfter = _sentinel,
+    Object? endAt = _sentinel,
+    Object? endBefore = _sentinel,
+    ItemModelDocumentSnapshot? startAtDocument,
+    ItemModelDocumentSnapshot? endAtDocument,
+    ItemModelDocumentSnapshot? endBeforeDocument,
+    ItemModelDocumentSnapshot? startAfterDocument,
+  }) {
+    var query = reference.orderBy('type', descending: descending);
+
+    if (startAtDocument != null) {
+      query = query.startAtDocument(startAtDocument.snapshot);
+    }
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument.snapshot);
+    }
+    if (endAtDocument != null) {
+      query = query.endAtDocument(endAtDocument.snapshot);
+    }
+    if (endBeforeDocument != null) {
+      query = query.endBeforeDocument(endBeforeDocument.snapshot);
+    }
+
+    if (startAt != _sentinel) {
+      query = query.startAt([startAt]);
+    }
+    if (startAfter != _sentinel) {
+      query = query.startAfter([startAfter]);
+    }
+    if (endAt != _sentinel) {
+      query = query.endAt([endAt]);
+    }
+    if (endBefore != _sentinel) {
+      query = query.endBefore([endBefore]);
+    }
+
+    return _$ItemModelQuery(query, _collection);
+  }
+
   ItemModelQuery orderByCoverPrice({
     bool descending = false,
     Object? startAt = _sentinel,
@@ -1025,7 +1121,7 @@ class _$ItemModelQuery extends QueryReference<ItemModelQuerySnapshot>
     return _$ItemModelQuery(query, _collection);
   }
 
-  ItemModelQuery orderByCustomCode({
+  ItemModelQuery orderByItemReference({
     bool descending = false,
     Object? startAt = _sentinel,
     Object? startAfter = _sentinel,
@@ -1036,7 +1132,7 @@ class _$ItemModelQuery extends QueryReference<ItemModelQuerySnapshot>
     ItemModelDocumentSnapshot? endBeforeDocument,
     ItemModelDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('customCode', descending: descending);
+    var query = reference.orderBy('itemReference', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -1286,26 +1382,30 @@ class ItemModelQueryDocumentSnapshot extends FirestoreQueryDocumentSnapshot
 ItemModel _$ItemModelFromJson(Map<String, dynamic> json) => ItemModel(
       id: json['id'] as String?,
       name: json['name'] as String,
+      type: json['type'] as String,
       coverPrice: json['coverPrice'] as num,
       images:
           (json['images'] as List<dynamic>).map((e) => e as String).toList(),
       barcode: json['barcode'] as String?,
-      customCode: json['customCode'] as int?,
+      itemReference: json['itemReference'] as int?,
       grade: json['grade'] as String?,
       semester: json['semester'] as String?,
       quantity: json['quantity'] as int?,
       year: json['year'] as int? ?? 2023,
+      createdAt: DateTime.parse(json['createdAt'] as String),
     );
 
 Map<String, dynamic> _$ItemModelToJson(ItemModel instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
+      'type': instance.type,
       'coverPrice': instance.coverPrice,
       'images': instance.images,
       'barcode': instance.barcode,
-      'customCode': instance.customCode,
+      'itemReference': instance.itemReference,
       'grade': instance.grade,
       'semester': instance.semester,
       'quantity': instance.quantity,
       'year': instance.year,
+      'createdAt': instance.createdAt.toIso8601String(),
     };

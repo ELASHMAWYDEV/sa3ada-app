@@ -30,26 +30,30 @@ enum Years {
 class ItemModel {
   final String? id;
   final String name;
+  final String type;
   final num coverPrice;
   final List<String> images;
   final String? barcode;
-  final int? customCode;
+  final int? itemReference;
   final String? grade;
   final String? semester;
   final int? quantity;
   final int year;
+  final DateTime createdAt;
 
   ItemModel(
       {this.id,
       required this.name,
+      required this.type,
       required this.coverPrice,
       required this.images,
       required this.barcode,
-      this.customCode,
+      this.itemReference,
       required this.grade,
-      required this.semester,
+      this.semester,
       this.quantity,
-      this.year = 2023});
+      this.year = 2023,
+      required this.createdAt});
 
   factory ItemModel.fromJson(Map<String, Object?> json) =>
       _$ItemModelFromJson(json);

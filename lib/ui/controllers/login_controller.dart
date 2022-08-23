@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sa3ada_app/data/firestore_models/user_model.dart';
 import 'package:sa3ada_app/ui/components/alert_prompt_box.dart';
 import 'package:sa3ada_app/utils/constants.dart';
 import 'package:sa3ada_app/utils/services/firebase.dart';
@@ -16,7 +18,7 @@ class LoginController extends GetxController {
   void onReady() {
     super.onReady();
 
-    if (Get.find<StorageService>().isLoggedIn) {
+    if (Get.find<StorageService>().userData != null) {
       Get.offAllNamed("/home");
     }
   }
@@ -38,12 +40,21 @@ class LoginController extends GetxController {
         return;
       }
 
-      final credential = await FirebaseService.firebaseAuth
+      final UserCredential credentials = await FirebaseService.firebaseAuth
           .signInWithEmailAndPassword(
               email: usernameInputController.text,
               password: passwordInputController.text);
 
-      Get.toNamed("/home");
+      if (credentials.user == null || credentials.user?.uid == null) {
+        ScaffoldMessenger.of(Get.find<NavigationService>().context())
+            .showSnackBar(
+                kSnackBar(message: "حدث خطأ ما", backgroundColor: kRedColor));
+        return;
+      }
+
+      await Future.delayed(Duration(milliseconds: 1500));
+
+      Get.offAndToNamed("/home");
       ScaffoldMessenger.of(Get.find<NavigationService>().context())
           .showSnackBar(kSnackBar(message: "تم تسجيل الدخول بنجاح"));
     } on FirebaseAuthException catch (e) {

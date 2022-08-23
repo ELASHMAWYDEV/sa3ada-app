@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:sa3ada_app/ui/components/text_box.dart';
 import 'package:sa3ada_app/utils/constants.dart';
 import 'package:get/get.dart';
 
@@ -34,15 +35,16 @@ class AlertPromptBox {
         barrierDismissible: true);
   }
 
-  static showPrompt({
-    required String message,
-    required String title,
-    required VoidCallback onSuccess,
-    VoidCallback? onDismiss,
-    String? iconPath,
-    String? successBtnTitle,
-    String? dismissBtnTitle,
-  }) {
+  static showPrompt(
+      {required String message,
+      required String title,
+      required Future Function() onSuccess,
+      VoidCallback? onDismiss,
+      String? iconPath,
+      String? successBtnTitle,
+      String? dismissBtnTitle,
+      Widget? textInput}) {
+    bool isLoading = false;
     Get.dialog(
         StatefulBuilder(
           builder: (BuildContext context, Function setState) => boxContainer(
@@ -52,21 +54,37 @@ class AlertPromptBox {
               iconPath: iconPath,
               onDismiss: onDismiss,
               context: context,
+              textInput: textInput,
               actions: [
                 SizedBox(
                   height: 40,
                   width: 120,
                   child: TextButton(
-                    onPressed: () {
+                    onPressed: () async {
+                      setState(() {
+                        isLoading = true;
+                      });
                       Get.back();
-                      onSuccess();
+                      await onSuccess();
+                      setState(() {
+                        isLoading = false;
+                      });
                     },
                     style: TextButton.styleFrom(
                         backgroundColor: kGreenColor,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(4))),
-                    child: Text(successBtnTitle ?? "نعم",
-                        style: TextStyle(color: kWhiteColor)),
+                    child: isLoading
+                        ? SizedBox(
+                            width: 30,
+                            height: 30,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: kWhiteColor,
+                            ),
+                          )
+                        : Text(successBtnTitle ?? "نعم",
+                            style: TextStyle(color: kWhiteColor)),
                   ),
                 ),
                 SizedBox(
@@ -97,6 +115,7 @@ Widget boxContainer(
         String? title,
         String? message,
         VoidCallback? onDismiss,
+        Widget? textInput,
         var context,
         required Color color}) =>
     Dialog(
@@ -196,6 +215,11 @@ Widget boxContainer(
                     ),
                   ),
                 ),
+                Center(
+                    child: Padding(
+                  padding: EdgeInsets.all(20.0),
+                  child: textInput ?? SizedBox(),
+                )),
                 Visibility(
                   visible: actions != null,
                   child: Padding(

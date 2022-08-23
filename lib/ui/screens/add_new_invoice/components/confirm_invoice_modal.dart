@@ -6,6 +6,7 @@ import 'package:sa3ada_app/data/models/mini_table_model.dart';
 import 'package:sa3ada_app/ui/components/alert_prompt_box.dart';
 import 'package:sa3ada_app/ui/components/main_button.dart';
 import 'package:sa3ada_app/ui/components/mini_table.dart';
+import 'package:sa3ada_app/ui/components/text_box.dart';
 import 'package:sa3ada_app/ui/controllers/add_new_invoice_controller.dart';
 import 'package:sa3ada_app/utils/constants.dart';
 import 'package:sa3ada_app/utils/utils.dart';
@@ -17,18 +18,15 @@ class ConfirmInvoiceModal extends StatelessWidget {
 
   bool isCreatingInvoiceFinished = false;
 
-  final AddNewInvoiceController controller =
-      Get.find<AddNewInvoiceController>();
-
   @override
   Widget build(BuildContext context) {
-    return StatefulBuilder(builder: (context, setState) {
+    return GetBuilder<AddNewInvoiceController>(builder: (_) {
       return Dialog(
         backgroundColor: kSecondaryColor,
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 20),
           width: size.width * 0.9,
-          height: size.height * 0.6,
+          height: size.height * 0.45 + 250,
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(10),
@@ -74,42 +72,79 @@ class ConfirmInvoiceModal extends StatelessWidget {
             SizedBox(
               height: 10,
             ),
+            RichText(
+              text: TextSpan(
+                  text: "عدد الاصناف: ",
+                  style: TextStyle(
+                      color: kSecondaryColor,
+                      fontSize: 16,
+                      fontFamily: kFontFamilyPrimary),
+                  children: [
+                    TextSpan(
+                        text: "${_.invoiceItems.length}",
+                        style: TextStyle(fontWeight: FontWeight.w600))
+                  ]),
+            ),
             SizedBox(
-              height: size.height * 0.4,
+              height: 10,
+            ),
+            RichText(
+              text: TextSpan(
+                  text: "الاجمالي: ",
+                  style: TextStyle(
+                      color: kSecondaryColor,
+                      fontSize: 16,
+                      fontFamily: kFontFamilyPrimary),
+                  children: [
+                    TextSpan(
+                        text: "${_.subTotal} جنيه",
+                        style: TextStyle(fontWeight: FontWeight.w600))
+                  ]),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: MiniTable(
+                onPressingAll: () {},
+                data: _.invoiceItems,
+                columns: [
+                  MiniTableModel(
+                      title: "اسم الكتاب",
+                      selector: (row) => getBookFullName(row)),
+                  MiniTableModel(
+                      title: "الكمية", selector: (row) => row.quantity),
+                ],
+              ),
+            ),
+            Spacer(),
+            Visibility(
+              visible: _.arguments["subFrom"].type != "store",
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: SingleChildScrollView(
-                  child: MiniTable(
-                    onPressingAll: () {},
-                    listAll: true,
-                    data: controller.invoiceItems,
-                    columns: [
-                      MiniTableModel(
-                          title: "م",
-                          selector: (row) =>
-                              (controller.invoiceItems.indexOf(row) + 1)
-                                  .toString()),
-                      MiniTableModel(
-                          title: "اسم الكتاب",
-                          selector: (row) => getBookFullName(row)),
-                      MiniTableModel(
-                          title: "الكمية", selector: (row) => row.quantity),
-                    ],
-                  ),
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: TextBox(
+                  label: "المبلغ المدفوع",
+                  controller: _.paidAmountController,
+                  keyboardType: TextInputType.number,
                 ),
               ),
             ),
             SizedBox(height: 20),
-            MainButton(
-                title: "تسجيل الفاتورة",
-                onPressed: () {
-                  AlertPromptBox.showPrompt(
-                      message: "تأكيد تسجيل الفاتورة",
-                      title: "تأكيد",
-                      onSuccess: () async {
-                        await controller.addNewInvoice();
-                      });
-                })
+            Visibility(
+              visible: _.arguments["subFrom"].type == "store" ||
+                  _.paidAmountController.text != "",
+              child: MainButton(
+                  title: "تسجيل الفاتورة",
+                  onPressed: () async {
+                    AlertPromptBox.showPrompt(
+                        message: "تأكيد تسجيل الفاتورة",
+                        title: "تأكيد",
+                        onSuccess: () async {
+                          await _.addNewInvoice();
+                        });
+                  }),
+            )
           ]),
         ),
       );

@@ -2,20 +2,26 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sa3ada_app/data/firestore_models/invoice_model.dart';
+import 'package:sa3ada_app/data/firestore_models/user_model.dart';
 import 'package:sa3ada_app/ui/components/alert_prompt_box.dart';
 import 'package:sa3ada_app/data/firestore_models/account_model.dart'
     as account_model;
 import 'package:sa3ada_app/data/firestore_models/item_model.dart' as item_model;
 import 'package:sa3ada_app/ui/components/item_quantity_sheet.dart';
+import 'package:sa3ada_app/utils/services/storage_service.dart';
 
 class AddNewInvoiceController extends GetxController {
   final Map<String, dynamic> arguments = Get.arguments;
   var foundItems;
   RxList<item_model.ItemModel> invoiceItems = <item_model.ItemModel>[].obs;
   RxDouble discountPercentage = 0.0.obs;
-  RxDouble commission = 0.0.obs;
+  RxDouble commissionPercentage = 0.0.obs;
   double total = 0;
   double subTotal = 0;
+  DateTime invoiceDate = DateTime.now();
+
+  final TextEditingController paidAmountController = TextEditingController();
+  final UserModel? user = Get.find<StorageService>().userData;
 
   @override
   void onInit() {
@@ -33,17 +39,21 @@ class AddNewInvoiceController extends GetxController {
             arguments["subFrom"].type == "trader"
         ? 20
         : 0);
-    commission(arguments["subFrom"].type == "trader" ? 7 : 0);
+    commissionPercentage(arguments["subFrom"].type == "trader" ? 7 : 0);
     update();
 
     discountPercentage.listen((p0) {
       calculateInvoice();
     });
-    commission.listen((p0) {
+    commissionPercentage.listen((p0) {
       calculateInvoice();
     });
     invoiceItems.listen((p0) {
       calculateInvoice();
+    });
+
+    paidAmountController.addListener(() {
+      update();
     });
   }
 
@@ -57,7 +67,9 @@ class AddNewInvoiceController extends GetxController {
 
     subTotal = total -
         total * discountPercentage.toDouble() / 100 -
-        total * commission.toDouble() / 100;
+        ((total - total * discountPercentage.toDouble() / 100) *
+            commissionPercentage.toDouble() /
+            100);
     update();
   }
 
@@ -74,15 +86,20 @@ class AddNewInvoiceController extends GetxController {
               to: arguments["subTo"],
               items: invoiceItems,
               discountPercentage: discountPercentage.toDouble(),
-              commission: commission.toDouble(),
+              commissionPercentage: commissionPercentage.toDouble(),
               total: total,
               subTotal: subTotal,
-              paidAmount: subTotal));
+              paidAmount: double.tryParse(paidAmountController.text) ?? 0,
+              createdAt: DateTime.now(),
+              invoiceDate: invoiceDate,
+              status: "pending",
+              invoiceCreator: InvoiceCreatorModel(
+                  id: user?.id ?? "", name: user?.name ?? "")));
 
       // for (final item in invoiceItems) {
       //   await invoicesRef.doc(createdInvoice.id).items.add(item);
       // }
-
+      Get.delete<AddNewInvoiceController>();
       AlertPromptBox.showSuccess(
           message: "تم انشاء الفاتورة بنجاح",
           onDismiss: () {

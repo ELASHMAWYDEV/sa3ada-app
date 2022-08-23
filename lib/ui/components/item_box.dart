@@ -43,7 +43,7 @@ class ItemBox extends StatelessWidget {
                   style: TextStyle(color: kSecondaryColor),
                 ),
                 Text(
-                  "${item.customCode}",
+                  "${item.itemReference}",
                   style: TextStyle(
                       fontWeight: FontWeight.w500, color: kSecondaryColor),
                 ),

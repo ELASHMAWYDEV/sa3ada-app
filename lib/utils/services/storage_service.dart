@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:sa3ada_app/data/firestore_models/user_model.dart';
 import 'package:sa3ada_app/utils/services/localization_service.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,7 +13,7 @@ abstract class StorageKeys {
   static const String token = "TOKEN";
   static const String activeLocale = "ACTIVE_LOCAL";
   static const String hasSeenSplashScreens = "HAS_SEEN_SPLASH_SCREENS";
-  static const String isLoggedIn = "IS_LOGGED_IN";
+  static const String userData = "USER_DATA";
 }
 
 class StorageService extends GetxService {
@@ -60,12 +61,19 @@ class StorageService extends GetxService {
     _prefs.setString(StorageKeys.activeLocale, activeLocal.toString());
   }
 
-  //is Logged in
-  bool get isLoggedIn {
-    return _prefs.getBool(StorageKeys.isLoggedIn) ?? false;
+  //User Data
+  UserModel? get userData {
+    return _prefs.getString(StorageKeys.userData) == null
+        ? null
+        : UserModel.fromJson(
+            jsonDecode(_prefs.getString(StorageKeys.userData)!));
   }
 
-  set isLoggedIn(bool isLoggedIn) {
-    _prefs.setBool(StorageKeys.isLoggedIn, isLoggedIn);
+  set userData(UserModel? userData) {
+    if (userData == null) {
+      _prefs.remove(StorageKeys.userData);
+    } else {
+      _prefs.setString(StorageKeys.userData, jsonEncode(userData.toJson()));
+    }
   }
 }

@@ -15,12 +15,17 @@ import 'utils/translations/app_translations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Get.putAsync(() => ConnectionService.init(), permanent: true);
   await Get.putAsync(() => StorageService.init(), permanent: true);
   Get.put(FirebaseService.init(), permanent: true);
   Get.put(LocalizationService.init(), permanent: true);
   Get.put(NavigationService.init(), permanent: true);
   Get.put(ApiService(), permanent: true);
+  await Get.putAsync(() => ConnectionService.init(), permanent: true);
+  WidgetsBinding.instance.addPostFrameCallback(
+    (timeStamp) async {
+      await Get.find<ConnectionService>().checkConnection();
+    },
+  );
   runApp(const MyApp());
 }
 

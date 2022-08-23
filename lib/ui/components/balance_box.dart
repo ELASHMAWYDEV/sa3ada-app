@@ -5,9 +5,16 @@ import 'package:sa3ada_app/utils/constants.dart';
 import 'package:sa3ada_app/utils/utils.dart';
 
 class BalanceBox extends StatelessWidget {
-  const BalanceBox({Key? key, required this.balance}) : super(key: key);
+  const BalanceBox(
+      {Key? key,
+      required this.balance,
+      this.title = "الرصيد",
+      this.balanceColor = kGreenColor})
+      : super(key: key);
 
   final num balance;
+  final String title;
+  final Color balanceColor;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -19,8 +26,9 @@ class BalanceBox extends StatelessWidget {
       child: Row(
         children: [
           Text(
-            "الرصيد",
-            style: TextStyle(fontSize: 26, fontWeight: FontWeight.w500),
+            title,
+            style: TextStyle(
+                fontSize: 26, fontWeight: FontWeight.w500, color: kWhiteColor),
           ),
           Spacer(),
           Row(
@@ -29,14 +37,18 @@ class BalanceBox extends StatelessWidget {
               Text(
                 numberToString(balance),
                 style: TextStyle(
-                    color: kGreenColor,
+                    color: balanceColor,
                     fontSize: 34,
                     fontFamily: "Cairo",
                     height: 1.2),
               ),
+              SizedBox(
+                width: 7,
+              ),
               Text(
                 "جنيه",
-                style: TextStyle(fontSize: 18, fontFamily: "Cairo"),
+                style: TextStyle(
+                    fontSize: 18, fontFamily: "Cairo", color: kWhiteColor),
               ),
             ],
           )

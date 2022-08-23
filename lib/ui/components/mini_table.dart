@@ -21,6 +21,7 @@ class MiniTable extends StatelessWidget {
     required this.onPressingAll,
     this.onCellPressed,
     this.listAll = false,
+    this.columnWidths,
   }) : super(key: key);
 
   final List<MiniTableModel> columns;
@@ -29,9 +30,7 @@ class MiniTable extends StatelessWidget {
   final VoidCallback onPressingAll;
   final Function(dynamic)? onCellPressed;
   final bool listAll;
-
-  Widget tableWrapper({required Widget child}) =>
-      listAll ? SingleChildScrollView(child: child) : SizedBox(child: child);
+  final Map<int, TableColumnWidth>? columnWidths;
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +77,7 @@ class MiniTable extends StatelessWidget {
           child: Column(
             children: [
               Table(
+                columnWidths: columnWidths,
                 children: [
                   TableRow(
                       decoration: BoxDecoration(
@@ -110,9 +110,10 @@ class MiniTable extends StatelessWidget {
                 constraints: BoxConstraints(
                     maxHeight: listAll ? double.infinity : 250,
                     minHeight: double.minPositive),
-                child: tableWrapper(
+                child: SingleChildScrollView(
                   child: Table(
                     defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                    columnWidths: columnWidths,
                     children: [
                       ...data
                           .asMap()
@@ -140,7 +141,7 @@ class MiniTable extends StatelessWidget {
                                                       ? 20
                                                       : column.cell == null
                                                           ? 40
-                                                          : 10,
+                                                          : 20,
                                                   12,
                                                   index == 0 ? 15 : 0,
                                                   12),

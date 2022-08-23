@@ -11,7 +11,7 @@ class MainButton extends StatefulWidget {
       : super(key: key);
 
   final String title;
-  final VoidCallback onPressed;
+  final Future Function() onPressed;
   final Color? backgroundColor;
 
   @override
@@ -25,11 +25,14 @@ class _MainButtonState extends State<MainButton> {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () async {
+        if (isLoading) {
+          return;
+        }
         setState(() {
           isLoading = true;
         });
 
-        widget.onPressed();
+        await widget.onPressed();
         setState(() {
           isLoading = false;
         });
@@ -42,7 +45,13 @@ class _MainButtonState extends State<MainButton> {
           shape: MaterialStateProperty.all(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)))),
       child: isLoading
-          ? CircularProgressIndicator()
+          ? SizedBox(
+              width: 25,
+              height: 25,
+              child: CircularProgressIndicator(
+                color: kWhiteColor,
+                strokeWidth: 2,
+              ))
           : Text(
               widget.title,
               style: TextStyle(

@@ -1,9 +1,15 @@
+// ignore_for_file: prefer_const_constructors, prefer_function_declarations_over_variables
+
 import 'dart:async';
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sa3ada_app/ui/components/main_button.dart';
+import 'package:sa3ada_app/utils/services/firebase.dart';
+import 'package:sa3ada_app/utils/services/navigation_service.dart';
 
 class ConnectionService extends GetxService {
   ConnectionService();
@@ -18,16 +24,16 @@ class ConnectionService extends GetxService {
     //subscribe to connection change
     service._subscription = service._connectivity.onConnectivityChanged
         .listen(service._onConnectionChange);
-
+    service.checkConnection();
     return service;
   }
 
   void _onConnectionChange(ConnectivityResult result) {
     //Check if connected
-    _checkConnection();
+    checkConnection();
   }
 
-  Future<void> _checkConnection() async {
+  Future<void> checkConnection() async {
     final bool oldConnectionStatus = hasConnection.value;
     bool newConnectionStatus;
 
@@ -48,17 +54,35 @@ class ConnectionService extends GetxService {
     }
 
     if (!newConnectionStatus) {
-      Get.dialog(const AlertDialog(
-        title: Text("لا يوجد اتصال بالانترنت"),
-        content: Text("يرجي من اتصالك بالانترنت واعادة فتح التطبيق"),
-      ));
+      if (!Get.isRegistered<NavigationService>()) {
+        await Future.delayed(Duration(seconds: 2));
+      }
+      Get.dialog(
+          AlertDialog(
+            title: Text("لا يوجد اتصال بالانترنت"),
+            content: Text(
+                "لا يوجد اتصال بالانترنت ، تحقق من اتصالك ثم أعد المحاولة"),
+            actionsAlignment: MainAxisAlignment.center,
+            actions: [
+              MainButton(
+                  title: "اعادة المحاولة",
+                  onPressed: () async {
+                    if (!newConnectionStatus) {
+                      await checkConnection();
+                      Get.back();
+                    } else {
+                      Get.back();
+                    }
+                  })
+            ],
+          ),
+          barrierDismissible: false);
     }
   }
 
   @override
   void onClose() {
     _subscription.cancel();
-
     super.onClose();
   }
 }

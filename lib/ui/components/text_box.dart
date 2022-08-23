@@ -45,7 +45,7 @@ class TextBox extends StatelessWidget {
         filled: true,
         contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.transparent),
+            borderSide: BorderSide(color: kGrayLightColor),
             borderRadius: BorderRadius.circular(8)),
         focusColor: kPrimaryColor,
         focusedBorder: OutlineInputBorder(

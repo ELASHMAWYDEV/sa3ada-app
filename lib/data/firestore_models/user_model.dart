@@ -8,24 +8,30 @@ final usersRef = UserModelCollectionReference();
 
 enum UserTypes { superAdmin, user }
 
-enum UserPermissions { expenses }
+enum UserPermissions {
+  createExpenses,
+  createDeposit,
+  createInvoice,
+}
 
 @JsonSerializable(explicitToJson: true)
 class UserModel {
   final String? id;
   final String authUserId;
   final String name;
-  final String username;
   final String? type;
   final List<String> permissions;
+  final List<String> branches;
+  final List<String> stores;
 
   UserModel({
     this.id,
     required this.authUserId,
     required this.name,
-    required this.username,
     required this.type,
     required this.permissions,
+    required this.branches,
+    required this.stores,
   });
 
   factory UserModel.fromJson(Map<String, Object?> json) =>

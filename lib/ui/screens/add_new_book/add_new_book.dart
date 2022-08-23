@@ -145,9 +145,12 @@ class AddNewBookScreen extends StatelessWidget {
                             indent: 40,
                             endIndent: 40,
                           ),
-                          TextBox(
-                              label: "اسم الكتاب",
-                              controller: _.bookNameInputController),
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: TextBox(
+                                label: "اسم الكتاب",
+                                controller: _.bookNameInputController),
+                          ),
                           SizedBox(
                             height: 20,
                           ),
@@ -162,37 +165,83 @@ class AddNewBookScreen extends StatelessWidget {
                             indent: 40,
                             endIndent: 40,
                           ),
+                          // Row(
+                          //   children: [
+                          //     TakePhotoButton(
+                          //       title: "التقاط صورة للكتاب",
+                          //       onSelectingImages: (images) {
+                          //         FocusScope.of(context).unfocus();
+                          //       },
+                          //     ),
+                          //   ],
+                          // ),
+                          // Divider(
+                          //   color: kSecondaryColor,
+                          //   height: 50,
+                          //   thickness: 1,
+                          //   indent: 40,
+                          //   endIndent: 40,
+                          // ),
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              TakePhotoButton(
-                                title: "التقاط صورة للكتاب",
-                                onSelectingImages: (images) {
-                                  FocusScope.of(context).unfocus();
-                                },
+                              Radio(
+                                  value: "withBarcode",
+                                  groupValue: _.withBarcodeOrNot,
+                                  toggleable: false,
+                                  activeColor: kWhiteColor,
+                                  fillColor:
+                                      MaterialStateProperty.all(kGreenColor),
+                                  onChanged: (String? value) {
+                                    _.withBarcodeOrNot = value ?? "";
+                                    _.update();
+                                  }),
+                              Text(
+                                "له باركود",
+                                style:
+                                    TextStyle(color: kWhiteColor, fontSize: 20),
+                              ),
+                              SizedBox(
+                                width: 30,
+                              ),
+                              Radio(
+                                  value: "withoutBarcode",
+                                  groupValue: _.withBarcodeOrNot,
+                                  toggleable: false,
+                                  activeColor: kWhiteColor,
+                                  fillColor:
+                                      MaterialStateProperty.all(kGreenColor),
+                                  onChanged: (String? value) {
+                                    _.withBarcodeOrNot = value ?? "";
+                                    _.update();
+                                  }),
+                              Text(
+                                "بدون باركود",
+                                style:
+                                    TextStyle(color: kWhiteColor, fontSize: 20),
                               ),
                             ],
                           ),
-                          Divider(
-                            color: kSecondaryColor,
-                            height: 50,
-                            thickness: 1,
-                            indent: 40,
-                            endIndent: 40,
+                          SizedBox(
+                            height: 20,
                           ),
-                          ScanBarCodeButton(
-                            onBarCodeScanned: (barcode) {
-                              _.barcode = barcode;
-                              _.update();
-                              FocusScope.of(context).unfocus();
-                            },
+                          Visibility(
+                            visible: _.withBarcodeOrNot == "withBarcode",
+                            child: ScanBarCodeButton(
+                              onBarCodeScanned: (barcode) {
+                                _.barcode = barcode;
+                                _.update();
+                                FocusScope.of(context).unfocus();
+                              },
+                            ),
                           ),
                           SizedBox(
                             height: 40,
                           ),
                           MainButton(
                               title: "اضافة",
-                              onPressed: () {
-                                _.addNewBook();
+                              onPressed: () async {
+                                await _.addNewBook();
                               })
                         ],
                       ),

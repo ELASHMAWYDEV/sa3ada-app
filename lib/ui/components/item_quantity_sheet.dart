@@ -7,10 +7,11 @@ import 'package:sa3ada_app/data/firestore_models/item_model.dart';
 import 'package:sa3ada_app/ui/components/alert_prompt_box.dart';
 import 'package:sa3ada_app/ui/components/item_box.dart';
 import 'package:sa3ada_app/ui/components/main_button.dart';
+import 'package:sa3ada_app/ui/components/text_box.dart';
 import 'package:sa3ada_app/utils/constants.dart';
 
 class ItemQuantitySheet extends StatelessWidget {
-  ItemQuantitySheet(
+  const ItemQuantitySheet(
       {Key? key,
       required this.item,
       required this.onConfirm,
@@ -21,11 +22,24 @@ class ItemQuantitySheet extends StatelessWidget {
   final Function(ItemModel, int) onConfirm;
   final int? defaultSelectedQuantity;
 
-  int? quantity;
+  static RxInt quantity = 0.obs;
 
   @override
   Widget build(BuildContext context) {
     return StatefulBuilder(builder: (context, setState) {
+      RxInt quantity = 0.obs;
+      final TextEditingController quantityInputController =
+          TextEditingController(text: quantity.toString());
+      @override
+      void initState() {
+        quantityInputController.addListener(() {
+          quantity(int.tryParse(quantityInputController.text) ?? 0);
+        });
+        quantity.listen((p0) {
+          setState(() {});
+        });
+      }
+
       return Container(
         padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
         decoration: BoxDecoration(
@@ -65,7 +79,7 @@ class ItemQuantitySheet extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          "${item.quantity == null ? "لا يوجد" : quantity ?? defaultSelectedQuantity ?? "اختر الكمية"}",
+                          "${item.quantity == null ? "لا يوجد" : quantity.toInt() != 0 ? quantity.toInt() : defaultSelectedQuantity ?? "اختر الكمية"}",
                           style: TextStyle(
                               color: kSecondaryColor,
                               fontSize: 14,
@@ -93,21 +107,30 @@ class ItemQuantitySheet extends StatelessWidget {
                             value: index + 1,
                           )),
                   onChanged: (int? index) {
-                    setState(() {
-                      quantity = index ?? 0 + 1;
-                    });
+                    quantityInputController.text = (index ?? 0 + 1).toString();
+                    quantity(index ?? 0 + 1);
                     print("selected ${index ?? 0 + 1}");
                   }),
+              SizedBox(
+                height: 20,
+              ),
+              TextBox(
+                  label: "الكمية",
+                  controller: quantityInputController,
+                  keyboardType: TextInputType.number),
               Spacer(),
               MainButton(
                   title: "تأكيد الصنف",
-                  onPressed: () {
-                    if (quantity == null &&
+                  onPressed: () async {
+                    if (quantity.toInt() == 0 &&
                         defaultSelectedQuantity == null &&
                         item.quantity != null) {
                       AlertPromptBox.showError(error: "يرجي اختيار الكمية");
                     } else {
-                      onConfirm(item, quantity ?? defaultSelectedQuantity!);
+                      onConfirm(
+                          item,
+                          int.tryParse(quantity.toString()) ??
+                              defaultSelectedQuantity!);
                       Get.back();
                     }
                   })

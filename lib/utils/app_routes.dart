@@ -2,11 +2,14 @@
 import 'package:sa3ada_app/ui/screens/add_new_book/add_new_book.dart';
 import 'package:sa3ada_app/ui/screens/add_new_invoice/add_new_invoice.dart';
 import 'package:sa3ada_app/ui/screens/books/books_screen.dart';
+import 'package:sa3ada_app/ui/screens/branches/branches_screen.dart';
+import 'package:sa3ada_app/ui/screens/clients/clients_screen.dart';
 import 'package:sa3ada_app/ui/screens/expenses/expenses_screen.dart';
 import 'package:sa3ada_app/ui/screens/home/home_screen.dart';
 import 'package:get/get.dart';
 import 'package:sa3ada_app/ui/screens/items/items_screen.dart';
 import 'package:sa3ada_app/ui/screens/login/login_screen.dart';
+import 'package:sa3ada_app/ui/screens/stores/stores_screen.dart';
 import 'package:sa3ada_app/ui/screens/traders/traders_screen.dart';
 import 'package:sa3ada_app/ui/screens/transfer_deposit/transfer_deposit_screen.dart';
 
@@ -24,5 +27,8 @@ class AppRoutes {
     GetPage(name: "/items/books", page: () => BooksScreen()),
     GetPage(name: "/items/books/add", page: () => AddNewBookScreen()),
     GetPage(name: "/invoices/add", page: () => AddNewInvoice()),
+    GetPage(name: "/clients", page: () => ClientsScreen()),
+    GetPage(name: "/branches", page: () => BranchesScreen()),
+    GetPage(name: "/stores", page: () => StoresScreen()),
   ];
 }

@@ -133,7 +133,10 @@ abstract class InvoiceModelDocumentReference
     double discountPercentage,
     double subTotal,
     double paidAmount,
-    double? commission,
+    double? commissionPercentage,
+    num? invoiceReference,
+    String status,
+    String? cancellationReason,
   });
 
   Future<void> set(InvoiceModel value);
@@ -188,7 +191,10 @@ class _$InvoiceModelDocumentReference
     Object? discountPercentage = _sentinel,
     Object? subTotal = _sentinel,
     Object? paidAmount = _sentinel,
-    Object? commission = _sentinel,
+    Object? commissionPercentage = _sentinel,
+    Object? invoiceReference = _sentinel,
+    Object? status = _sentinel,
+    Object? cancellationReason = _sentinel,
   }) async {
     final json = {
       if (id != _sentinel) "id": id as String?,
@@ -197,7 +203,13 @@ class _$InvoiceModelDocumentReference
         "discountPercentage": discountPercentage as double,
       if (subTotal != _sentinel) "subTotal": subTotal as double,
       if (paidAmount != _sentinel) "paidAmount": paidAmount as double,
-      if (commission != _sentinel) "commission": commission as double?,
+      if (commissionPercentage != _sentinel)
+        "commissionPercentage": commissionPercentage as double?,
+      if (invoiceReference != _sentinel)
+        "invoiceReference": invoiceReference as num?,
+      if (status != _sentinel) "status": status as String,
+      if (cancellationReason != _sentinel)
+        "cancellationReason": cancellationReason as String?,
     };
 
     return reference.update(json);
@@ -302,7 +314,7 @@ abstract class InvoiceModelQuery
     List<double>? whereIn,
     List<double>? whereNotIn,
   });
-  InvoiceModelQuery whereCommission({
+  InvoiceModelQuery whereCommissionPercentage({
     double? isEqualTo,
     double? isNotEqualTo,
     double? isLessThan,
@@ -312,6 +324,39 @@ abstract class InvoiceModelQuery
     bool? isNull,
     List<double?>? whereIn,
     List<double?>? whereNotIn,
+  });
+  InvoiceModelQuery whereInvoiceReference({
+    num? isEqualTo,
+    num? isNotEqualTo,
+    num? isLessThan,
+    num? isLessThanOrEqualTo,
+    num? isGreaterThan,
+    num? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<num?>? whereIn,
+    List<num?>? whereNotIn,
+  });
+  InvoiceModelQuery whereStatus({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String>? whereIn,
+    List<String>? whereNotIn,
+  });
+  InvoiceModelQuery whereCancellationReason({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String?>? whereIn,
+    List<String?>? whereNotIn,
   });
 
   InvoiceModelQuery orderById({
@@ -374,12 +419,48 @@ abstract class InvoiceModelQuery
     InvoiceModelDocumentSnapshot? startAfterDocument,
   });
 
-  InvoiceModelQuery orderByCommission({
+  InvoiceModelQuery orderByCommissionPercentage({
     bool descending = false,
     double? startAt,
     double? startAfter,
     double? endAt,
     double? endBefore,
+    InvoiceModelDocumentSnapshot? startAtDocument,
+    InvoiceModelDocumentSnapshot? endAtDocument,
+    InvoiceModelDocumentSnapshot? endBeforeDocument,
+    InvoiceModelDocumentSnapshot? startAfterDocument,
+  });
+
+  InvoiceModelQuery orderByInvoiceReference({
+    bool descending = false,
+    num? startAt,
+    num? startAfter,
+    num? endAt,
+    num? endBefore,
+    InvoiceModelDocumentSnapshot? startAtDocument,
+    InvoiceModelDocumentSnapshot? endAtDocument,
+    InvoiceModelDocumentSnapshot? endBeforeDocument,
+    InvoiceModelDocumentSnapshot? startAfterDocument,
+  });
+
+  InvoiceModelQuery orderByStatus({
+    bool descending = false,
+    String startAt,
+    String startAfter,
+    String endAt,
+    String endBefore,
+    InvoiceModelDocumentSnapshot? startAtDocument,
+    InvoiceModelDocumentSnapshot? endAtDocument,
+    InvoiceModelDocumentSnapshot? endBeforeDocument,
+    InvoiceModelDocumentSnapshot? startAfterDocument,
+  });
+
+  InvoiceModelQuery orderByCancellationReason({
+    bool descending = false,
+    String? startAt,
+    String? startAfter,
+    String? endAt,
+    String? endBefore,
     InvoiceModelDocumentSnapshot? startAtDocument,
     InvoiceModelDocumentSnapshot? endAtDocument,
     InvoiceModelDocumentSnapshot? endBeforeDocument,
@@ -588,7 +669,7 @@ class _$InvoiceModelQuery extends QueryReference<InvoiceModelQuerySnapshot>
     );
   }
 
-  InvoiceModelQuery whereCommission({
+  InvoiceModelQuery whereCommissionPercentage({
     double? isEqualTo,
     double? isNotEqualTo,
     double? isLessThan,
@@ -601,7 +682,91 @@ class _$InvoiceModelQuery extends QueryReference<InvoiceModelQuerySnapshot>
   }) {
     return _$InvoiceModelQuery(
       reference.where(
-        'commission',
+        'commissionPercentage',
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        whereIn: whereIn,
+        whereNotIn: whereNotIn,
+      ),
+      _collection,
+    );
+  }
+
+  InvoiceModelQuery whereInvoiceReference({
+    num? isEqualTo,
+    num? isNotEqualTo,
+    num? isLessThan,
+    num? isLessThanOrEqualTo,
+    num? isGreaterThan,
+    num? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<num?>? whereIn,
+    List<num?>? whereNotIn,
+  }) {
+    return _$InvoiceModelQuery(
+      reference.where(
+        'invoiceReference',
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        whereIn: whereIn,
+        whereNotIn: whereNotIn,
+      ),
+      _collection,
+    );
+  }
+
+  InvoiceModelQuery whereStatus({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String>? whereIn,
+    List<String>? whereNotIn,
+  }) {
+    return _$InvoiceModelQuery(
+      reference.where(
+        'status',
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        whereIn: whereIn,
+        whereNotIn: whereNotIn,
+      ),
+      _collection,
+    );
+  }
+
+  InvoiceModelQuery whereCancellationReason({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String?>? whereIn,
+    List<String?>? whereNotIn,
+  }) {
+    return _$InvoiceModelQuery(
+      reference.where(
+        'cancellationReason',
         isEqualTo: isEqualTo,
         isNotEqualTo: isNotEqualTo,
         isLessThan: isLessThan,
@@ -826,7 +991,7 @@ class _$InvoiceModelQuery extends QueryReference<InvoiceModelQuerySnapshot>
     return _$InvoiceModelQuery(query, _collection);
   }
 
-  InvoiceModelQuery orderByCommission({
+  InvoiceModelQuery orderByCommissionPercentage({
     bool descending = false,
     Object? startAt = _sentinel,
     Object? startAfter = _sentinel,
@@ -837,7 +1002,134 @@ class _$InvoiceModelQuery extends QueryReference<InvoiceModelQuerySnapshot>
     InvoiceModelDocumentSnapshot? endBeforeDocument,
     InvoiceModelDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('commission', descending: descending);
+    var query =
+        reference.orderBy('commissionPercentage', descending: descending);
+
+    if (startAtDocument != null) {
+      query = query.startAtDocument(startAtDocument.snapshot);
+    }
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument.snapshot);
+    }
+    if (endAtDocument != null) {
+      query = query.endAtDocument(endAtDocument.snapshot);
+    }
+    if (endBeforeDocument != null) {
+      query = query.endBeforeDocument(endBeforeDocument.snapshot);
+    }
+
+    if (startAt != _sentinel) {
+      query = query.startAt([startAt]);
+    }
+    if (startAfter != _sentinel) {
+      query = query.startAfter([startAfter]);
+    }
+    if (endAt != _sentinel) {
+      query = query.endAt([endAt]);
+    }
+    if (endBefore != _sentinel) {
+      query = query.endBefore([endBefore]);
+    }
+
+    return _$InvoiceModelQuery(query, _collection);
+  }
+
+  InvoiceModelQuery orderByInvoiceReference({
+    bool descending = false,
+    Object? startAt = _sentinel,
+    Object? startAfter = _sentinel,
+    Object? endAt = _sentinel,
+    Object? endBefore = _sentinel,
+    InvoiceModelDocumentSnapshot? startAtDocument,
+    InvoiceModelDocumentSnapshot? endAtDocument,
+    InvoiceModelDocumentSnapshot? endBeforeDocument,
+    InvoiceModelDocumentSnapshot? startAfterDocument,
+  }) {
+    var query = reference.orderBy('invoiceReference', descending: descending);
+
+    if (startAtDocument != null) {
+      query = query.startAtDocument(startAtDocument.snapshot);
+    }
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument.snapshot);
+    }
+    if (endAtDocument != null) {
+      query = query.endAtDocument(endAtDocument.snapshot);
+    }
+    if (endBeforeDocument != null) {
+      query = query.endBeforeDocument(endBeforeDocument.snapshot);
+    }
+
+    if (startAt != _sentinel) {
+      query = query.startAt([startAt]);
+    }
+    if (startAfter != _sentinel) {
+      query = query.startAfter([startAfter]);
+    }
+    if (endAt != _sentinel) {
+      query = query.endAt([endAt]);
+    }
+    if (endBefore != _sentinel) {
+      query = query.endBefore([endBefore]);
+    }
+
+    return _$InvoiceModelQuery(query, _collection);
+  }
+
+  InvoiceModelQuery orderByStatus({
+    bool descending = false,
+    Object? startAt = _sentinel,
+    Object? startAfter = _sentinel,
+    Object? endAt = _sentinel,
+    Object? endBefore = _sentinel,
+    InvoiceModelDocumentSnapshot? startAtDocument,
+    InvoiceModelDocumentSnapshot? endAtDocument,
+    InvoiceModelDocumentSnapshot? endBeforeDocument,
+    InvoiceModelDocumentSnapshot? startAfterDocument,
+  }) {
+    var query = reference.orderBy('status', descending: descending);
+
+    if (startAtDocument != null) {
+      query = query.startAtDocument(startAtDocument.snapshot);
+    }
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument.snapshot);
+    }
+    if (endAtDocument != null) {
+      query = query.endAtDocument(endAtDocument.snapshot);
+    }
+    if (endBeforeDocument != null) {
+      query = query.endBeforeDocument(endBeforeDocument.snapshot);
+    }
+
+    if (startAt != _sentinel) {
+      query = query.startAt([startAt]);
+    }
+    if (startAfter != _sentinel) {
+      query = query.startAfter([startAfter]);
+    }
+    if (endAt != _sentinel) {
+      query = query.endAt([endAt]);
+    }
+    if (endBefore != _sentinel) {
+      query = query.endBefore([endBefore]);
+    }
+
+    return _$InvoiceModelQuery(query, _collection);
+  }
+
+  InvoiceModelQuery orderByCancellationReason({
+    bool descending = false,
+    Object? startAt = _sentinel,
+    Object? startAfter = _sentinel,
+    Object? endAt = _sentinel,
+    Object? endBefore = _sentinel,
+    InvoiceModelDocumentSnapshot? startAtDocument,
+    InvoiceModelDocumentSnapshot? endAtDocument,
+    InvoiceModelDocumentSnapshot? endBeforeDocument,
+    InvoiceModelDocumentSnapshot? startAfterDocument,
+  }) {
+    var query = reference.orderBy('cancellationReason', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -1032,10 +1324,11 @@ abstract class ItemModelDocumentReference
   Future<void> update({
     String? id,
     String name,
+    String type,
     num coverPrice,
     List<String> images,
     String? barcode,
-    int? customCode,
+    int? itemReference,
     String? grade,
     String? semester,
     int? quantity,
@@ -1091,10 +1384,11 @@ class _$ItemModelDocumentReference
   Future<void> update({
     Object? id = _sentinel,
     Object? name = _sentinel,
+    Object? type = _sentinel,
     Object? coverPrice = _sentinel,
     Object? images = _sentinel,
     Object? barcode = _sentinel,
-    Object? customCode = _sentinel,
+    Object? itemReference = _sentinel,
     Object? grade = _sentinel,
     Object? semester = _sentinel,
     Object? quantity = _sentinel,
@@ -1103,10 +1397,11 @@ class _$ItemModelDocumentReference
     final json = {
       if (id != _sentinel) "id": id as String?,
       if (name != _sentinel) "name": name as String,
+      if (type != _sentinel) "type": type as String,
       if (coverPrice != _sentinel) "coverPrice": coverPrice as num,
       if (images != _sentinel) "images": images as List<String>,
       if (barcode != _sentinel) "barcode": barcode as String?,
-      if (customCode != _sentinel) "customCode": customCode as int?,
+      if (itemReference != _sentinel) "itemReference": itemReference as int?,
       if (grade != _sentinel) "grade": grade as String?,
       if (semester != _sentinel) "semester": semester as String?,
       if (quantity != _sentinel) "quantity": quantity as int?,
@@ -1182,6 +1477,17 @@ abstract class ItemModelQuery
     List<String>? whereIn,
     List<String>? whereNotIn,
   });
+  ItemModelQuery whereType({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String>? whereIn,
+    List<String>? whereNotIn,
+  });
   ItemModelQuery whereCoverPrice({
     num? isEqualTo,
     num? isNotEqualTo,
@@ -1214,7 +1520,7 @@ abstract class ItemModelQuery
     List<String?>? whereIn,
     List<String?>? whereNotIn,
   });
-  ItemModelQuery whereCustomCode({
+  ItemModelQuery whereItemReference({
     int? isEqualTo,
     int? isNotEqualTo,
     int? isLessThan,
@@ -1294,6 +1600,18 @@ abstract class ItemModelQuery
     ItemModelDocumentSnapshot? startAfterDocument,
   });
 
+  ItemModelQuery orderByType({
+    bool descending = false,
+    String startAt,
+    String startAfter,
+    String endAt,
+    String endBefore,
+    ItemModelDocumentSnapshot? startAtDocument,
+    ItemModelDocumentSnapshot? endAtDocument,
+    ItemModelDocumentSnapshot? endBeforeDocument,
+    ItemModelDocumentSnapshot? startAfterDocument,
+  });
+
   ItemModelQuery orderByCoverPrice({
     bool descending = false,
     num startAt,
@@ -1330,7 +1648,7 @@ abstract class ItemModelQuery
     ItemModelDocumentSnapshot? startAfterDocument,
   });
 
-  ItemModelQuery orderByCustomCode({
+  ItemModelQuery orderByItemReference({
     bool descending = false,
     int? startAt,
     int? startAfter,
@@ -1508,6 +1826,34 @@ class _$ItemModelQuery extends QueryReference<ItemModelQuerySnapshot>
     );
   }
 
+  ItemModelQuery whereType({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String>? whereIn,
+    List<String>? whereNotIn,
+  }) {
+    return _$ItemModelQuery(
+      reference.where(
+        'type',
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        whereIn: whereIn,
+        whereNotIn: whereNotIn,
+      ),
+      _collection,
+    );
+  }
+
   ItemModelQuery whereCoverPrice({
     num? isEqualTo,
     num? isNotEqualTo,
@@ -1590,7 +1936,7 @@ class _$ItemModelQuery extends QueryReference<ItemModelQuerySnapshot>
     );
   }
 
-  ItemModelQuery whereCustomCode({
+  ItemModelQuery whereItemReference({
     int? isEqualTo,
     int? isNotEqualTo,
     int? isLessThan,
@@ -1603,7 +1949,7 @@ class _$ItemModelQuery extends QueryReference<ItemModelQuerySnapshot>
   }) {
     return _$ItemModelQuery(
       reference.where(
-        'customCode',
+        'itemReference',
         isEqualTo: isEqualTo,
         isNotEqualTo: isNotEqualTo,
         isLessThan: isLessThan,
@@ -1814,6 +2160,48 @@ class _$ItemModelQuery extends QueryReference<ItemModelQuerySnapshot>
     return _$ItemModelQuery(query, _collection);
   }
 
+  ItemModelQuery orderByType({
+    bool descending = false,
+    Object? startAt = _sentinel,
+    Object? startAfter = _sentinel,
+    Object? endAt = _sentinel,
+    Object? endBefore = _sentinel,
+    ItemModelDocumentSnapshot? startAtDocument,
+    ItemModelDocumentSnapshot? endAtDocument,
+    ItemModelDocumentSnapshot? endBeforeDocument,
+    ItemModelDocumentSnapshot? startAfterDocument,
+  }) {
+    var query = reference.orderBy('type', descending: descending);
+
+    if (startAtDocument != null) {
+      query = query.startAtDocument(startAtDocument.snapshot);
+    }
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument.snapshot);
+    }
+    if (endAtDocument != null) {
+      query = query.endAtDocument(endAtDocument.snapshot);
+    }
+    if (endBeforeDocument != null) {
+      query = query.endBeforeDocument(endBeforeDocument.snapshot);
+    }
+
+    if (startAt != _sentinel) {
+      query = query.startAt([startAt]);
+    }
+    if (startAfter != _sentinel) {
+      query = query.startAfter([startAfter]);
+    }
+    if (endAt != _sentinel) {
+      query = query.endAt([endAt]);
+    }
+    if (endBefore != _sentinel) {
+      query = query.endBefore([endBefore]);
+    }
+
+    return _$ItemModelQuery(query, _collection);
+  }
+
   ItemModelQuery orderByCoverPrice({
     bool descending = false,
     Object? startAt = _sentinel,
@@ -1940,7 +2328,7 @@ class _$ItemModelQuery extends QueryReference<ItemModelQuerySnapshot>
     return _$ItemModelQuery(query, _collection);
   }
 
-  ItemModelQuery orderByCustomCode({
+  ItemModelQuery orderByItemReference({
     bool descending = false,
     Object? startAt = _sentinel,
     Object? startAfter = _sentinel,
@@ -1951,7 +2339,7 @@ class _$ItemModelQuery extends QueryReference<ItemModelQuerySnapshot>
     ItemModelDocumentSnapshot? endBeforeDocument,
     ItemModelDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('customCode', descending: descending);
+    var query = reference.orderBy('itemReference', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -2206,10 +2594,17 @@ InvoiceModel _$InvoiceModelFromJson(Map<String, dynamic> json) => InvoiceModel(
       discountPercentage: (json['discountPercentage'] as num).toDouble(),
       subTotal: (json['subTotal'] as num).toDouble(),
       paidAmount: (json['paidAmount'] as num).toDouble(),
-      commission: (json['commission'] as num?)?.toDouble(),
+      commissionPercentage: (json['commissionPercentage'] as num?)?.toDouble(),
       items: (json['items'] as List<dynamic>?)
           ?.map((e) => ItemModel.fromJson(e as Map<String, dynamic>))
           .toList(),
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      invoiceReference: json['invoiceReference'] as num?,
+      invoiceCreator: InvoiceCreatorModel.fromJson(
+          json['invoiceCreator'] as Map<String, dynamic>),
+      invoiceDate: DateTime.parse(json['invoiceDate'] as String),
+      status: json['status'] as String,
+      cancellationReason: json['cancellationReason'] as String?,
     );
 
 Map<String, dynamic> _$InvoiceModelToJson(InvoiceModel instance) =>
@@ -2221,6 +2616,12 @@ Map<String, dynamic> _$InvoiceModelToJson(InvoiceModel instance) =>
       'discountPercentage': instance.discountPercentage,
       'subTotal': instance.subTotal,
       'paidAmount': instance.paidAmount,
-      'commission': instance.commission,
+      'commissionPercentage': instance.commissionPercentage,
       'items': instance.items?.map((e) => e.toJson()).toList(),
+      'createdAt': instance.createdAt.toIso8601String(),
+      'invoiceReference': instance.invoiceReference,
+      'invoiceCreator': instance.invoiceCreator.toJson(),
+      'invoiceDate': instance.invoiceDate.toIso8601String(),
+      'status': instance.status,
+      'cancellationReason': instance.cancellationReason,
     };

@@ -19,12 +19,14 @@ class ItemSelectButton extends StatefulWidget {
       {Key? key,
       required this.onSelect,
       required this.fromAccount,
-      this.defaultSelectedQuantity})
+      this.defaultSelectedQuantity,
+      this.selectedItems})
       : super(key: key);
 
   final Function(item_model.ItemModel, int) onSelect;
   final account_model.AccountModel fromAccount;
   final int? defaultSelectedQuantity;
+  final List<item_model.ItemModel>? selectedItems;
   @override
   State<ItemSelectButton> createState() => _ItemSelectButtonState();
 }
@@ -54,8 +56,6 @@ class _ItemSelectButtonState extends State<ItemSelectButton> {
           onPressed: () {
             Get.bottomSheet(StatefulBuilder(builder: (context, setModalState) {
               this.setModalState = setModalState;
-              print(
-                  "defaultSelectedQuantity .. ${widget.defaultSelectedQuantity}");
               return Container(
                   height: size.height * 0.8,
                   decoration: BoxDecoration(
@@ -155,14 +155,25 @@ class _ItemSelectButtonState extends State<ItemSelectButton> {
                                           "quantity": 100000
                                         });
 
+                                        // Extra step for invoice items
+                                        final item_model.ItemModel?
+                                            foundSelectedItem = widget
+                                                .selectedItems
+                                                ?.firstWhereOrNull(
+                                                    (e) => e.id == item.id);
+
                                         return Padding(
                                           padding: EdgeInsets.only(bottom: 20),
                                           child: ItemBox(
                                             item: item,
                                             onPressed: (item) {
                                               Get.bottomSheet(ItemQuantitySheet(
-                                                  defaultSelectedQuantity: widget
-                                                      .defaultSelectedQuantity,
+                                                  defaultSelectedQuantity:
+                                                      foundSelectedItem != null
+                                                          ? foundSelectedItem
+                                                              .quantity
+                                                          : widget
+                                                              .defaultSelectedQuantity,
                                                   item: item,
                                                   onConfirm: (item, quantity) {
                                                     widget.onSelect(
@@ -183,7 +194,8 @@ class _ItemSelectButtonState extends State<ItemSelectButton> {
                                       .whereName(
                                           isGreaterThanOrEqualTo: searchInputController.text == "" ? null : searchInputController.text,
                                           isLessThanOrEqualTo: searchInputController.text == "" ? null : "${searchInputController.text}\uf8ff")
-                                      .whereGrade(isEqualTo: selectedStage?.value == "other" ? "null" : null, whereIn: selectedStage == null || selectedStage?.value == "other" ? null : kGradeSelectors[selectedStage?.value]?.map((e) => e.value).toList()),
+                                      .whereGrade(isEqualTo: selectedStage?.value == "other" ? "null" : null, whereIn: selectedStage == null || selectedStage?.value == "other" ? null : kGradeSelectors[selectedStage?.value]?.map((e) => e.value).toList())
+                                      .whereQuantity(isGreaterThan: 0),
                                   builder: (context, snapshot, _) {
                                     if (snapshot.hasError)
                                       return Text('error: ${snapshot.error}');
@@ -204,14 +216,26 @@ class _ItemSelectButtonState extends State<ItemSelectButton> {
                                               .toJson(),
                                           "id": querySnapshot.docs[index].id
                                         });
+
+                                        // Extra step for invoice items
+                                        final item_model.ItemModel?
+                                            foundSelectedItem = widget
+                                                .selectedItems
+                                                ?.firstWhereOrNull(
+                                                    (e) => e.id == item.id);
+
                                         return Padding(
                                           padding: EdgeInsets.only(bottom: 20),
                                           child: ItemBox(
                                             item: item,
                                             onPressed: (item) {
                                               Get.bottomSheet(ItemQuantitySheet(
-                                                  defaultSelectedQuantity: widget
-                                                      .defaultSelectedQuantity,
+                                                  defaultSelectedQuantity:
+                                                      foundSelectedItem != null
+                                                          ? foundSelectedItem
+                                                              .quantity
+                                                          : widget
+                                                              .defaultSelectedQuantity,
                                                   item: item,
                                                   onConfirm: (item, quantity) {
                                                     widget.onSelect(

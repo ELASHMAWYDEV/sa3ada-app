@@ -9,30 +9,26 @@ import 'package:sa3ada_app/data/firestore_models/invoice_model.dart';
 import 'package:sa3ada_app/data/firestore_models/item_model.dart' as item_model;
 import 'package:sa3ada_app/data/firestore_models/user_model.dart';
 import 'package:sa3ada_app/data/models/mini_table_model.dart';
-import 'package:sa3ada_app/ui/components/alert_prompt_box.dart';
 import 'package:sa3ada_app/ui/components/balance_box.dart';
 import 'package:sa3ada_app/ui/components/floating_add_button.dart';
 import 'package:sa3ada_app/ui/components/header.dart';
 import 'package:sa3ada_app/ui/components/mini_table.dart';
 import 'package:sa3ada_app/ui/components/select_box.dart';
-import 'package:sa3ada_app/ui/components/text_box.dart';
 import 'package:sa3ada_app/utils/constants.dart';
 import 'package:sa3ada_app/utils/services/storage_service.dart';
 import 'package:sa3ada_app/utils/utils.dart';
 
-import 'components/add_new_trader_modal.dart';
+import 'components/add_new_client_modal.dart';
 
-class TradersScreen extends StatefulWidget {
-  const TradersScreen({Key? key}) : super(key: key);
+class ClientsScreen extends StatefulWidget {
+  const ClientsScreen({Key? key}) : super(key: key);
 
   @override
-  State<TradersScreen> createState() => _TradersScreenState();
+  State<ClientsScreen> createState() => _ClientsScreenState();
 }
 
-class _TradersScreenState extends State<TradersScreen> {
+class _ClientsScreenState extends State<ClientsScreen> {
   account_model.AccountModel? selectedAccount;
-
-  final TextEditingController cancellationReasonInput = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +54,7 @@ class _TradersScreenState extends State<TradersScreen> {
                 })
               : null;
           return FirestoreBuilder<account_model.AccountModelQuerySnapshot>(
-              ref: account_model.accountsRef.whereType(isEqualTo: "trader"),
+              ref: account_model.accountsRef.whereType(isEqualTo: "client"),
               builder: (context, snapshot, _) {
                 if (snapshot.hasError) return Text('error: ${snapshot.error}');
                 if (!snapshot.hasData)
@@ -76,11 +72,11 @@ class _TradersScreenState extends State<TradersScreen> {
                 return Scaffold(
                     floatingActionButton: FloatingAddButton(
                       options: [
-                        if (user!.permissions.contains("createTraders"))
+                        if (user!.permissions.contains("createClients"))
                           FloatingOptionButton(
-                            title: "تاجر جديد",
+                            title: "عميل جديد",
                             onClick: () {
-                              Get.dialog(AddNewTraderModal());
+                              Get.dialog(AddNewClientModal());
                             },
                           )
                         else
@@ -92,7 +88,7 @@ class _TradersScreenState extends State<TradersScreen> {
                     body: Column(
                       children: [
                         Header(
-                          title: "التجار",
+                          title: "العملاء",
                         ),
                         SizedBox(
                           height: size.height -
@@ -107,7 +103,7 @@ class _TradersScreenState extends State<TradersScreen> {
                                   height: 20,
                                 ),
                                 SelectBox(
-                                  title: "اختر التاجر",
+                                  title: "اختر العميل",
                                   items: accounts.map((e) => e.name).toList(),
                                   selectedItemIndex: selectedAccount == null
                                       ? null
@@ -161,7 +157,7 @@ class _TradersScreenState extends State<TradersScreen> {
                                           ref: invoicesRef.select((snapshot) {
                                         return snapshot.docs
                                             .where((element) =>
-                                                element.data.from.id ==
+                                                element.data.to.id ==
                                                 selectedAccount?.id)
                                             .toList();
                                       }), builder: (context, snapshot, _) {
@@ -181,9 +177,6 @@ class _TradersScreenState extends State<TradersScreen> {
                                                   "id": e.id
                                                 }))
                                             .toList();
-
-                                        invoices?.sort((a, b) => -a.invoiceDate
-                                            .compareTo(b.invoiceDate));
                                         print(snapshot.data
                                             ?.map((e) => e.data)
                                             .toList());
@@ -197,8 +190,9 @@ class _TradersScreenState extends State<TradersScreen> {
                                                 selector: (row) =>
                                                     row.invoiceReference),
                                             MiniTableModel(
-                                                title: "الي",
-                                                selector: (row) => row.to.name),
+                                                title: "من",
+                                                selector: (row) =>
+                                                    row.from.name),
                                             MiniTableModel(
                                                 title: "المبلغ",
                                                 selector: (row) =>
@@ -211,96 +205,10 @@ class _TradersScreenState extends State<TradersScreen> {
                                                         row.paidAmount,
                                                         includeMinimals: true)),
                                             MiniTableModel(
-                                                title: "التاريخ",
+                                                title: "الوقت",
                                                 selector: (row) =>
-                                                    DateFormat("d/M").format(
-                                                        row.invoiceDate)),
-                                            MiniTableModel(
-                                              title: "",
-                                              selector: (row) => row,
-                                              cell: (row) => row.status ==
-                                                      "cancelled"
-                                                  ? GestureDetector(
-                                                      onTap: () {
-                                                        AlertPromptBox.showSuccess(
-                                                            message:
-                                                                "${row.cancellationReason}",
-                                                            title:
-                                                                "سبب الالغاء");
-                                                      },
-                                                      child: Container(
-                                                          padding: EdgeInsets
-                                                              .symmetric(
-                                                                  vertical: 3),
-                                                          decoration: BoxDecoration(
-                                                              color: kRedColor,
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          40)),
-                                                          child: Center(
-                                                            child: Text(
-                                                              "ملغية",
-                                                              style: TextStyle(
-                                                                  color:
-                                                                      kWhiteColor),
-                                                            ),
-                                                          )))
-                                                  : SizedBox(
-                                                      height: 30,
-                                                      width: 30,
-                                                      child: TextButton(
-                                                        onPressed: () {
-                                                          AlertPromptBox
-                                                              .showPrompt(
-                                                                  message:
-                                                                      "هل انت متأكد من الغاء الفاتورة رقم ${row.invoiceReference}\nقيمتها ${row.subTotal} جنيه\n تم انشائها من ${row.from.name} الي ${row.to.name}",
-                                                                  title:
-                                                                      "الغاء الفاتورة",
-                                                                  textInput: TextBox(
-                                                                      label:
-                                                                          "سبب الالغاء",
-                                                                      controller:
-                                                                          cancellationReasonInput),
-                                                                  onSuccess:
-                                                                      () async {
-                                                                    await invoicesRef
-                                                                        .doc(row
-                                                                            .id)
-                                                                        .update(
-                                                                            status:
-                                                                                "cancelled",
-                                                                            cancellationReason: cancellationReasonInput
-                                                                                .text)
-                                                                        .then(
-                                                                            (value) {
-                                                                      cancellationReasonInput
-                                                                          .text = "";
-                                                                      AlertPromptBox.showSuccess(
-                                                                          message:
-                                                                              "تم الغاء الفاتورة بنجاح");
-                                                                    });
-                                                                  });
-                                                        },
-                                                        style: TextButton
-                                                            .styleFrom(
-                                                          padding:
-                                                              EdgeInsets.zero,
-                                                          backgroundColor:
-                                                              kRedColor,
-                                                          fixedSize:
-                                                              Size(15, 15),
-                                                        ),
-                                                        child: Center(
-                                                          child: Icon(
-                                                            Icons.close_rounded,
-                                                            color: kWhiteColor,
-                                                            size: 18,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                            ),
+                                                    DateFormat("d/M  HH:mm aa")
+                                                        .format(row.createdAt)),
                                           ],
                                         );
                                       }),

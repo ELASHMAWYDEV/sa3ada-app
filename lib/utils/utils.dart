@@ -14,6 +14,12 @@ String getBookFullName(ItemModel item) {
   String semester = "";
 
   switch (item.grade) {
+    case "KG1":
+      grade = "Kg1";
+      break;
+    case "KG2":
+      grade = "Kg2";
+      break;
     case "grade1":
       grade = "١ب";
       break;

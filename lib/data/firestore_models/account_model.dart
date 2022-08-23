@@ -24,14 +24,14 @@ class AccountModel {
   final String? id;
   final String name;
   final String type;
-  final double activeBalance;
-  final double creditBalance;
+  final double? totalBalance;
+  final double? creditBalance;
 
   AccountModel({
     this.id,
     required this.name,
     required this.type,
-    required this.activeBalance,
+    required this.totalBalance,
     required this.creditBalance,
   });
 

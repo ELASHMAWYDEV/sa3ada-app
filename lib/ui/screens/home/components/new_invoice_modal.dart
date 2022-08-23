@@ -8,6 +8,7 @@ import 'package:sa3ada_app/ui/components/main_button.dart';
 import 'package:sa3ada_app/ui/components/rounded_selector_box.dart';
 import 'package:sa3ada_app/ui/components/select_box.dart';
 import 'package:sa3ada_app/utils/constants.dart';
+import 'package:sa3ada_app/utils/services/storage_service.dart';
 
 class NewInvoiceModal extends StatefulWidget {
   const NewInvoiceModal({Key? key}) : super(key: key);
@@ -17,16 +18,28 @@ class NewInvoiceModal extends StatefulWidget {
 }
 
 class _NewInvoiceModalState extends State<NewInvoiceModal> {
-  final List<SelectorModel> selectorsFrom = [
-    SelectorModel(label: "فرع", value: "branch"),
-    SelectorModel(label: "مخزن", value: "store"),
-    SelectorModel(label: "تاجر", value: "trader"),
-  ];
-  final List<SelectorModel> selectorsTo = [
-    SelectorModel(label: "عميل", value: "client"),
-    SelectorModel(label: "زبون", value: "customer"),
-    SelectorModel(label: "مخزن", value: "store"),
-    SelectorModel(label: "فرع", value: "branch"),
+  static final userData = Get.find<StorageService>().userData;
+
+  final List<Map<SelectorModel, List<SelectorModel>>> selectors = [
+    {
+      SelectorModel(label: "فرع", value: "branch"): [
+        SelectorModel(label: "عميل", value: "client"),
+        SelectorModel(label: "زبون", value: "customer"),
+        SelectorModel(label: "مخزن", value: "store"),
+      ]
+    },
+    {
+      SelectorModel(label: "مخزن", value: "store"): [
+        SelectorModel(label: "فرع", value: "branch"),
+        SelectorModel(label: "مخزن", value: "store"),
+      ]
+    },
+    {
+      SelectorModel(label: "تاجر", value: "trader"): [
+        SelectorModel(label: "مخزن", value: "store"),
+        // SelectorModel(label: "فرع", value: "branch"),
+      ]
+    }
   ];
 
   SelectorModel? selectedFrom;
@@ -98,10 +111,10 @@ class _NewInvoiceModalState extends State<NewInvoiceModal> {
             alignment: WrapAlignment.center,
             runSpacing: 15,
             spacing: 30,
-            children: selectorsFrom
+            children: selectors
                 .map((selector) => RoundedSelectorBox(
-                      selector: selector,
-                      isActive: selector == selectedFrom,
+                      selector: selector.keys.toList()[0],
+                      isActive: selector.keys.toList()[0] == selectedFrom,
                       onSelect: (selectedItem) {
                         selectedSubFrom = null;
                         selectedSubTo = null;
@@ -165,113 +178,121 @@ class _NewInvoiceModalState extends State<NewInvoiceModal> {
                       ],
                     );
                   })),
-          Visibility(
-            visible: selectedFrom != null && selectedSubFrom != null,
-            child: Column(
-              children: [
-                Divider(
-                  color: kSecondaryColor,
-                  height: 50,
-                  thickness: 1,
-                  indent: 40,
-                  endIndent: 40,
-                ),
-                Text("الى",
-                    style: TextStyle(
-                      fontSize: 14,
+          selectedFrom != null && selectedSubFrom != null
+              ? Column(
+                  children: [
+                    Divider(
                       color: kSecondaryColor,
-                    )),
-                SizedBox(
-                  height: 15,
-                ),
-                Wrap(
-                  alignment: WrapAlignment.center,
-                  runSpacing: 15,
-                  spacing: 30,
-                  children: selectorsTo
-                      .map((selector) => RoundedSelectorBox(
-                            selector: selector,
-                            isActive: selector == selectedTo,
-                            onSelect: (selectedItem) {
-                              selectedSubTo = null;
-                              if (selectedTo == selectedItem) {
-                                selectedTo = null;
-                              } else {
-                                selectedTo = selectedItem;
-                              }
-                              setState(() {});
-                            },
-                          ))
-                      .toList(),
-                ),
-                Visibility(
-                    visible: selectedTo != null,
-                    child: FirestoreBuilder<AccountModelQuerySnapshot>(
-                        ref:
-                            accountsRef.whereType(isEqualTo: selectedTo?.value),
-                        builder: (context, snapshot, _) {
-                          if (snapshot.hasError)
-                            return Text('error: ${snapshot.error}');
-                          if (!snapshot.hasData)
-                            return CircularProgressIndicator(
-                              color: kGreenColor,
-                            );
+                      height: 50,
+                      thickness: 1,
+                      indent: 40,
+                      endIndent: 40,
+                    ),
+                    Text("الى",
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: kSecondaryColor,
+                        )),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Wrap(
+                      alignment: WrapAlignment.center,
+                      runSpacing: 15,
+                      spacing: 30,
+                      children: selectors
+                          .where((element) =>
+                              element.keys.toList()[0] == selectedFrom)
+                          .toList()[0]
+                          .values
+                          .toList()[0]
+                          .map((selector) => RoundedSelectorBox(
+                                selector: selector,
+                                isActive: selector == selectedTo,
+                                onSelect: (selectedItem) {
+                                  selectedSubTo = null;
+                                  if (selectedTo == selectedItem) {
+                                    selectedTo = null;
+                                  } else {
+                                    selectedTo = selectedItem;
+                                  }
+                                  setState(() {});
+                                },
+                              ))
+                          .toList(),
+                    ),
+                    Visibility(
+                        visible: selectedTo != null,
+                        child: FirestoreBuilder<AccountModelQuerySnapshot>(
+                            ref: accountsRef.whereType(
+                                isEqualTo: selectedTo?.value),
+                            builder: (context, snapshot, _) {
+                              if (snapshot.hasError)
+                                return Text('error: ${snapshot.error}');
+                              if (!snapshot.hasData)
+                                return CircularProgressIndicator(
+                                  color: kGreenColor,
+                                );
 
-                          AccountModelQuerySnapshot querySnapshot =
-                              snapshot.requireData;
+                              AccountModelQuerySnapshot querySnapshot =
+                                  snapshot.requireData;
 
-                          if (querySnapshot.docs.isEmpty)
-                            return Text("لا يوجد نتائج لكي تختار منها");
+                              if (querySnapshot.docs.isEmpty)
+                                return Text("لا يوجد نتائج لكي تختار منها");
 
-                          List<AccountModel> accounts = querySnapshot.docs
-                              .map((e) => AccountModel.fromJson(
-                                  {...e.data.toJson(), "id": e.id}))
-                              .toList();
+                              List<AccountModel> accounts = querySnapshot.docs
+                                  .map((e) => AccountModel.fromJson(
+                                      {...e.data.toJson(), "id": e.id}))
+                                  .toList();
 
-                          return Column(
-                            children: [
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 30),
-                                child: SelectBox(
-                                    items: accounts.map((e) => e.name).toList(),
-                                    selectedItemIndex: selectedSubTo == null
-                                        ? null
-                                        : accounts.indexWhere((account) =>
-                                            account.id == selectedSubTo?.id),
-                                    onChange: (index) {
-                                      selectedSubTo = accounts[index];
-                                      setState(() {});
-                                    },
-                                    backgroundColor: kSecondaryColor,
-                                    textColor: kWhiteColor),
-                              ),
-                            ],
-                          );
-                        })),
-                SizedBox(
-                  height: 40,
-                ),
-                Visibility(
-                    visible: selectedTo != null &&
-                        selectedFrom != null &&
-                        selectedSubFrom != null &&
-                        selectedSubTo != null,
-                    child: MainButton(
-                        title: "التالى",
-                        onPressed: () {
-                          Get.toNamed("/invoices/add", arguments: {
-                            "from": selectedFrom,
-                            "to": selectedTo,
-                            "subFrom": selectedSubFrom,
-                            "subTo": selectedSubTo,
-                          });
-                        }))
-              ],
-            ),
-          ),
+                              return Column(
+                                children: [
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 30),
+                                    child: SelectBox(
+                                        items: accounts
+                                            .map((e) => e.name)
+                                            .toList(),
+                                        selectedItemIndex: selectedSubTo == null
+                                            ? null
+                                            : accounts.indexWhere((account) =>
+                                                account.id ==
+                                                selectedSubTo?.id),
+                                        onChange: (index) {
+                                          selectedSubTo = accounts[index];
+                                          setState(() {});
+                                        },
+                                        backgroundColor: kSecondaryColor,
+                                        textColor: kWhiteColor),
+                                  ),
+                                ],
+                              );
+                            })),
+                    SizedBox(
+                      height: 40,
+                    ),
+                    Visibility(
+                        visible: selectedTo != null &&
+                            selectedFrom != null &&
+                            selectedSubFrom != null &&
+                            selectedSubTo != null,
+                        child: MainButton(
+                            title: "التالى",
+                            onPressed: () async {
+                              Get.toNamed("/invoices/add", arguments: {
+                                "from": selectedFrom,
+                                "to": selectedTo,
+                                "subFrom": selectedSubFrom,
+                                "subTo": selectedSubTo,
+                              });
+                            }))
+                  ],
+                )
+              : SizedBox(),
         ]),
       )),
     );

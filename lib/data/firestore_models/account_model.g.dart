@@ -131,8 +131,8 @@ abstract class AccountModelDocumentReference
     String? id,
     String name,
     String type,
-    double activeBalance,
-    double creditBalance,
+    double? totalBalance,
+    double? creditBalance,
   });
 
   Future<void> set(AccountModel value);
@@ -185,15 +185,15 @@ class _$AccountModelDocumentReference
     Object? id = _sentinel,
     Object? name = _sentinel,
     Object? type = _sentinel,
-    Object? activeBalance = _sentinel,
+    Object? totalBalance = _sentinel,
     Object? creditBalance = _sentinel,
   }) async {
     final json = {
       if (id != _sentinel) "id": id as String?,
       if (name != _sentinel) "name": name as String,
       if (type != _sentinel) "type": type as String,
-      if (activeBalance != _sentinel) "activeBalance": activeBalance as double,
-      if (creditBalance != _sentinel) "creditBalance": creditBalance as double,
+      if (totalBalance != _sentinel) "totalBalance": totalBalance as double?,
+      if (creditBalance != _sentinel) "creditBalance": creditBalance as double?,
     };
 
     return reference.update(json);
@@ -276,7 +276,7 @@ abstract class AccountModelQuery
     List<String>? whereIn,
     List<String>? whereNotIn,
   });
-  AccountModelQuery whereActiveBalance({
+  AccountModelQuery whereTotalBalance({
     double? isEqualTo,
     double? isNotEqualTo,
     double? isLessThan,
@@ -284,8 +284,8 @@ abstract class AccountModelQuery
     double? isGreaterThan,
     double? isGreaterThanOrEqualTo,
     bool? isNull,
-    List<double>? whereIn,
-    List<double>? whereNotIn,
+    List<double?>? whereIn,
+    List<double?>? whereNotIn,
   });
   AccountModelQuery whereCreditBalance({
     double? isEqualTo,
@@ -295,8 +295,8 @@ abstract class AccountModelQuery
     double? isGreaterThan,
     double? isGreaterThanOrEqualTo,
     bool? isNull,
-    List<double>? whereIn,
-    List<double>? whereNotIn,
+    List<double?>? whereIn,
+    List<double?>? whereNotIn,
   });
 
   AccountModelQuery orderById({
@@ -335,12 +335,12 @@ abstract class AccountModelQuery
     AccountModelDocumentSnapshot? startAfterDocument,
   });
 
-  AccountModelQuery orderByActiveBalance({
+  AccountModelQuery orderByTotalBalance({
     bool descending = false,
-    double startAt,
-    double startAfter,
-    double endAt,
-    double endBefore,
+    double? startAt,
+    double? startAfter,
+    double? endAt,
+    double? endBefore,
     AccountModelDocumentSnapshot? startAtDocument,
     AccountModelDocumentSnapshot? endAtDocument,
     AccountModelDocumentSnapshot? endBeforeDocument,
@@ -349,10 +349,10 @@ abstract class AccountModelQuery
 
   AccountModelQuery orderByCreditBalance({
     bool descending = false,
-    double startAt,
-    double startAfter,
-    double endAt,
-    double endBefore,
+    double? startAt,
+    double? startAfter,
+    double? endAt,
+    double? endBefore,
     AccountModelDocumentSnapshot? startAtDocument,
     AccountModelDocumentSnapshot? endAtDocument,
     AccountModelDocumentSnapshot? endBeforeDocument,
@@ -505,7 +505,7 @@ class _$AccountModelQuery extends QueryReference<AccountModelQuerySnapshot>
     );
   }
 
-  AccountModelQuery whereActiveBalance({
+  AccountModelQuery whereTotalBalance({
     double? isEqualTo,
     double? isNotEqualTo,
     double? isLessThan,
@@ -513,12 +513,12 @@ class _$AccountModelQuery extends QueryReference<AccountModelQuerySnapshot>
     double? isGreaterThan,
     double? isGreaterThanOrEqualTo,
     bool? isNull,
-    List<double>? whereIn,
-    List<double>? whereNotIn,
+    List<double?>? whereIn,
+    List<double?>? whereNotIn,
   }) {
     return _$AccountModelQuery(
       reference.where(
-        'activeBalance',
+        'totalBalance',
         isEqualTo: isEqualTo,
         isNotEqualTo: isNotEqualTo,
         isLessThan: isLessThan,
@@ -541,8 +541,8 @@ class _$AccountModelQuery extends QueryReference<AccountModelQuerySnapshot>
     double? isGreaterThan,
     double? isGreaterThanOrEqualTo,
     bool? isNull,
-    List<double>? whereIn,
-    List<double>? whereNotIn,
+    List<double?>? whereIn,
+    List<double?>? whereNotIn,
   }) {
     return _$AccountModelQuery(
       reference.where(
@@ -687,7 +687,7 @@ class _$AccountModelQuery extends QueryReference<AccountModelQuerySnapshot>
     return _$AccountModelQuery(query, _collection);
   }
 
-  AccountModelQuery orderByActiveBalance({
+  AccountModelQuery orderByTotalBalance({
     bool descending = false,
     Object? startAt = _sentinel,
     Object? startAfter = _sentinel,
@@ -698,7 +698,7 @@ class _$AccountModelQuery extends QueryReference<AccountModelQuerySnapshot>
     AccountModelDocumentSnapshot? endBeforeDocument,
     AccountModelDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('activeBalance', descending: descending);
+    var query = reference.orderBy('totalBalance', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -935,10 +935,11 @@ abstract class ItemModelDocumentReference
   Future<void> update({
     String? id,
     String name,
+    String type,
     num coverPrice,
     List<String> images,
     String? barcode,
-    int? customCode,
+    int? itemReference,
     String? grade,
     String? semester,
     int? quantity,
@@ -994,10 +995,11 @@ class _$ItemModelDocumentReference
   Future<void> update({
     Object? id = _sentinel,
     Object? name = _sentinel,
+    Object? type = _sentinel,
     Object? coverPrice = _sentinel,
     Object? images = _sentinel,
     Object? barcode = _sentinel,
-    Object? customCode = _sentinel,
+    Object? itemReference = _sentinel,
     Object? grade = _sentinel,
     Object? semester = _sentinel,
     Object? quantity = _sentinel,
@@ -1006,10 +1008,11 @@ class _$ItemModelDocumentReference
     final json = {
       if (id != _sentinel) "id": id as String?,
       if (name != _sentinel) "name": name as String,
+      if (type != _sentinel) "type": type as String,
       if (coverPrice != _sentinel) "coverPrice": coverPrice as num,
       if (images != _sentinel) "images": images as List<String>,
       if (barcode != _sentinel) "barcode": barcode as String?,
-      if (customCode != _sentinel) "customCode": customCode as int?,
+      if (itemReference != _sentinel) "itemReference": itemReference as int?,
       if (grade != _sentinel) "grade": grade as String?,
       if (semester != _sentinel) "semester": semester as String?,
       if (quantity != _sentinel) "quantity": quantity as int?,
@@ -1085,6 +1088,17 @@ abstract class ItemModelQuery
     List<String>? whereIn,
     List<String>? whereNotIn,
   });
+  ItemModelQuery whereType({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String>? whereIn,
+    List<String>? whereNotIn,
+  });
   ItemModelQuery whereCoverPrice({
     num? isEqualTo,
     num? isNotEqualTo,
@@ -1117,7 +1131,7 @@ abstract class ItemModelQuery
     List<String?>? whereIn,
     List<String?>? whereNotIn,
   });
-  ItemModelQuery whereCustomCode({
+  ItemModelQuery whereItemReference({
     int? isEqualTo,
     int? isNotEqualTo,
     int? isLessThan,
@@ -1197,6 +1211,18 @@ abstract class ItemModelQuery
     ItemModelDocumentSnapshot? startAfterDocument,
   });
 
+  ItemModelQuery orderByType({
+    bool descending = false,
+    String startAt,
+    String startAfter,
+    String endAt,
+    String endBefore,
+    ItemModelDocumentSnapshot? startAtDocument,
+    ItemModelDocumentSnapshot? endAtDocument,
+    ItemModelDocumentSnapshot? endBeforeDocument,
+    ItemModelDocumentSnapshot? startAfterDocument,
+  });
+
   ItemModelQuery orderByCoverPrice({
     bool descending = false,
     num startAt,
@@ -1233,7 +1259,7 @@ abstract class ItemModelQuery
     ItemModelDocumentSnapshot? startAfterDocument,
   });
 
-  ItemModelQuery orderByCustomCode({
+  ItemModelQuery orderByItemReference({
     bool descending = false,
     int? startAt,
     int? startAfter,
@@ -1411,6 +1437,34 @@ class _$ItemModelQuery extends QueryReference<ItemModelQuerySnapshot>
     );
   }
 
+  ItemModelQuery whereType({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String>? whereIn,
+    List<String>? whereNotIn,
+  }) {
+    return _$ItemModelQuery(
+      reference.where(
+        'type',
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        whereIn: whereIn,
+        whereNotIn: whereNotIn,
+      ),
+      _collection,
+    );
+  }
+
   ItemModelQuery whereCoverPrice({
     num? isEqualTo,
     num? isNotEqualTo,
@@ -1493,7 +1547,7 @@ class _$ItemModelQuery extends QueryReference<ItemModelQuerySnapshot>
     );
   }
 
-  ItemModelQuery whereCustomCode({
+  ItemModelQuery whereItemReference({
     int? isEqualTo,
     int? isNotEqualTo,
     int? isLessThan,
@@ -1506,7 +1560,7 @@ class _$ItemModelQuery extends QueryReference<ItemModelQuerySnapshot>
   }) {
     return _$ItemModelQuery(
       reference.where(
-        'customCode',
+        'itemReference',
         isEqualTo: isEqualTo,
         isNotEqualTo: isNotEqualTo,
         isLessThan: isLessThan,
@@ -1717,6 +1771,48 @@ class _$ItemModelQuery extends QueryReference<ItemModelQuerySnapshot>
     return _$ItemModelQuery(query, _collection);
   }
 
+  ItemModelQuery orderByType({
+    bool descending = false,
+    Object? startAt = _sentinel,
+    Object? startAfter = _sentinel,
+    Object? endAt = _sentinel,
+    Object? endBefore = _sentinel,
+    ItemModelDocumentSnapshot? startAtDocument,
+    ItemModelDocumentSnapshot? endAtDocument,
+    ItemModelDocumentSnapshot? endBeforeDocument,
+    ItemModelDocumentSnapshot? startAfterDocument,
+  }) {
+    var query = reference.orderBy('type', descending: descending);
+
+    if (startAtDocument != null) {
+      query = query.startAtDocument(startAtDocument.snapshot);
+    }
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument.snapshot);
+    }
+    if (endAtDocument != null) {
+      query = query.endAtDocument(endAtDocument.snapshot);
+    }
+    if (endBeforeDocument != null) {
+      query = query.endBeforeDocument(endBeforeDocument.snapshot);
+    }
+
+    if (startAt != _sentinel) {
+      query = query.startAt([startAt]);
+    }
+    if (startAfter != _sentinel) {
+      query = query.startAfter([startAfter]);
+    }
+    if (endAt != _sentinel) {
+      query = query.endAt([endAt]);
+    }
+    if (endBefore != _sentinel) {
+      query = query.endBefore([endBefore]);
+    }
+
+    return _$ItemModelQuery(query, _collection);
+  }
+
   ItemModelQuery orderByCoverPrice({
     bool descending = false,
     Object? startAt = _sentinel,
@@ -1843,7 +1939,7 @@ class _$ItemModelQuery extends QueryReference<ItemModelQuerySnapshot>
     return _$ItemModelQuery(query, _collection);
   }
 
-  ItemModelQuery orderByCustomCode({
+  ItemModelQuery orderByItemReference({
     bool descending = false,
     Object? startAt = _sentinel,
     Object? startAfter = _sentinel,
@@ -1854,7 +1950,7 @@ class _$ItemModelQuery extends QueryReference<ItemModelQuerySnapshot>
     ItemModelDocumentSnapshot? endBeforeDocument,
     ItemModelDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('customCode', descending: descending);
+    var query = reference.orderBy('itemReference', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -2105,8 +2201,8 @@ AccountModel _$AccountModelFromJson(Map<String, dynamic> json) => AccountModel(
       id: json['id'] as String?,
       name: json['name'] as String,
       type: json['type'] as String,
-      activeBalance: (json['activeBalance'] as num).toDouble(),
-      creditBalance: (json['creditBalance'] as num).toDouble(),
+      totalBalance: (json['totalBalance'] as num?)?.toDouble(),
+      creditBalance: (json['creditBalance'] as num?)?.toDouble(),
     );
 
 Map<String, dynamic> _$AccountModelToJson(AccountModel instance) =>
@@ -2114,6 +2210,6 @@ Map<String, dynamic> _$AccountModelToJson(AccountModel instance) =>
       'id': instance.id,
       'name': instance.name,
       'type': instance.type,
-      'activeBalance': instance.activeBalance,
+      'totalBalance': instance.totalBalance,
       'creditBalance': instance.creditBalance,
     };

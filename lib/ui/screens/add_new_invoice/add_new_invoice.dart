@@ -1,15 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, prefer_function_declarations_over_variables
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sa3ada_app/data/firestore_models/account_model.dart'
-    as account_model;
 import 'package:sa3ada_app/data/firestore_models/item_model.dart' as item_model;
 import 'package:sa3ada_app/data/models/mini_table_model.dart';
 import 'package:sa3ada_app/ui/components/alert_prompt_box.dart';
 import 'package:sa3ada_app/ui/components/header.dart';
-import 'package:sa3ada_app/ui/components/item_quantity_sheet.dart';
 import 'package:sa3ada_app/ui/components/item_select_button.dart';
 import 'package:sa3ada_app/ui/components/main_button.dart';
 import 'package:sa3ada_app/ui/components/mini_table.dart';
@@ -40,7 +36,8 @@ class AddNewInvoice extends StatelessWidget {
           AlertPromptBox.showPrompt(
               message: "لن يتم تسجيل هذه الفاتورة ، هل تريد الخروج فعلا ؟",
               title: "تحذير",
-              onSuccess: () {
+              onSuccess: () async {
+                Get.delete<AddNewInvoiceController>();
                 Get.back();
               });
           return false;
@@ -59,7 +56,7 @@ class AddNewInvoice extends StatelessWidget {
                       message:
                           "لن يتم تسجيل هذه الفاتورة ، هل تريد الخروج فعلا ؟",
                       title: "تحذير",
-                      onSuccess: () {
+                      onSuccess: () async {
                         Get.back();
                       });
                 },
@@ -72,6 +69,29 @@ class AddNewInvoice extends StatelessWidget {
                       child: Padding(
                     padding: EdgeInsets.all(20),
                     child: Column(children: [
+                      Text("تاريخ الفاتورة",
+                          style:
+                              TextStyle(color: kGrayLightColor, fontSize: 10)),
+                      TextButton(
+                          onPressed: () async {
+                            _.invoiceDate = await showDatePicker(
+                                    context: context,
+                                    initialDate: _.invoiceDate,
+                                    firstDate: DateTime(2020),
+                                    lastDate: DateTime.now()) ??
+                                DateTime.now();
+                            _.update();
+                          },
+                          style: TextButton.styleFrom(
+                              backgroundColor: kSecondaryColor,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 40, vertical: 8),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(4))),
+                          child: Text(
+                            "${_.invoiceDate.day}/${_.invoiceDate.month}/${_.invoiceDate.year}",
+                            style: TextStyle(color: kWhiteColor),
+                          )),
                       SizedBox(
                         height: 20,
                       ),
@@ -115,22 +135,22 @@ class AddNewInvoice extends StatelessWidget {
                       ItemSelectButton(
                         defaultSelectedQuantity:
                             _.arguments["subTo"].type == "customer" ? 1 : null,
+                        selectedItems: _.invoiceItems,
                         fromAccount: _.arguments["subFrom"],
                         onSelect: (item, quantity) {
-                          if (_.invoiceItems.firstWhereOrNull(
-                                  (e) => e.barcode == item.barcode) ==
+                          if (_.invoiceItems
+                                  .firstWhereOrNull((e) => e.id == item.id) ==
                               null) {
                             _.invoiceItems.add(item_model.ItemModel.fromJson(
                                 {...item.toJson(), "quantity": quantity}));
                           } else {
                             final int itemIndex = _.invoiceItems
-                                .indexWhere((e) => e.barcode == item.barcode);
+                                .indexWhere((e) => e.id == item.id);
 
                             _.invoiceItems[itemIndex] =
                                 item_model.ItemModel.fromJson({
                               ..._.invoiceItems[itemIndex].toJson(),
-                              "quantity":
-                                  quantity + _.invoiceItems[itemIndex].quantity!
+                              "quantity": quantity
                             });
                           }
                         },
@@ -149,15 +169,15 @@ class AddNewInvoice extends StatelessWidget {
                           await _.itemQuantitybyBarcode(barcode: row.barcode);
                         },
                         listAll: true,
+                        columnWidths: {
+                          1: FlexColumnWidth(2),
+                        },
                         data: _.invoiceItems,
                         columns: [
                           MiniTableModel(
                               title: "م",
                               selector: (row) =>
                                   (_.invoiceItems.indexOf(row) + 1).toString()),
-                          MiniTableModel(
-                              title: "الكود",
-                              selector: (row) => row.customCode),
                           MiniTableModel(
                               title: "اسم الكتاب",
                               selector: (row) => getBookFullName(row)),
@@ -226,78 +246,104 @@ class AddNewInvoice extends StatelessWidget {
                       SizedBox(
                         height: 10,
                       ),
-                      Row(
-                        children: [
-                          Text(
-                            "الخصم",
-                            style: TextStyle(
-                                color: kWhiteColor,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          DropdownButton2(
-                              iconSize: 30,
-                              underline: SizedBox(),
-                              focusColor: kGreenColor,
-                              customButton: Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 3),
-                                width: 100,
-                                decoration: BoxDecoration(
-                                    color: kWhiteColor,
-                                    borderRadius: BorderRadius.circular(4)),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "${_.discountPercentage}%",
-                                      style: TextStyle(
-                                          color: kSecondaryColor,
-                                          fontSize: 14,
-                                          fontFamily: kFontFamilyPrimary),
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Icon(
-                                      Icons.arrow_drop_down_rounded,
-                                      color: kSecondaryColor,
-                                      size: 30,
-                                    )
-                                  ],
+                      Visibility(
+                        visible: _.arguments["subFrom"].type != "store",
+                        child: Row(
+                          children: [
+                            Text(
+                              "الخصم",
+                              style: TextStyle(
+                                  color: kWhiteColor,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            DropdownButton2(
+                                iconSize: 30,
+                                underline: SizedBox(),
+                                focusColor: kGreenColor,
+                                customButton: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 3),
+                                  width: 100,
+                                  decoration: BoxDecoration(
+                                      color: kWhiteColor,
+                                      borderRadius: BorderRadius.circular(4)),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "${_.discountPercentage}%",
+                                        style: TextStyle(
+                                            color: kSecondaryColor,
+                                            fontSize: 14,
+                                            fontFamily: kFontFamilyPrimary),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Icon(
+                                        Icons.arrow_drop_down_rounded,
+                                        color: kSecondaryColor,
+                                        size: 30,
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              iconDisabledColor: kRedColor,
-                              iconEnabledColor: kWhiteColor,
-                              style: TextStyle(color: kSecondaryColor),
-                              items: List.generate(
-                                  101,
-                                  (index) => DropdownMenuItem<int>(
-                                        child: Text("$index"),
-                                        value: index,
-                                      )),
-                              onChanged: (int? index) {
-                                _.discountPercentage(index!.toDouble());
-                                _.update();
-                              }),
-                          Spacer(),
-                          Text(
-                            "- ${(_.total * _.discountPercentage.toDouble() / 100)} ج",
-                            style: TextStyle(
-                                color: kWhiteColor,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
+                                iconDisabledColor: kRedColor,
+                                iconEnabledColor: kWhiteColor,
+                                style: TextStyle(color: kSecondaryColor),
+                                items: List.generate(
+                                    101,
+                                    (index) => DropdownMenuItem<int>(
+                                          child: Text("$index"),
+                                          value: index,
+                                        )),
+                                onChanged: (int? index) {
+                                  _.discountPercentage(index!.toDouble());
+                                  _.update();
+                                }),
+                            Spacer(),
+                            Text(
+                              "- ${numberToString(_.total * _.discountPercentage.toDouble() / 100)} ج",
+                              style: TextStyle(
+                                  color: kWhiteColor,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
                       ),
                       Visibility(
                         visible: _.arguments["subFrom"].type == "trader",
                         child: Column(
                           children: [
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  "الاجمالي بعد الخصم",
+                                  style: TextStyle(
+                                      color: kWhiteColor,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Spacer(),
+                                Text(
+                                  "- ${numberToString((_.total - _.total * _.discountPercentage.toDouble() / 100), includeMinimals: true)} ج",
+                                  style: TextStyle(
+                                      color: kWhiteColor,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
                             SizedBox(
                               height: 20,
                             ),
@@ -332,7 +378,7 @@ class AddNewInvoice extends StatelessWidget {
                                             CrossAxisAlignment.center,
                                         children: [
                                           Text(
-                                            "${_.commission}%",
+                                            "${_.commissionPercentage}%",
                                             style: TextStyle(
                                                 color: kSecondaryColor,
                                                 fontSize: 14,
@@ -359,12 +405,12 @@ class AddNewInvoice extends StatelessWidget {
                                               value: index,
                                             )),
                                     onChanged: (int? index) {
-                                      _.commission(index!.toDouble());
+                                      _.commissionPercentage(index!.toDouble());
                                       _.update();
                                     }),
                                 Spacer(),
                                 Text(
-                                  "- ${(_.total * _.commission.toDouble() / 100)} ج",
+                                  "- ${numberToString((_.total - _.total * _.discountPercentage.toDouble() / 100) * _.commissionPercentage.toDouble() / 100, includeMinimals: true)} ج",
                                   style: TextStyle(
                                       color: kWhiteColor,
                                       fontSize: 18,
@@ -393,7 +439,7 @@ class AddNewInvoice extends StatelessWidget {
                           ),
                           Spacer(),
                           Text(
-                            "${_.subTotal} ج",
+                            "${numberToString(_.subTotal, includeMinimals: true)} ج",
                             style: TextStyle(
                                 color: kWhiteColor,
                                 fontSize: 20,

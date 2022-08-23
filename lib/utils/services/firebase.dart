@@ -8,6 +8,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:sa3ada_app/data/firestore_models/user_model.dart';
 import 'package:sa3ada_app/firebase_options.dart';
 import 'package:sa3ada_app/utils/constants.dart';
 import 'package:sa3ada_app/utils/services/storage_service.dart';
@@ -47,25 +48,51 @@ class FirebaseService extends GetxService {
       if (kIsWeb) {
         firestore.enablePersistence();
       }
-      // firestore.enableNetwork();
-      firestore.settings = Settings(persistenceEnabled: true);
+      // firestore.settings = Settings(persistenceEnabled: true);
 
       // Handle authentication
-      firebaseAuth.authStateChanges().listen((user) {
+      firebaseAuth.authStateChanges().listen((user) async {
         if (user == null) {
           print("user logged out...");
           Get.offAndToNamed("/login");
-          Get.find<StorageService>().isLoggedIn = false;
+          Get.find<StorageService>().userData = null;
         } else {
-          Get.find<StorageService>().isLoggedIn = true;
+          // Create the user on firestore if doesn't exist
+          final foundUsers =
+              await usersRef.whereAuthUserId(isEqualTo: user.uid).get();
+          if (foundUsers.docs.isEmpty) {
+            final UserModelDocumentReference createdUser = await usersRef.add(
+                UserModel(
+                    authUserId: user.uid,
+                    name: user.displayName ?? "غير معروف",
+                    type: "user",
+                    permissions: [],
+                    branches: [],
+                    stores: []));
+
+            // Set the userId on the cloud
+            await createdUser.update(id: createdUser.id);
+
+            // Store user data
+            Get.find<StorageService>().userData = UserModel.fromJson({
+              ...(await createdUser.get()).data!.toJson(),
+              "id": createdUser.id
+            });
+          } else {
+            // Update user data with the first occurence
+            Get.find<StorageService>().userData = UserModel.fromJson({
+              ...foundUsers.docs[0].data.toJson(),
+              "id": foundUsers.docs[0].id
+            });
+          }
         }
       });
 
       // Initialize emulators
       if (!kReleaseMode) {
-        await firebaseAuth.useAuthEmulator('192.168.1.153', 9099);
-        firestore.useFirestoreEmulator('192.168.1.153', 8080);
-        await firebaseStorage.useStorageEmulator('192.168.1.153', 9199);
+        await firebaseAuth.useAuthEmulator('192.168.114.201', 9099);
+        firestore.useFirestoreEmulator('192.168.114.201', 8080);
+        await firebaseStorage.useStorageEmulator('192.168.114.201', 9199);
       }
 
       //Get the token

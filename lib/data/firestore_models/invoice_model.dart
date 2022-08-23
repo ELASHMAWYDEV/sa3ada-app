@@ -10,6 +10,8 @@ part 'invoice_model.g.dart';
 final invoicesRef = InvoiceModelCollectionReference();
 const invoiceItemsRef = ItemModelCollectionReference;
 
+enum InvoiceStatuses { cancelled, completed, pending }
+
 @JsonSerializable(explicitToJson: true)
 class InvoiceModel {
   final String? id;
@@ -19,22 +21,54 @@ class InvoiceModel {
   final double discountPercentage;
   final double subTotal;
   final double paidAmount;
-  final double? commission;
+  final double? commissionPercentage;
   final List<ItemModel>? items;
+  final DateTime createdAt;
+  final num? invoiceReference;
+  final InvoiceCreatorModel invoiceCreator;
+  final DateTime invoiceDate;
+  final String status;
+  final String? cancellationReason;
 
-  InvoiceModel(
-      {this.id,
-      required this.from,
-      required this.to,
-      required this.total,
-      required this.discountPercentage,
-      required this.subTotal,
-      required this.paidAmount,
-      this.commission,
-      this.items});
+  InvoiceModel({
+    this.id,
+    required this.from,
+    required this.to,
+    required this.total,
+    required this.discountPercentage,
+    required this.subTotal,
+    required this.paidAmount,
+    this.commissionPercentage,
+    this.items,
+    required this.createdAt,
+    this.invoiceReference,
+    required this.invoiceCreator,
+    required this.invoiceDate,
+    required this.status,
+    this.cancellationReason,
+  });
 
   factory InvoiceModel.fromJson(Map<String, Object?> json) =>
       _$InvoiceModelFromJson(json);
 
   Map<String, Object?> toJson() => _$InvoiceModelToJson(this);
+}
+
+class InvoiceCreatorModel {
+  final String id;
+  final String name;
+
+  InvoiceCreatorModel({required this.id, required this.name});
+
+  factory InvoiceCreatorModel.fromJson(Map<String, dynamic> parsedJson) {
+    return InvoiceCreatorModel(
+      id: parsedJson['id'],
+      name: parsedJson['name'],
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+      };
 }
