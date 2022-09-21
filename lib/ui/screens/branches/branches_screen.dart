@@ -125,8 +125,8 @@ class _BranchesScreenState extends State<BranchesScreen> {
                                     title:
                                         (selectedAccount?.creditBalance ?? 0) <
                                                 0
-                                            ? "له"
-                                            : "عليه",
+                                            ? "عليه"
+                                            : "له",
                                     balance:
                                         selectedAccount?.creditBalance?.abs() ??
                                             0,

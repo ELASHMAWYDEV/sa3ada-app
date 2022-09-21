@@ -73,7 +73,7 @@ class FirebaseService extends GetxService {
             // Set the userId on the cloud
             await createdUser.update(id: createdUser.id);
 
-            // Store user data
+            // Store user datay
             Get.find<StorageService>().userData = UserModel.fromJson({
               ...(await createdUser.get()).data!.toJson(),
               "id": createdUser.id
@@ -90,9 +90,9 @@ class FirebaseService extends GetxService {
 
       // Initialize emulators
       if (!kReleaseMode) {
-        await firebaseAuth.useAuthEmulator('192.168.114.201', 9099);
-        firestore.useFirestoreEmulator('192.168.114.201', 8080);
-        await firebaseStorage.useStorageEmulator('192.168.114.201', 9199);
+        await firebaseAuth.useAuthEmulator('10.10.10.224', 9099);
+        firestore.useFirestoreEmulator('10.10.10.224', 8080);
+        await firebaseStorage.useStorageEmulator('10.10.10.224', 9199);
       }
 
       //Get the token

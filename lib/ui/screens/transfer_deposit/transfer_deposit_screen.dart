@@ -75,7 +75,7 @@ class TransferDepositScreen extends StatelessWidget {
                             .toList(),
                       ),
                       Visibility(
-                          visible: ["trader", "branch"]
+                          visible: ["trader", "branch", "client", "bankAccount"]
                               .contains(_.selectedFrom?.value),
                           child: Column(
                             children: [
@@ -129,8 +129,12 @@ class TransferDepositScreen extends StatelessWidget {
                           _.selectedFrom?.value == "bankAccount")
                         Visibility(
                             visible: (_.selectedFrom != null &&
-                                    ["branch", "trader"]
-                                        .contains(_.selectedFrom?.value) &&
+                                    [
+                                      "branch",
+                                      "trader",
+                                      "client",
+                                      "bankAccount"
+                                    ].contains(_.selectedFrom?.value) &&
                                     _.selectedSubFrom != null) ||
                                 _.selectedFrom?.value == "bankAccount",
                             child: Column(
@@ -242,7 +246,8 @@ class TransferDepositScreen extends StatelessWidget {
                                     visible: (_.selectedTo != null &&
                                             [
                                               "branch",
-                                              "trader"
+                                              "trader",
+                                              "client"
                                             ].contains(_.selectedTo?.value) &&
                                             _.selectedSubTo != null) ||
                                         _.selectedTo?.value == "bankAccount",

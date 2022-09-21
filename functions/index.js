@@ -276,7 +276,7 @@ const onDepositCreated = functions.firestore.document("deposits/{depositId}").on
     await depositRef.update({
       id: context.params.depositId,
       depositReference: newCounter,
-      status: "pending"
+      status: "pending",
     });
 
     // Create a transaction for the deposit
@@ -295,6 +295,7 @@ const onDepositCreated = functions.firestore.document("deposits/{depositId}").on
     });
   }
 });
+
 module.exports = {
   onTransactionCreated,
   onItemCreated,

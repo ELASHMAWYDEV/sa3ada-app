@@ -10,6 +10,7 @@ class TransferDepositController extends GetxController {
         SelectorModel(label: "حساب الشغل", value: "bankAccount"),
         SelectorModel(label: "فرع", value: "branch"),
         SelectorModel(label: "تاجر", value: "trader"),
+        SelectorModel(label: "عميل", value: "client"),
       ]
     },
     {
@@ -18,12 +19,11 @@ class TransferDepositController extends GetxController {
         SelectorModel(label: "تاجر", value: "trader"),
       ]
     },
-    // {
-    //   SelectorModel(label: "تاجر", value: "trader"): [
-    //     SelectorModel(label: "حساب الشغل", value: "bankAccount"),
-    //     SelectorModel(label: "فرع", value: "branch"),
-    //   ]
-    // }
+    {
+      SelectorModel(label: "عميل", value: "client"): [
+        SelectorModel(label: "فرع", value: "branch"),
+      ]
+    }
   ];
 
   SelectorModel? selectedFrom;

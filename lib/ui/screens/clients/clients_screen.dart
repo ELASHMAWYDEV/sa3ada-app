@@ -135,8 +135,8 @@ class _ClientsScreenState extends State<ClientsScreen> {
                                             (selectedAccount?.creditBalance ??
                                                         0) <
                                                     0
-                                                ? "له"
-                                                : "عليه",
+                                                ? "عليه"
+                                                : "له",
                                         balance: selectedAccount?.creditBalance
                                                 ?.abs() ??
                                             0,

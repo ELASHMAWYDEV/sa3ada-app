@@ -36,7 +36,7 @@ module.exports = async ({ transactionData, invoiceData, depositData, isReversed 
           fromTotalBalance = fromTotalBalance - getSign(transactionData.totalAmount, isReversed);
           break;
         case "deposit":
-          fromCreditBalance = fromCreditBalance - getSign(transactionData.creditAmount, isReversed);
+          fromCreditBalance = fromCreditBalance + getSign(transactionData.creditAmount, isReversed);
           break;
         default:
           return { isTransactionCalculated: false };
@@ -45,7 +45,15 @@ module.exports = async ({ transactionData, invoiceData, depositData, isReversed 
     case "store":
       switch (transactionData.type) {
         case "invoice":
-          fromTotalBalance = fromTotalBalance - getSign(transactionData.totalAmount, isReversed);
+          if (invoiceData?.commissionPercentage) {
+            // In case from a trader, remove the commission percentage
+            fromTotalBalance =
+              fromTotalBalance -
+              getSign((invoiceData.total * (100 - invoiceData.discountPercentage)) / 100, isReversed);
+          } else {
+            fromTotalBalance = fromTotalBalance - getSign(transactionData.totalAmount, isReversed);
+          }
+          fromCreditBalance = fromCreditBalance - getSign(invoiceData.total, isReversed); // Before discount & commission
           break;
         case "deposit":
           return { isTransactionCalculated: false };
@@ -89,7 +97,8 @@ module.exports = async ({ transactionData, invoiceData, depositData, isReversed 
         case "invoice":
           return { isTransactionCalculated: false };
         case "deposit":
-          return { isTransactionCalculated: false };
+          fromCreditBalance = fromCreditBalance + getSign(transactionData.totalAmount, isReversed);
+          break;
         default:
           return { isTransactionCalculated: false };
       }
@@ -115,7 +124,7 @@ module.exports = async ({ transactionData, invoiceData, depositData, isReversed 
         case "invoice":
           return { isTransactionCalculated: false };
         case "deposit":
-          fromCreditBalance = fromCreditBalance + getSign(transactionData.creditAmount, isReversed);
+          toCreditBalance = toCreditBalance + getSign(transactionData.creditAmount, isReversed);
           break;
         default:
           return { isTransactionCalculated: false };
@@ -125,10 +134,10 @@ module.exports = async ({ transactionData, invoiceData, depositData, isReversed 
       switch (transactionData.type) {
         case "invoice":
           toTotalBalance = toTotalBalance + getSign(transactionData.totalAmount, isReversed);
-          toCreditBalance = toCreditBalance + getSign(transactionData.creditAmount, isReversed);
+          toCreditBalance = toCreditBalance - getSign(transactionData.creditAmount, isReversed);
           break;
         case "deposit":
-          fromCreditBalance = fromCreditBalance + getSign(transactionData.creditAmount, isReversed);
+          toCreditBalance = toCreditBalance - getSign(transactionData.creditAmount, isReversed);
           break;
         default:
           return { isTransactionCalculated: false };
@@ -144,6 +153,7 @@ module.exports = async ({ transactionData, invoiceData, depositData, isReversed 
           } else {
             toTotalBalance = toTotalBalance + getSign(transactionData.totalAmount, isReversed);
           }
+          toCreditBalance = toCreditBalance + getSign(invoiceData.total, isReversed); // Before discount & commission
           break;
         case "deposit":
           return { isTransactionCalculated: false };
@@ -186,7 +196,7 @@ module.exports = async ({ transactionData, invoiceData, depositData, isReversed 
       switch (transactionData.type) {
         case "invoice":
           toTotalBalance = toTotalBalance + getSign(transactionData.totalAmount, isReversed);
-          fromCreditBalance = fromCreditBalance + getSign(transactionData.creditAmount, isReversed);
+          toCreditBalance = toCreditBalance + getSign(transactionData.creditAmount, isReversed);
           break;
         case "deposit":
           return { isTransactionCalculated: false };

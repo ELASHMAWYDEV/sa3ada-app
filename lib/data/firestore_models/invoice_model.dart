@@ -27,7 +27,7 @@ class InvoiceModel {
   final num? invoiceReference;
   final InvoiceCreatorModel invoiceCreator;
   final DateTime invoiceDate;
-  final String status;
+  final String? status;
   final String? cancellationReason;
 
   InvoiceModel({

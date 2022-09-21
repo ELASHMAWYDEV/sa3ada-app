@@ -9,6 +9,7 @@ import 'package:sa3ada_app/ui/screens/home/home_screen.dart';
 import 'package:get/get.dart';
 import 'package:sa3ada_app/ui/screens/items/items_screen.dart';
 import 'package:sa3ada_app/ui/screens/login/login_screen.dart';
+import 'package:sa3ada_app/ui/screens/stats/stats_screen.dart';
 import 'package:sa3ada_app/ui/screens/stores/stores_screen.dart';
 import 'package:sa3ada_app/ui/screens/traders/traders_screen.dart';
 import 'package:sa3ada_app/ui/screens/transfer_deposit/transfer_deposit_screen.dart';
@@ -30,5 +31,6 @@ class AppRoutes {
     GetPage(name: "/clients", page: () => ClientsScreen()),
     GetPage(name: "/branches", page: () => BranchesScreen()),
     GetPage(name: "/stores", page: () => StoresScreen()),
+    GetPage(name: "/stats", page: () => StatsScreen()),
   ];
 }

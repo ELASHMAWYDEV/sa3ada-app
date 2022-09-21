@@ -125,29 +125,34 @@ class _TradersScreenState extends State<TradersScreen> {
                                       SizedBox(
                                         height: 25,
                                       ),
-                                      BalanceBox(
-                                        title: "اجمالي التعاملات",
-                                        balance: selectedAccount?.totalBalance
-                                                ?.abs() ??
-                                            0,
-                                      ),
-                                      SizedBox(
-                                        height: 15,
-                                      ),
-                                      BalanceBox(
-                                        title:
-                                            (selectedAccount?.creditBalance ??
-                                                        0) <
-                                                    0
-                                                ? "له"
-                                                : "عليه",
-                                        balance: selectedAccount?.creditBalance
-                                                ?.abs() ??
-                                            0,
-                                      ),
-                                      SizedBox(
-                                        height: 15,
-                                      ),
+                                      if (user.permissions
+                                          .contains("traderBalance")) ...[
+                                        BalanceBox(
+                                          title: "اجمالي التعاملات",
+                                          balance: selectedAccount?.totalBalance
+                                                  ?.abs() ??
+                                              0,
+                                        ),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        BalanceBox(
+                                          title:
+                                              (selectedAccount?.creditBalance ??
+                                                          0) <
+                                                      0
+                                                  ? "له"
+                                                  : "عليه",
+                                          balance: selectedAccount
+                                                  ?.creditBalance
+                                                  ?.abs() ??
+                                              0,
+                                        ),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                      ] else
+                                        ...[],
                                       Divider(
                                         color: kSecondaryColor,
                                         height: 50,

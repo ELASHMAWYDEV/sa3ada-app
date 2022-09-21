@@ -135,7 +135,7 @@ abstract class InvoiceModelDocumentReference
     double paidAmount,
     double? commissionPercentage,
     num? invoiceReference,
-    String status,
+    String? status,
     String? cancellationReason,
   });
 
@@ -207,7 +207,7 @@ class _$InvoiceModelDocumentReference
         "commissionPercentage": commissionPercentage as double?,
       if (invoiceReference != _sentinel)
         "invoiceReference": invoiceReference as num?,
-      if (status != _sentinel) "status": status as String,
+      if (status != _sentinel) "status": status as String?,
       if (cancellationReason != _sentinel)
         "cancellationReason": cancellationReason as String?,
     };
@@ -344,8 +344,8 @@ abstract class InvoiceModelQuery
     String? isGreaterThan,
     String? isGreaterThanOrEqualTo,
     bool? isNull,
-    List<String>? whereIn,
-    List<String>? whereNotIn,
+    List<String?>? whereIn,
+    List<String?>? whereNotIn,
   });
   InvoiceModelQuery whereCancellationReason({
     String? isEqualTo,
@@ -445,10 +445,10 @@ abstract class InvoiceModelQuery
 
   InvoiceModelQuery orderByStatus({
     bool descending = false,
-    String startAt,
-    String startAfter,
-    String endAt,
-    String endBefore,
+    String? startAt,
+    String? startAfter,
+    String? endAt,
+    String? endBefore,
     InvoiceModelDocumentSnapshot? startAtDocument,
     InvoiceModelDocumentSnapshot? endAtDocument,
     InvoiceModelDocumentSnapshot? endBeforeDocument,
@@ -733,8 +733,8 @@ class _$InvoiceModelQuery extends QueryReference<InvoiceModelQuerySnapshot>
     String? isGreaterThan,
     String? isGreaterThanOrEqualTo,
     bool? isNull,
-    List<String>? whereIn,
-    List<String>? whereNotIn,
+    List<String?>? whereIn,
+    List<String?>? whereNotIn,
   }) {
     return _$InvoiceModelQuery(
       reference.where(
@@ -2603,7 +2603,7 @@ InvoiceModel _$InvoiceModelFromJson(Map<String, dynamic> json) => InvoiceModel(
       invoiceCreator: InvoiceCreatorModel.fromJson(
           json['invoiceCreator'] as Map<String, dynamic>),
       invoiceDate: DateTime.parse(json['invoiceDate'] as String),
-      status: json['status'] as String,
+      status: json['status'] as String?,
       cancellationReason: json['cancellationReason'] as String?,
     );
 

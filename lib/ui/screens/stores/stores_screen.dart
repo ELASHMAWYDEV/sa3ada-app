@@ -113,22 +113,27 @@ class _StoresScreenState extends State<StoresScreen> {
                                   SizedBox(
                                     height: 25,
                                   ),
-                                  BalanceBox(
-                                    title: "اجمالي البضاعة",
-                                    balance: selectedAccount?.totalBalance ?? 0,
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  BalanceBox(
-                                    title: "الوارد كلي",
-                                    balance:
-                                        selectedAccount?.creditBalance?.abs() ??
-                                            0,
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
+                                  if (user!.permissions
+                                      .contains("storeBalance")) ...[
+                                    BalanceBox(
+                                      title: "اجمالي البضاعة",
+                                      balance:
+                                          selectedAccount?.totalBalance ?? 0,
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    BalanceBox(
+                                      title: "الوارد كلي",
+                                      balance: selectedAccount?.creditBalance
+                                              ?.abs() ??
+                                          0,
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                  ] else
+                                    ...[],
                                   Divider(
                                     color: kSecondaryColor,
                                     height: 50,

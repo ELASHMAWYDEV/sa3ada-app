@@ -167,10 +167,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         Get.toNamed("/stores");
                       },
                     ),
-                  // OptionButton(
-                  //   title: "الخزنة",
-                  //   onPressed: () {},
-                  // ),
+                  if (user.type == "superAdmin")
+                    OptionButton(
+                      title: "الاحصائيات",
+                      onPressed: () {
+                        Get.toNamed("/stats");
+                      },
+                    ),
                   // OptionButton(
                   //   title: "حساب الشغل",
                   //   onPressed: () {},
